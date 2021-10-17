@@ -1,0 +1,39 @@
+.grid-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    border: 2px solid #909090;
+    border-radius: 6px;
+
+    .grid-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: inherit;
+        padding: 0.5em;
+
+        .image-container {
+            width: 5rem;
+            height: 5rem;
+            margin-right: 2.5rem;
+
+            img {
+                object-fit: cover;
+                width: inherit;
+                height: inherit;
+            }
+        }
+
+    }
+
+    .warning-icon {
+        padding-right: 5em;
+    }
+}
+
+.grid-link-with-warning {
+    border: 2px solid #de5b04;
+    background-color: rgba(255, 169, 103, 0.25);
+}

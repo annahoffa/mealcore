@@ -1,0 +1,27 @@
+.dashboard-product {
+    width: 35em;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+    padding: 0.2em 1em;
+    margin: 1em;
+
+    .product-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .nutrients {
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 80%; //of the parent container
+        list-style: none;
+        padding: 0;
+    }
+}
+
+.dashboard-product-with-warning {
+    border: 2px solid #de5b04;
+    background-color: rgba(255, 169, 103, 0.25);
+}

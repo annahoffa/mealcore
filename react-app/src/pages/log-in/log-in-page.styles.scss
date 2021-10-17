@@ -1,0 +1,22 @@
+.horizontal-container {
+    display: flex;
+    flex-direction: row;
+
+    & > * {
+        margin: 0 3rem;
+    }
+
+    .section {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+
+        .section-title {
+            margin-bottom: 2rem;
+        }
+    }
+}
+
+.vertical-line {
+    border-left: medium solid #b8b8b8;
+}

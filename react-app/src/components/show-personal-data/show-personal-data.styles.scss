@@ -1,0 +1,9 @@
+.personal-data-container {
+    width: 350px;
+
+    .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+    }
+}

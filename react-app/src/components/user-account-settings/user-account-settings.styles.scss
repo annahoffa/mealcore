@@ -1,0 +1,97 @@
+.menu-container {
+    border-right: 1px solid #ccc;
+
+    .menu {
+        display: flex;
+        flex-direction: column;
+
+        .menu-item {
+            cursor: pointer;
+            display: flex;
+
+            &.active {
+                background: rgba(210, 242, 219, 0.4);
+                border-left: 15px solid #1FBD4B;
+                border-top-left-radius: 6px;
+                border-bottom-left-radius: 6px;
+            }
+
+            &:hover {
+                background: rgba(204, 204, 204, 0.5);
+            }
+            
+            > svg {
+                width: 32px;
+                height: 32px;
+                padding: 0 10px 0 0;
+            }
+        }
+    }
+}
+
+.account-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    .container {
+        display: inline-flex;
+        flex-direction: column;
+        overflow: auto;
+        margin-top: 30px;
+
+        & > * {
+            margin: 2rem 0.2rem;
+        }
+
+        .data-container {
+            > ul {
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                list-style: none;
+                padding: 12px;
+            }
+        }
+
+        .avatar-container {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: flex-end;
+            //background-color: cornflowerblue;
+
+            & > * {
+                margin: 0px 10px;
+            }
+
+            .avatar-placeholder {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background-color: lightgray;
+            }
+        }
+
+        .text-settings {
+
+            .settings-element {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px;
+
+                .icon-text-clip {
+                    display: inline-flex;
+                    flex-direction: row;
+                    align-items: center;
+                    margin-right: 4em;
+
+                    & > * {
+                        margin-right: 0.5em;
+                    }
+                }
+            }
+        }
+    }
+}

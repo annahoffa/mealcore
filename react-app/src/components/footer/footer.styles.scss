@@ -1,0 +1,31 @@
+$font-color: #E3E3E4;
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: auto;
+    background-color: #1A1D16;
+    color: $font-color;
+
+    .footer-left-container {
+        display: flex;
+        flex-direction: row;
+        margin: 30px;
+    }
+
+    .footer-right-container {
+        display: flex;
+        flex-direction: row;
+        margin: 30px;
+    }
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-width: 150px;
+    margin: 20px 15px 15px;
+}

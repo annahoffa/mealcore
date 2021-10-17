@@ -1,0 +1,18 @@
+.search {
+    display: flex;
+    align-content: baseline;
+    border: 2px solid #DFDFDF;
+    border-radius: 4px;
+
+    &:focus-within {
+        border: 2px solid #20C34E;
+    }
+
+    .icon-container {
+        padding: 0.5rem;
+    }
+
+    .search-input {
+
+    }
+}

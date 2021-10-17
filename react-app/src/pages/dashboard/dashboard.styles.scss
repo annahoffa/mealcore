@@ -1,0 +1,7 @@
+.dashboard-container {
+    display: flex;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 100px 50px 50px; /* TODO: margin-top should be equal to the header height */
+    background-color: #E4E3E3;
+}

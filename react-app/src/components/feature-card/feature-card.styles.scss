@@ -1,0 +1,56 @@
+$feature-card-width: 12rem;
+/* a little less (0.4) than half the picture is visible above the card */
+$img-above-card-amount: calc(-0.4 * calc(0.6 * #{$feature-card-width}));
+
+
+.feature-card {
+    display: inline-block;
+    padding-top: calc(-1 * #{$img-above-card-amount});
+
+    .relative-content-wrapper {
+        display: inline-flex;
+        justify-content: center;
+        position: relative;
+        width: $feature-card-width;
+
+        .image-container {
+            display: inline-block;
+            position: absolute;
+            top: $img-above-card-amount;
+            z-index: 1;
+            width: calc(0.7 * #{$feature-card-width});
+            height: calc(0.7 * #{$feature-card-width});
+            overflow: hidden;
+
+            img {
+                object-fit: cover;
+                width: inherit;
+                height: inherit;
+                border-radius: 50%;
+            }
+        }
+
+        .card-surface {
+            display: flex;
+            align-items: flex-end;
+            width: inherit;
+            height: 15rem;
+            padding-top: $img-above-card-amount;
+            border-radius: 3%;
+            background-color: #DFDFDF;
+            text-align: center;
+
+            .text-container {
+                margin: 0 0.4em 1.8em;
+
+                .text-title {
+                    margin-bottom: 0.6em;
+                }
+
+                .text-body {
+
+                }
+            }
+        }
+    }
+}

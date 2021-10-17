@@ -1,0 +1,12 @@
+.daily-requirements-container {
+    width: 300px;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+    padding: 0.2em 1em;
+
+    .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+    }
+}
