@@ -1,0 +1,872 @@
+swagger: '2.0'
+info:
+  description: API documentation
+  version: 1.0.9
+  title: FoodCore
+tags:
+  - name: products
+  - name: users
+paths:
+  '/products/suggestions/{name}':
+    get:
+      tags:
+        - products
+      summary: Find suggestions by name substring
+      description: Returns up to 25 porducts
+      operationId: getSuggestions
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: name
+          description: Substring of product name (min 2 chars)
+          required: true
+          type: string
+          minLength: 2
+        - in: query
+          name: page
+          description: Page to display
+          required: false
+          type: integer
+          minimum: 0
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BasicProduct'
+        '400':
+          description: Bad request
+        '404':
+          description: Products not found
+  /products/findById:
+    get:
+      tags:
+        - products
+      summary: Find single complete product
+      description: Returns one product
+      operationId: getPorductById
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: productId
+          description: Porduct ID
+          required: false
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/CompleteProduct'
+        '400':
+          description: Bad request
+        '404':
+          description: Product not found
+  /user/register:
+    post:
+      tags:
+        - users
+      summary: Register new user
+      operationId: registerNewUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: >-
+            Login and password needs to be at least 4 characters. Type is
+            optional.
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: Invalid login or password
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '409':
+          description: Login is already taken
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '500':
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/login:
+    post:
+      tags:
+        - users
+      summary: Login user
+      description: Process the credentials and if valid authenticate the user
+      operationId: login
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: username
+          required: true
+          type: string
+        - in: query
+          name: password
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '404':
+          description: Invalid username or password
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/logout:
+    post:
+      tags:
+        - users
+      summary: Logout user
+      operationId: logout
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: Success
+  /user/addProduct:
+    post:
+      tags:
+        - users
+      summary: Add product to logged user
+      operationId: addProduct
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: productId
+          required: true
+          type: integer
+        - in: query
+          name: quantity
+          description: Between 1 and 15000
+          default: 100
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: Bad quantity value
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/getLogin:
+    get:
+      tags:
+        - users
+      summary: Get login of current user
+      operationId: getLogin
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/getPersonalData:
+    get:
+      tags:
+        - users
+      summary: Get personal data of current user
+      operationId: getPersonalData
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserDataResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/getNutritionalRequirements:
+    get:
+      tags:
+        - users
+      summary: Get nutritional requirements for current user
+      operationId: getNutritionalRequirements
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/NutritionalRequirementsResponse'
+        '400':
+          description: 'Gender, activity level, age, weight or height is not complete.'
+          schema:
+            $ref: '#/definitions/NutritionalRequirementsResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/NutritionalRequirementsResponse'
+  /user/getUserProducts:
+    get:
+      tags:
+        - users
+      summary: Get products for logged user and sum of nutritional values
+      operationId: getUserProducts
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserProductsResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/NutritionalRequirementsResponse'
+  /user/changePassword:
+    put:
+      tags:
+        - users
+      summary: Change password for logged user
+      operationId: changePassword
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: oldPassword
+          required: true
+          type: string
+        - in: query
+          name: newPassword
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: Invalid new password
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: Bad session
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '403':
+          description: Wrong oldPassword
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/changeLogin:
+    put:
+      tags:
+        - users
+      summary: Change login for logged user
+      operationId: changeLogin
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: newLogin
+          required: true
+          type: string
+        - in: query
+          name: password
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: Invalid new login
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: Bad session
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '403':
+          description: Wrong password
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '409':
+          description: Login is already taken
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/changePersonalData:
+    put:
+      tags:
+        - users
+      summary: Update personal data for logged user
+      operationId: changePersonalData
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: UserDataRequest
+          description: "User personal data"
+          required: true
+          schema:
+            $ref: '#/definitions/UserDataRequest'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: 'Bad request'
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/removeProduct:
+    delete:
+      tags:
+        - users
+      summary: Remove product from logged user
+      operationId: removeProduct
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: productId
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+definitions:
+  BasicProduct:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      code:
+        type: string
+      name:
+        type: string
+      brands:
+        type: string
+      countriesTags:
+        type: string
+      servingQuantity:
+        type: string
+      servingSize:
+        type: string
+      embCodesTags:
+        type: string
+      quantity:
+        type: string
+      ingredients:
+        $ref: '#/definitions/Ingredients'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/Image'
+      allergenWarning:
+        type: boolean
+  CompleteProduct:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      code:
+        type: string
+      name:
+        type: string
+      brands:
+        type: string
+      countriesTags:
+        type: string
+      servingQuantity:
+        type: string
+      servingSize:
+        type: string
+      embCodesTags:
+        type: string
+      quantity:
+        type: string
+      addedQuantity:
+        type: integer
+      nutrients:
+        $ref: '#/definitions/Nutrients'
+      ingredients:
+        $ref: '#/definitions/Ingredients'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/Image'
+      allergenWarning:
+        type: boolean
+  Nutrients:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      productId:
+        type: integer
+        format: int64
+      energyKj:
+        type: string
+      energyKcal:
+        type: string
+      energy:
+        type: string
+      energyFromFat:
+        type: string
+      fat:
+        type: string
+      saturatedFat:
+        type: string
+      butyricAcid:
+        type: string
+      caproicAcid:
+        type: string
+      caprylicAcid:
+        type: string
+      capricAcid:
+        type: string
+      lauricAcid:
+        type: string
+      myristicAcid:
+        type: string
+      palmiticAcid:
+        type: string
+      stearicAcid:
+        type: string
+      arachidicAcid:
+        type: string
+      behenicAcid:
+        type: string
+      lignocericAcid:
+        type: string
+      ceroticAcid:
+        type: string
+      montanicAcid:
+        type: string
+      melissicAcid:
+        type: string
+      monounsaturatedFat:
+        type: string
+      polyunsaturatedFat:
+        type: string
+      omega3Fat:
+        type: string
+      alphaLinolenicAcid:
+        type: string
+      eicosapentaenoicAcid:
+        type: string
+      docosahexaenoicAcid:
+        type: string
+      omega6Fat:
+        type: string
+      linoleicAcid:
+        type: string
+      arachidonicAcid:
+        type: string
+      gammaLinolenicAcid:
+        type: string
+      dihomoGammaLinolenicAcid:
+        type: string
+      omega9Fat:
+        type: string
+      oleicAcid:
+        type: string
+      elaidicAcid:
+        type: string
+      gondoicAcid:
+        type: string
+      meadAcid:
+        type: string
+      erucicAcid:
+        type: string
+      nervonicAcid:
+        type: string
+      transFat:
+        type: string
+      cholesterol:
+        type: string
+      carbohydrates:
+        type: string
+      sugars:
+        type: string
+      sucrose:
+        type: string
+      glucose:
+        type: string
+      fructose:
+        type: string
+      lactose:
+        type: string
+      maltose:
+        type: string
+      maltodextrins:
+        type: string
+      starch:
+        type: string
+      polyols:
+        type: string
+      fiber:
+        type: string
+      solubleFiber:
+        type: string
+      insolubleFiber:
+        type: string
+      proteins:
+        type: string
+      casein:
+        type: string
+      serumProteins:
+        type: string
+      nucleotides:
+        type: string
+      salt:
+        type: string
+      sodium:
+        type: string
+      alcohol:
+        type: string
+      vitaminA:
+        type: string
+      betaCarotene:
+        type: string
+      vitaminD:
+        type: string
+      vitaminE:
+        type: string
+      vitaminK:
+        type: string
+      vitaminC:
+        type: string
+      vitaminB1:
+        type: string
+      vitaminB2:
+        type: string
+      vitaminPp:
+        type: string
+      vitaminB6:
+        type: string
+      vitaminB9:
+        type: string
+      folates:
+        type: string
+      vitaminB12:
+        type: string
+      biotin:
+        type: string
+      pantothenicAcid:
+        type: string
+      silica:
+        type: string
+      bicarbonate:
+        type: string
+      potassium:
+        type: string
+      chloride:
+        type: string
+      calcium:
+        type: string
+      phosphorus:
+        type: string
+      iron:
+        type: string
+      magnesium:
+        type: string
+      zinc:
+        type: string
+      copper:
+        type: string
+      manganese:
+        type: string
+      fluoride:
+        type: string
+      selenium:
+        type: string
+      chromium:
+        type: string
+      molybdenum:
+        type: string
+      iodine:
+        type: string
+      caffeine:
+        type: string
+      taurine:
+        type: string
+      ph:
+        type: string
+      fruitsVegetablesNuts:
+        type: string
+      fruitsVegetablesNutsDried:
+        type: string
+      fruitsVegetablesNutsEstimate:
+        type: string
+      collagenMeatProteinRatio:
+        type: string
+      cocoa:
+        type: string
+      chlorophyl:
+        type: string
+      carbonFootprint:
+        type: string
+      carbonFootprintFromMeatOrFish:
+        type: string
+      glycemicIndex:
+        type: string
+      waterHardness:
+        type: string
+      choline:
+        type: string
+      phylloquinone:
+        type: string
+      betaGlucan:
+        type: string
+      inositol:
+        type: string
+      carnitine:
+        type: string
+  Ingredients:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      productId:
+        type: integer
+        format: int64
+      ingredientsText:
+        type: string
+      allergens:
+        type: string
+      tracesTags:
+        type: string
+      additives:
+        type: array
+        items:
+          $ref: '#/definitions/Addition'
+      ingredientsFromPalmOilTags:
+        type: string
+      ingredientsThatMayBeFromPalmOilTags:
+        type: string
+  Image:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      productId:
+        type: integer
+        format: int64
+      url:
+        type: string
+      type:
+        type: string
+        enum:
+          - MAIN
+          - MAIN_SMALL
+          - INGREDIENTS
+          - INGREDIENTS_SMALL
+          - NUTRITION
+          - NUTRITION_SMALL
+  User:
+    type: object
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+      gender:
+        type: string
+        enum:
+          - MALE
+          - FEMALE
+      age:
+        type: integer
+      weight:
+        type: integer
+      height:
+        type: integer
+      activityLevel:
+        type: string
+        enum:
+          - LACK_OF_ACTIVITY
+          - LITTLE_ACTIVITY
+          - MODERATE_ACTIVITY
+          - LOT_OF_ACTIVITY
+          - VERY_ACTIVE
+      allergens:
+        type: array
+        items:
+          type: string
+  UserDataResponse:
+    type: object
+    properties:
+      login:
+        type: string
+      type:
+        type: string
+        enum:
+          - NORMAL
+          - PREMIUM
+          - DIETICIAN
+          - ADMIN
+      gender:
+        type: string
+        enum:
+          - MALE
+          - FEMALE
+      age:
+        type: integer
+      weight:
+        type: integer
+      height:
+        type: integer
+      activityLevel:
+        type: string
+        enum:
+          - LACK_OF_ACTIVITY
+          - LITTLE_ACTIVITY
+          - MODERATE_ACTIVITY
+          - LOT_OF_ACTIVITY
+          - VERY_ACTIVE
+      allergens:
+        type: array
+        items:
+          type: string
+      success:
+        type: boolean
+  UserDataRequest:
+    type: object
+    properties:
+      gender:
+        type: string
+        enum:
+          - MALE
+          - FEMALE
+      age:
+        type: integer
+      weight:
+        type: integer
+      height:
+        type: integer
+      activityLevel:
+        type: string
+        enum:
+          - LACK_OF_ACTIVITY
+          - LITTLE_ACTIVITY
+          - MODERATE_ACTIVITY
+          - LOT_OF_ACTIVITY
+          - VERY_ACTIVE
+      allergens:
+        type: array
+        items:
+          type: string
+  NutritionalRequirementsResponse:
+    type: object
+    properties:
+      kcal:
+        type: number
+      proteins:
+        type: number
+      carbohydrates:
+        type: number
+      fat:
+        type: number
+      fiber:
+        type: number
+      success:
+        type: boolean
+  BasicResponse:
+    type: object
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+  Addition:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+  UserProductsResponse:
+    type: object
+    properties:
+      products:
+        type: array
+        items:
+          $ref: '#/definitions/CompleteProduct'
+      kcal:
+        type: number
+      proteins:
+        type: number
+      carbohydrates:
+        type: number
+      fat:
+        type: number
+      fiber:
+        type: number
+      success:
+        type: boolean
