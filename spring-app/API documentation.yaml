@@ -6,6 +6,7 @@ info:
 tags:
   - name: products
   - name: users
+  - name: sports
 paths:
   '/products/suggestions/{name}':
     get:
@@ -594,6 +595,27 @@ paths:
           description: User not logged in
           schema:
             $ref: '#/definitions/BasicResponse'
+  /sport/getAll:
+    get:
+      tags:
+        - sports
+      summary: Find all sports
+      operationId: getAll
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Sport'
+        '400':
+          description: Bad request
+        '404':
+          description: Product not found
 definitions:
   BasicProduct:
     type: object
@@ -1103,4 +1125,14 @@ definitions:
       duration:
         type: number
       calculatedKcal:
+        type: number
+  Sport:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      kcalPerHour:
         type: number
