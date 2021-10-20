@@ -187,6 +187,46 @@ paths:
           description: User not logged in
           schema:
             $ref: '#/definitions/BasicResponse'
+  /user/addExercise:
+    post:
+      tags:
+        - users
+      summary: Add exercise to logged user
+      operationId: addExercise
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: sportId
+          required: true
+          type: integer
+        - in: query
+          name: duration
+          description: In (0, 24)
+          default: 1
+          required: false
+          type: number
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: Bad quantity value
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
   /user/getLogin:
     get:
       tags:
@@ -274,6 +314,32 @@ paths:
           description: User not logged in
           schema:
             $ref: '#/definitions/NutritionalRequirementsResponse'
+  /user/getUserExercises:
+    get:
+      tags:
+        - users
+      summary: Get exercises for logged user
+      operationId: getUserExercises
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserExercisesResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
   /user/editProduct:
     put:
       tags:
@@ -316,6 +382,50 @@ paths:
             $ref: '#/definitions/BasicResponse'
         '404':
           description: Product not found
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/editExercise:
+    put:
+      tags:
+        - users
+      summary: Edit logged user exercise
+      operationId: editExercise
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: sportId
+          required: true
+          type: integer
+        - in: query
+          name: duration
+          description: In (0, 24)
+          default: 1
+          required: false
+          type: number
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: Bad quantity value or bad date format
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '404':
+          description: Exercise not found
           schema:
             $ref: '#/definitions/BasicResponse'
   /user/changePassword:
@@ -437,6 +547,36 @@ paths:
       parameters:
         - in: query
           name: productId
+          required: true
+          type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/removeExercise:
+    delete:
+      tags:
+        - users
+      summary: Remove exercise from logged user
+      operationId: removeExercise
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: sportId
           required: true
           type: integer
         - in: query
@@ -936,3 +1076,31 @@ definitions:
         format: date
       success:
         type: boolean
+  UserExercisesResponse:
+    type: object
+    properties:
+      exercises:
+        type: array
+        items:
+          $ref: '#/definitions/Exercises'
+      kcal:
+        type: number
+      date:
+        type: string
+        format: date
+      success:
+        type: boolean
+  Exercises:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      kcalPerHour:
+        type: number
+      duration:
+        type: number
+      calculatedKcal:
+        type: number
