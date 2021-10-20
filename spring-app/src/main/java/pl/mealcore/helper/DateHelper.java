@@ -3,6 +3,7 @@ package pl.mealcore.helper;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.time.DateUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,10 +17,11 @@ public class DateHelper {
      * Get date without time, if date == null return today
      *
      * @param date to format
+     * @param defaultDate default
      * @return formatted date
      */
-    public Date getDateWithoutTime(Date date) {
-        return DateUtils.truncate(nonNull(date) ? date : new Date(), Calendar.DAY_OF_MONTH);
+    public Date getDateWithoutTime(Date date, Date defaultDate) {
+        return DateUtils.truncate(nonNull(date) ? date : defaultDate, Calendar.DAY_OF_MONTH);
     }
 
     /**
@@ -34,5 +36,10 @@ public class DateHelper {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static String format(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        return formatter.format(date);
     }
 }

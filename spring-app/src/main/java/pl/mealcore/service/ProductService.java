@@ -1,11 +1,9 @@
 package pl.mealcore.service;
 
-import lombok.NonNull;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.product.Product;
-import pl.mealcore.dto.response.UserProductsResponse;
+import pl.mealcore.model.product.ProductEntity;
 
-import java.util.Date;
 import java.util.List;
 
 public interface ProductService {
@@ -13,5 +11,7 @@ public interface ProductService {
 
     Product getProduct(User user, Long id);
 
-    UserProductsResponse getProductsWithNutrientsForUser(@NonNull User user, Date parse);
+    Product createBaseProduct(ProductEntity entity);
+
+    void completeProduct(User user, Product product);
 }

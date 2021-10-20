@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,17 +15,15 @@ import pl.mealcore.dto.request.UserDataRequest;
 import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.dto.response.NutritionalRequirementsResponse;
 import pl.mealcore.dto.response.UserDataResponse;
-import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.error.*;
 import pl.mealcore.handler.CalculatorNutritionalRequirementsHandler;
-import pl.mealcore.helper.DateHelper;
-import pl.mealcore.service.ProductService;
+import pl.mealcore.service.UserProductService;
 import pl.mealcore.service.UserService;
 
 import java.util.Optional;
 
-import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
 
 @Slf4j
 @RestApiController(path = "user")
@@ -34,7 +31,7 @@ import static java.util.Objects.nonNull;
 public class UserController {
 
     private final UserService userService;
-    private final ProductService productService;
+    private final UserProductService userProductService;
     private final CalculatorNutritionalRequirementsHandler calculatorNutritionalRequirementsHandler;
 
     //    ----Create endpoints----
@@ -58,50 +55,6 @@ public class UserController {
         } catch (Exception e) {
             log.info("FAILED registration, internal server error: ", e);
             return new ResponseEntity<>(response.withMessage("Błąd wewnętrzny serwera."), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @ResponseBody
-    @PostMapping("/addProduct")
-    ResponseEntity<Object> addProduct(@RequestParam(name = "productId") Long productId,
-                                      @RequestParam(name = "quantity", required = false, defaultValue = "100") Integer quantity,
-                                      @RequestParam(name = "date", required = false) String date) {
-        BasicResponse response = new BasicResponse().withSuccess(false);
-        if (nonNull(date) && isNull(DateHelper.parse(date)))
-            return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
-        if (quantity < 1 || quantity > 15000) {
-            log.info("FAILED addProduct, invalid quantity: '{}'", quantity);
-            return new ResponseEntity<>(response.withMessage("Ilość musi być liczbą z zakresu od 1 do 15000"), HttpStatus.BAD_REQUEST);
-        }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
-            userService.addUserProduct(user, productId, quantity, DateHelper.parse(date));
-            log.info("SUCCESSFUL add product '{}' to user '{}' ", productId, user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED addProduct, no user in session");
-            return new ResponseEntity<>(response.withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    //    ----Delete endpoints----
-    @ResponseBody
-    @DeleteMapping("/removeProduct")
-    ResponseEntity<Object> removeProduct(@RequestParam(name = "productId") Long productId,
-                                         @RequestParam(name = "date", required = false) String date) {
-        BasicResponse response = new BasicResponse().withSuccess(false);
-        if (nonNull(date) && isNull(DateHelper.parse(date)))
-            return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
-            userService.deleteUserProduct(user, productId, DateHelper.parse(date));
-            log.info("SUCCESSFUL deleted product '{}' from user '{}' ", productId, user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED addProduct, no user in session");
-            return new ResponseEntity<>(response.withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -154,21 +107,6 @@ public class UserController {
         } else {
             log.info("FAILED get nutritional requirements, no user in session");
             return new ResponseEntity<>(new NutritionalRequirementsResponse().withSuccess(false), HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @ResponseBody
-    @GetMapping("/getUserProducts")
-    ResponseEntity<Object> getUserProducts(@RequestParam(name = "date", required = false) String date) {//TODO
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
-            UserProductsResponse response = productService.getProductsWithNutrientsForUser(user, DateHelper.parse(date));
-            log.info("SUCCESSFUL get '{}' products", user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED getUserProducts, no user in session");
-            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -253,12 +191,4 @@ public class UserController {
         }
     }
 
-    // ----PRIVS----
-    private boolean isAuthenticated(Authentication auth, User user) {
-        return !(auth instanceof AnonymousAuthenticationToken) && nonNull(user);
-    }
-
-    private boolean isAuthenticated(Authentication auth, String userLogin) {
-        return !(auth instanceof AnonymousAuthenticationToken) && nonNull(userLogin);
-    }
 }

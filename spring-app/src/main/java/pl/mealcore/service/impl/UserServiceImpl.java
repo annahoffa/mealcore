@@ -1,26 +1,20 @@
 package pl.mealcore.service.impl;
 
 import javassist.tools.web.BadHttpRequest;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.mealcore.dao.AllergenRepository;
-import pl.mealcore.dao.UserProductRepository;
 import pl.mealcore.dao.UserRepository;
 import pl.mealcore.dto.account.Allergen;
 import pl.mealcore.dto.account.User;
-import pl.mealcore.dto.account.UserProduct;
-import pl.mealcore.dto.product.Product;
 import pl.mealcore.dto.request.UserDataRequest;
 import pl.mealcore.error.*;
-import pl.mealcore.helper.DateHelper;
 import pl.mealcore.model.account.AccountType;
 import pl.mealcore.model.account.AllergenEntity;
 import pl.mealcore.service.UserService;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,12 +23,12 @@ import static java.util.Objects.nonNull;
 import static pl.mealcore.dto.account.User.*;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AllergenRepository allergenRepository;
-    private final UserProductRepository userProductRepository;
 
     //    PUBLIC
     @Override
@@ -76,7 +70,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public User save(User user, boolean isRawPassword) {
         if (isRawPassword)
             user.hashPassword();
@@ -129,7 +122,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void changeUserData(User user, UserDataRequest request) throws BadHttpRequest {
         if (isNull(user) || isNull(request) || !validatePersonalData(user))
             throw new BadHttpRequest();
@@ -142,22 +134,6 @@ public class UserServiceImpl implements UserService {
         user.setHeight(request.getHeight());
         user.setWeight(request.getWeight());
         save(user, false);
-    }
-
-    @Override
-    public void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date) {
-        date = DateHelper.getDateWithoutTime(date);
-        UserProduct toSave = userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, date)
-                .map(UserProduct::new)
-                .orElse(new UserProduct(user, new Product(productId), date, 0));
-        toSave.addQuantity(quantity);
-        userProductRepository.save(toSave.toEntity());
-    }
-
-    @Override
-    public void deleteUserProduct(User user, Long productId, Date date) {
-        userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, DateHelper.getDateWithoutTime(date))
-                .ifPresent(userProductRepository::delete);
     }
 
     //  PRIVS

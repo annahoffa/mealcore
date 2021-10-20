@@ -15,14 +15,16 @@ public class UserProductsResponse {
     private double fat;
     private double fiber;
     private boolean success;
+    private String date;
 
-    public UserProductsResponse(List<Product> products, BasicNutrients nutrients) {
+    public UserProductsResponse(List<Product> products, BasicNutrients nutrients, String date) {
         this.products = products;
-        kcal = nutrients.getKcal();
-        proteins = nutrients.getProteins();
-        carbohydrates = nutrients.getCarbohydrates();
-        fat = nutrients.getFat();
-        fiber = nutrients.getFiber();
+        this.kcal = nutrients.getKcal();
+        this.proteins = nutrients.getProteins();
+        this.carbohydrates = nutrients.getCarbohydrates();
+        this.fat = nutrients.getFat();
+        this.fiber = nutrients.getFiber();
+        this.date = date;
     }
 
     public UserProductsResponse withSuccess(boolean success) {

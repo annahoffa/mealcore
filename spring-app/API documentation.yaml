@@ -274,6 +274,50 @@ paths:
           description: User not logged in
           schema:
             $ref: '#/definitions/NutritionalRequirementsResponse'
+  /user/editProduct:
+    put:
+      tags:
+        - users
+      summary: Edit logged user product
+      operationId: editProduct
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: productId
+          required: true
+          type: integer
+        - in: query
+          name: quantity
+          description: Between 1 and 15000
+          default: 100
+          required: false
+          type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: Bad quantity value or bad date format
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '404':
+          description: Product not found
+          schema:
+            $ref: '#/definitions/BasicResponse'
   /user/changePassword:
     put:
       tags:
@@ -887,5 +931,8 @@ definitions:
         type: number
       fiber:
         type: number
+      date:
+        type: string
+        format: date
       success:
         type: boolean
