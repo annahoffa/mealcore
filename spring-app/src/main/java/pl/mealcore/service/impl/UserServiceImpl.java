@@ -15,11 +15,11 @@ import pl.mealcore.dto.account.UserProduct;
 import pl.mealcore.dto.product.Product;
 import pl.mealcore.dto.request.UserDataRequest;
 import pl.mealcore.error.*;
+import pl.mealcore.helper.DateHelper;
 import pl.mealcore.model.account.AccountType;
 import pl.mealcore.model.account.AllergenEntity;
 import pl.mealcore.service.UserService;
 
-import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +29,7 @@ import static java.util.Objects.nonNull;
 import static pl.mealcore.dto.account.User.*;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -145,16 +145,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity) {
-        if (userProductRepository.findByUserIdAndProductId(user.getId(), productId).isEmpty()) {
-            UserProduct toAdd = new UserProduct(user, new Product(productId), new Date(), quantity);
-            userProductRepository.save(toAdd.toEntity());
-        }
+    public void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date) {
+        date = DateHelper.getDateWithoutTime(date);
+        UserProduct toSave = userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, date)
+                .map(UserProduct::new)
+                .orElse(new UserProduct(user, new Product(productId), date, 0));
+        toSave.addQuantity(quantity);
+        userProductRepository.save(toSave.toEntity());
     }
 
     @Override
-    public void deleteUserProduct(User user, Long productId) {
-        userProductRepository.findByUserIdAndProductId(user.getId(), productId)
+    public void deleteUserProduct(User user, Long productId, Date date) {
+        userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, DateHelper.getDateWithoutTime(date))
                 .ifPresent(userProductRepository::delete);
     }
 

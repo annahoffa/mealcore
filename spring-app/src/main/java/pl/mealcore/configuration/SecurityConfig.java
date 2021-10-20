@@ -20,7 +20,6 @@ import pl.mealcore.configuration.handler.CustomAuthenticationSuccessHandler;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.service.impl.UserDetailsServiceImpl;
 
-import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -30,7 +29,7 @@ import static pl.mealcore.model.account.UserRole.BASIC_USER_ROLE;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;

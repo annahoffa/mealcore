@@ -6,6 +6,8 @@ import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.request.UserDataRequest;
 import pl.mealcore.error.*;
 
+import java.util.Date;
+
 public interface UserService {
     User save(User user, boolean hashPassword);
 
@@ -21,7 +23,7 @@ public interface UserService {
 
     void changeUserData(User user, UserDataRequest request) throws BadHttpRequest;
 
-    void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity);
+    void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date);
 
-    void deleteUserProduct(User user, Long productId);
+    void deleteUserProduct(@NonNull User user, @NonNull  Long productId, Date date);
 }

@@ -168,6 +168,12 @@ paths:
           default: 100
           required: false
           type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
       responses:
         '200':
           description: Success
@@ -252,6 +258,13 @@ paths:
         - application/json
       produces:
         - application/json
+      parameters:
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
       responses:
         '200':
           description: Success
@@ -382,6 +395,12 @@ paths:
           name: productId
           required: true
           type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
       responses:
         '200':
           description: Success

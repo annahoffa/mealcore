@@ -8,12 +8,10 @@ import org.springframework.stereotype.Component;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.service.UserService;
 
-import javax.inject.Inject;
-
 import static java.util.Objects.isNull;
 
 @Component
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserService service;

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.mealcore.dao.*;
 import pl.mealcore.model.product.*;
 
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,7 +21,7 @@ import java.util.function.Consumer;
 @Slf4j
 @Component
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor
 public class Migrator implements ApplicationListener<ApplicationReadyEvent> {
 //    BEFORE MIGRATION REMOVE @GeneratedValue ANNOTATION
 

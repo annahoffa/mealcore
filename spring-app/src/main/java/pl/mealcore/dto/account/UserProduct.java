@@ -9,6 +9,8 @@ import pl.mealcore.model.product.ProductEntity;
 
 import java.util.Date;
 
+import static java.util.Objects.isNull;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -38,5 +40,11 @@ public class UserProduct extends BaseDto<UserProductEntity> {
         entity.setDate(date);
         entity.setQuantity(quantity);
         return entity;
+    }
+
+    public void addQuantity(Integer toAdd) {
+        if (isNull(toAdd))
+            return;
+        quantity = isNull(quantity) ? toAdd : quantity + toAdd;
     }
 }

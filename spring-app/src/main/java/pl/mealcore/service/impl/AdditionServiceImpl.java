@@ -6,14 +6,13 @@ import pl.mealcore.dao.AdditivesRepository;
 import pl.mealcore.dto.product.Addition;
 import pl.mealcore.service.AdditionService;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor
 public class AdditionServiceImpl implements AdditionService {
     public static final String ADDITIVES_SEPARATOR = ",";
     private static final String NO_INFORMATION_MESSAGE = "Brak informacji o dodatku";

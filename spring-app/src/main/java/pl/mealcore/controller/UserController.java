@@ -19,11 +19,13 @@ import pl.mealcore.dto.response.UserDataResponse;
 import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.error.*;
 import pl.mealcore.handler.CalculatorNutritionalRequirementsHandler;
+import pl.mealcore.helper.DateHelper;
 import pl.mealcore.service.ProductService;
 import pl.mealcore.service.UserService;
 
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Slf4j
@@ -62,8 +64,11 @@ public class UserController {
     @ResponseBody
     @PostMapping("/addProduct")
     ResponseEntity<Object> addProduct(@RequestParam(name = "productId") Long productId,
-                                      @RequestParam(name = "quantity", required = false, defaultValue = "100") Integer quantity) {
+                                      @RequestParam(name = "quantity", required = false, defaultValue = "100") Integer quantity,
+                                      @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
+        if (nonNull(date) && isNull(DateHelper.parse(date)))
+            return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
         if (quantity < 1 || quantity > 15000) {
             log.info("FAILED addProduct, invalid quantity: '{}'", quantity);
             return new ResponseEntity<>(response.withMessage("Ilość musi być liczbą z zakresu od 1 do 15000"), HttpStatus.BAD_REQUEST);
@@ -71,7 +76,7 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
-            userService.addUserProduct(user, productId, quantity);
+            userService.addUserProduct(user, productId, quantity, DateHelper.parse(date));
             log.info("SUCCESSFUL add product '{}' to user '{}' ", productId, user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {
@@ -83,12 +88,15 @@ public class UserController {
     //    ----Delete endpoints----
     @ResponseBody
     @DeleteMapping("/removeProduct")
-    ResponseEntity<Object> removeProduct(@RequestParam(name = "productId") Long productId) {
+    ResponseEntity<Object> removeProduct(@RequestParam(name = "productId") Long productId,
+                                         @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
+        if (nonNull(date) && isNull(DateHelper.parse(date)))
+            return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
-            userService.deleteUserProduct(user, productId);
+            userService.deleteUserProduct(user, productId, DateHelper.parse(date));
             log.info("SUCCESSFUL deleted product '{}' from user '{}' ", productId, user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {
@@ -151,11 +159,11 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/getUserProducts")
-    ResponseEntity<Object> getUserProducts() {
+    ResponseEntity<Object> getUserProducts(@RequestParam(name = "date", required = false) String date) {//TODO
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
-            UserProductsResponse response = productService.getProductsWithNutrientsForUser(user);
+            UserProductsResponse response = productService.getProductsWithNutrientsForUser(user, DateHelper.parse(date));
             log.info("SUCCESSFUL get '{}' products", user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {
