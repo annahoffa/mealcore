@@ -205,7 +205,7 @@ paths:
           type: integer
         - in: query
           name: duration
-          description: In (0, 24)
+          description: In hours (0, 24)
           default: 1
           required: false
           type: number
@@ -402,7 +402,7 @@ paths:
           type: integer
         - in: query
           name: duration
-          description: In (0, 24)
+          description: In hours (0, 24)
           default: 1
           required: false
           type: number
