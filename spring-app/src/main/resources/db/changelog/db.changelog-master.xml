@@ -38,4 +38,10 @@
                   separator="^"
                   relativeToChangelogFile="true"/>
     </changeSet>
+    <changeSet id="insertInitData_11" author="ls">
+        <loadData tableName="sports_11"
+                  file="/../initialData/sports_11.csv"
+                  separator="^"
+                  relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>
