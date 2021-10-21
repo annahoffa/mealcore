@@ -1,0 +1,424 @@
+id^name^description
+1^e100^kurkumina
+2^e101i^ryboflawina
+3^e101a^5′-fosforan ryboflawiny
+4^e102^tartrazyna
+5^e103^rezorcyna
+6^e104^żółcień chinolinowa
+7^e105^żółcień trwała AB
+8^e106^sól sodowa fosforanu-5′-ryboflawiny
+9^e107^żółcień 2G
+10^e110^żółcień pomarańczowa FCF
+11^e1103^inwertaza
+12^e1105^lizozym
+13^e111^oranż GGN
+14^e120^kwas karminowy (koszenila)
+15^e1200^polidekstroza
+16^e1201^poliwinylopirolidon
+17^e1202^poliwinylopirolidonon
+18^e1203^alkohol poliwinylowy
+19^e1204^pullulan
+20^e1205^zasadowy kopolimer metakrylanu
+21^e121^lakmus
+22^e122^azorubina (karmoizyna)
+23^e123^amarant
+24^e124^czerwień koszenilowa A (pąs 4R)
+25^e125^szkarłat GN
+26^e126^pąs 6R
+27^e127^erytrozyna
+28^e128^czerwień 2G
+29^e129^czerwień allura
+30^e130^błękit indantrenowy RS
+31^e131^błękit patentowy V
+32^e132^indygokarmin
+33^e133^błękit brylantowy FCF
+34^e140^chlorofile
+35^e1400^dekstryna
+36^e1401^skrobia modyfikowana kwasami
+37^e1402^skrobia modyfikowana zasadami
+38^e1403^skrobia bielona
+39^e1404^skrobia utleniona
+40^e1405^skrobia modyfikowana enzymatycznie
+41^e141^kompleksy miedziowe chlorofili i chlorofilin
+42^e1410^fosforan monoskrobiowy
+43^e1411^glicerol diskrobiowy
+44^e1412^fosforan diskrobiowy
+45^e1413^fosforanowany fosforan diskrobiowy
+46^e1414^acetylowany fosforan diskrobiowy
+47^e142^zieleń S
+48^e1420^skrobia acetylowana
+49^e1422^acetylowany adypinian diskrobiowy
+50^e1423^acetylowany glicerol diskrobiowy
+51^e1440^hydroksypropyloskrobia
+52^e1442^hydroksypropylofosforan diskrobiowy
+53^e1450^sól sodowa oktenylobursztynianu skrobiowego
+54^e1451^acetylowana skrobia utleniona
+55^e1452^sól glinowa oktenylobursztynianu skrobiowego
+56^e1505^cytrynian trietylu
+57^e150a^karmel
+58^e150b^karmel siarczynowy
+59^e150c^karmel amoniakalny
+60^e150d^karmel amoniakalno-siarczynowy
+61^e151^czerń PN
+62^e1510^Etanol, alkohol etylowy
+63^e1517^dioctan glicerolu
+64^e1518^trioctan glicerolu
+65^e1519^alkohol benzylowy
+66^e152^czerń 7984
+67^e1520^propano-1,2-diol
+68^e1521^glikol polietylenowy
+69^e153^węgiel roślinny
+70^e154^brąz FK
+71^e155^brąz HT
+72^e160a^karoteny
+73^e160b^annato
+74^e160c^kapsaicyna
+75^e160d^likopen
+76^e160e^β-apo-8′-karotenal
+77^e160f^ester etylowy kwasu β-apo-8′-karotenowego
+78^e161a^flawoksantyna
+79^e161b^luteina
+80^e161c^kryptoksantyna
+81^e161d^rubiksantyna
+82^e161e^wiolaksantyna
+83^e161f^rodoksantyna
+84^e161g^kantaksantyna
+85^e161h^zeaksantyna
+86^e161i^cytranaksantyna
+87^e161j^astaksantyna
+88^e162^czerwień buraczana;ekstrakt z buraka
+89^e163^antocyjany
+90^e163(i)^wyciąg ze skórki winogrona
+91^e163(ii)^mieszanina antocyjanów
+92^e163(iii)^wyciąg z porzeczki czarnej
+93^e163a^cyjanidyna
+94^e163b^delfinidyna
+95^e163c^malwidyna
+96^e163d^pelargonidyna
+97^e163e^peonidyna
+98^e163f^petunidyna
+99^e170^węglan wapnia
+100^e171^tlenek tytanu(IV)
+101^e172^tlenki żelaza
+102^e173^glin
+103^e174^srebro
+104^e175^złoto
+105^e180^czerwień litolowa BK
+106^e181^taniny
+107^e200^kwas sorbowy
+108^e201^sorbinian sodu
+109^e202^sorbinian potasu
+110^e203^sorbinian wapnia
+111^e209^Heptyl p-hydroxybenzoate
+112^e210^kwas benzoesowy
+113^e211^benzoesan sodu
+114^e212^benzoesan potasu
+115^e213^benzoesan wapnia
+116^e214^p-hydroksybenzoesan etylu
+117^e215^sól sodowa p-hydroksybenzoesanu etylu
+118^e216^p-hydroksybenzoesan propylu
+119^e217^propylo-p-hydroksybenzoesan sodu
+120^e218^p-hydroksybenzoesan metylu
+121^e219^sól sodowa p-hydroksybenzoesanu metylu
+122^e220^dwutlenek siarki
+123^e221^siarczyn sodu
+124^e222^wodorosiarczyn sodu
+125^e223^pirosiarczyn sodu
+126^e224^pirosiarczyn potasu
+127^e225^siarczyn potasu
+128^e226^siarczyn wapnia
+129^e227^wodorosiarczyn wapnia
+130^e228^wodorosiarczyn potasu
+131^e230^bifenyl
+132^e231^ortofenylofenol
+133^e232^sól sodowa ortofenylofenolu
+134^e233^tiabendazol
+135^e234^nizyna
+136^e235^natamycyna
+137^e236^kwas mrówkowy
+138^e237^mrówczan sodu
+139^e238^mrówczan wapnia
+140^e239^heksametylenotetraamina
+141^e240^aldehyd mrówkowy, formaldehyd
+142^e242^pirowęglan dimetylu
+143^e249^azotyn potasu
+144^e250^azotyn sodu
+145^e251^azotan sodu
+146^e252^azotan potasu
+147^e260^kwas octowy
+148^e261^octan potasu
+150^e263^octan wapnia
+151^e264^octan amonu
+152^e265^kwas dehydrooctowy
+153^e266^dehydrooctan sodu
+154^e270^kwas mlekowy
+155^e280^kwas propionowy
+156^e281^propionian sodu
+157^e282^propionian wapnia
+158^e283^propionian potasu
+159^e284^kwas borowy
+160^e285^tetraboran sodu
+161^e290^dwutlenek węgla
+162^e296^kwas jabłkowy
+163^e297^kwas fumarowy
+164^e300^kwas askorbinowy
+165^e301^askorbinian sodu
+166^e302^askorbinian wapnia
+167^e304^estry kwasów tłuszczowych i kwasu askorbinowego
+168^e306^mieszanina tokoferoli
+169^e307^α-tokoferol
+170^e308^γ-tokoferol
+171^e309^δ-tokoferol
+172^e310^galusan propylu
+173^e311^galusan oktylu
+174^e312^galusan dodecylu
+175^e315^kwas izoaskorbinowy
+176^e316^izoaskorbinian sodu
+177^e319^tert-butylohydrochinon (TBHQ)
+178^e320^butylohydroksyanizol (BHA)
+179^e321^butylohydroksytoluen (BHT)
+180^e322^lecytyny
+181^e325^mleczan sodu
+182^e326^mleczan potasu
+183^e327^mleczan wapnia
+184^e330^kwas cytrynowy
+185^e331iii^cytrynian trisodu
+186^e332iii^cytrynian tripotasu
+187^e333iii^cytrynian triwapnia
+188^e334^kwas L(+)-winowy
+189^e335ii^winian disodu
+190^e336ii^winian dipotasu
+191^e337^Winian potasowo-sodowy
+192^e338^kwas fosforowy
+193^e339iii^fosforan trisodu
+194^e340iii^fosforan tripotasu
+195^e341iii^fosforan triwapnia
+196^e343iii^fosforan trimagnezu
+197^e350ii^jabłczan disodu
+198^e351^jabłczan potasu
+199^e352ii^dijabłczan wapnia
+200^e353^kwas metawinowy
+201^e354^winian wapnia
+202^e355^kwas adypinowy
+203^e356^adypinian sodu
+204^e357^adypinian potasu
+205^e363^kwas bursztynowy
+206^e380^cytrynian triamonowy
+207^e385^sól wapniowo-dwusodowa EDTA
+208^e391^kwas fitowy
+209^e392^ekstrakty z rozmarynu (wyciągi z rozmarynu)
+210^e400^kwas alginowy
+211^e401^alginian sodu
+212^e402^alginian potasu
+213^e403^alginian amonu
+214^e404^alginian wapnia
+215^e405^alginian glikolu propylenowego
+216^e406^agar
+217^e407^karagen
+218^e407a^przetworzone wodorosty morskie z gatunku Euchuema
+219^e410^mączka chleba świętojańskiego
+220^e412^guma guar
+221^e413^tragakanta
+222^e414^guma arabska (guma akacjowa)
+223^e415^guma ksantanowa
+224^e416^guma karaya
+225^e417^guma tara
+226^e418^guma gellan
+227^e420ii^syrop sorbitolowy
+228^e421^mannitol
+229^e422^glicerol
+230^e425^konjac
+231^e426^hemiceluloza sojowa
+232^e427^guma kasja
+233^e431^stearynian polioksyetylenu (40)
+234^e432^monolaurynian polioksyetylenosorbitolu (polisorbat 20)
+235^e433^monooleinian polioksyetylenosorbitolu (polisorbat 80)
+236^e434^monopalmitynian polioksyetylenosorbitolu (polisorbat 40)
+237^e435^monostearynian polioksyetylenosorbitolu (polisorbat 60)
+238^e436^tristearynian polioksyetylenosorbitolu (polisorbat 65)
+239^e440^pektyny
+240^e442^fosfatydy amonu
+241^e444^octan izomaślanu sacharozy
+242^e445^estry glicerolu i żywicy roślinnej
+243^e450vii^diwodorodifosforan wapnia
+244^e451ii^trifosforan pentapotasu
+245^e452v^polifosforany amonu
+246^e459^β-cyklodekstryna
+247^e460^celuloza
+248^e461^metyloceluloza
+249^e462^etyloceluloza
+250^e463^hydroksypropyloceluloza
+251^e464^hydroksypropylometyloceluloza
+252^e465^etylometyloceluloza
+253^e466^karboksymetyloceluloza, sól sodowa karboksymetylocelulozy, guma celulozowa
+254^e468^sól sodowa karboksymetylocelulozy usieciowana, guma celulozowa usieciowana
+255^e469^enzymatycznie zhydrolizowana karboksymetyloceluloza, enzymatycznie zhydrolizowana guma celulozowa
+256^e470a^sole sodowe, potasowe i wapniowe kwasów tłuszczowych
+257^e470b^sole magnezowe kwasów tłuszczowych
+258^e471^mono- i diglicerydy kwasów tłuszczowych
+259^e472a^mono- i diglicerydy kwasów tłuszczowych estryfikowane kwasem octowym
+260^e472b^mono- i diglicerydy kwasów tłuszczowych estryfikowane kwasem mlekowym
+261^e472c^mono- i diglicerydy kwasów tłuszczowych estryfikowane kwasem cytrynowym
+262^e472d^mono- i diglicerydy kwasów tłuszczowych estryfikowane kwasem winowym
+263^e472e^mono- i diglicerydy kwasów tłuszczowych estryfikowane kwasem mono- i diacetylowinowym
+264^e472f^mono- i diglicerydy kwasów tłuszczowych estryfikowane mieszaniną kwasu octowego i winowego
+265^e473^estry sacharozy i kwasów tłuszczowych
+266^e474^sacharoglicerydy
+267^e475^estry kwasów tłuszczowych i poliglicerolu
+268^e476^polirycynooleinian poliglicerolu
+269^e477^estry kwasów tłuszczowych i glikolu propylenowego
+270^e479b^termoutleniony olej sojowy z mono- i diglicerydami kwasów tłuszczowych
+271^e481^stearoilomleczan sodu
+272^e482^stearoilomleczan wapnia
+273^e483^winian stearylu
+274^e491^monostearynian sorbitolu
+275^e492^tristearynian sorbitolu
+276^e493^monolaurynian sorbitolu
+277^e494^monooleinian sorbitolu
+278^e495^monopalmitynian sorbitolu
+279^e500iii^wodorodiwęglan trisodu
+280^e501ii^wodorowęglan potasu
+281^e502ii^wodorowęglan amonu
+282^e504ii^wodorowęglan magnezu
+283^e507^kwas chlorowodorowy
+284^e508^chlorek potasu
+285^e509^chlorek wapnia
+286^e511^chlorek magnezu
+287^e512^chlorek cyny(II)
+288^e513^kwas siarkowy
+289^e514ii^wodorosiarczan sodu
+290^e515ii^wodorosiarczan potasu
+291^e516^siarczan wapnia
+292^e517^siarczan amonu
+293^e520^siarczan glinu
+294^e521^siarczan glinu sodu
+295^e522^siarczan glinu potasu
+296^e523^siarczan amonu glinu
+297^e524^wodorotlenek sodu
+298^e525^wodorotlenek potasu
+299^e526^wodorotlenek wapnia
+300^e527^woda amoniakalna
+301^e528^wodorotlenek magnezu
+302^e529^tlenek wapnia
+303^e530^tlenek magnezu
+304^e535^żelazocyjanek sodu
+305^e536^żelazocyjanek potasu
+306^e538^żelazocyjanek wapnia
+307^e541^wodorofosforan glinu sodu
+308^e551^ditlenek krzemu
+309^e552^krzemian wapnia
+310^e553a^krzemian magnezu
+311^e553b^talk
+312^e554^glinokrzemian sodu
+313^e555^glinokrzemian potasu
+314^e556^glinokrzemian wapnia
+315^e558^bentonit
+316^e559^krzemian glinu (kaolin)
+317^e570^kwasy tłuszczowe
+318^e574^kwas glukonowy
+319^e575^lakton kwasu glukonowego
+320^e576^glukonian sodu
+321^e577^glukonian potasu
+322^e578^glukonian wapnia
+323^e579^glukonian żelaza(II)
+324^e585^mleczan żelaza(II)
+325^e586^4-heksylorezorcynol
+326^e620^kwas glutaminowy
+327^e621^glutaminian sodu
+328^e622^glutaminian monopotasu
+329^e623^diglutaminian wapnia
+330^e624^glutaminian monoamonu
+331^e625^diglutaminian magnezu
+332^e626^kwas guanylowy
+333^e627^guanylan disodowy
+334^e628^guanylan dipotasu
+335^e629^guanylan wapnia
+336^e630^kwas inozynowy
+337^e631^inozynian disodowy
+338^e632^inozynian dipotasu
+339^e633^inozynian wapnia
+340^e634^5′-rybonukleotydy wapnia
+341^e635^5′-rybonukleotydy disodu
+342^e636^maltol
+343^e637^etylmaltol
+344^e639^alanina
+345^e640^glicyna i jej sól sodowa
+346^e641^leucyna
+347^e642^chlorowodorek lizyny
+348^e650^octan cynku
+349^e900^dimetylopolisiloksan
+350^e901^wosk pszczeli biały, wosk przczeli żółty
+351^e902^wosk candelilla
+352^e903^wosk carnauba
+353^e904^szelak
+354^e905^wosk mikrokrystaliczny
+355^e907^uwodorniony poli-1-deken
+356^e912^estry kwasu montanowego
+357^e914^wosk polietylenowy utleniony
+358^e920^L-cysteina
+359^e927b^karbamid
+360^e938^argon
+361^e939^hel
+362^e941^azot
+363^e942^tlenek diazotu
+364^e943a^butan
+365^e943b^izobutan
+366^e944^propan
+367^e948^tlen
+368^e949^wodór
+369^e950^acesulfam K
+370^e951^aspartam
+371^e952^cyklaminiany
+372^e953^izomalt
+373^e954^sacharyna
+374^e955^sukraloza
+375^e957^taumatyna
+376^e959^neohesperydyna DC
+377^e960^glikozydy stewiolowe
+378^e961^neotam
+379^e962^sól aspartamu; sól acesulfamu
+380^e965ii^syrop maltitolowy
+381^e966^laktitol
+382^e967^ksylitol
+383^e968^erytrytol
+384^e999^ekstrakt z Quillaia
+385^e262i^octan sodu
+386^e262ii^dioctan sodu
+387^e331i^cytrynian monosodu
+388^e331ii^cytrynian disodu
+389^e332i^cytrynian monopotasu
+390^e332ii^cytrynian dipotasu
+391^e333i^cytrynian monowapnia
+392^e333ii^cytrynian diwapnia
+393^e335i^winian monosodu
+394^e336i^winian monopotasu
+395^e339i^fosforan monosodu
+396^e339ii^fosforan disodu
+397^e340i^fosforan monopotasu
+398^e340ii^fosforan dipotasu
+399^e341i^fosforan monowapnia
+400^e341ii^fosforan diwapnia
+401^e343i^fosforan monomagnezu
+402^e343ii^fosforan dimagnezu
+403^e350i^jabłczan monosodu
+404^e352i^jabłczan monowapnia
+405^e420i^sorbitol
+406^e450i^difosforan disodu
+407^e450ii^difosforan trisodu
+408^e450iii^difosforan tetrasodu
+409^e450iv^difosforan dipotasu
+410^e450v^difosforan tetrapotasu
+411^e450vi^difosforan diwapnia
+412^e451i^trifosforan pentasodu
+413^e452i^polifosforany sodu
+414^e452ii^polifosforany potasu
+415^e452iii^polifosforany sodu wapnia
+416^e452iv^polifosforany wapnia
+417^e500i^węglan sodu
+418^e500ii^wodorowęglan sodu
+419^e501i^węglan potasu
+420^e502i^węglan amonu
+421^e504i^węglan magnezu
+422^e514i^siarczan sodu
+423^e515i^siarczan potasu
+424^e965i^maltitol

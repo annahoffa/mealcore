@@ -8,4 +8,34 @@
         <sqlFile encoding="utf8" path="/db/changelog/sql/createTables.sql"/>
         <sqlFile encoding="utf8" path="/db/changelog/sql/createTables.sql"/>
     </changeSet>
+    <changeSet id="insertInitData_1" author="ls">
+        <loadData tableName="products_1"
+                  file="/../initialData/products_1.csv"
+                  separator="^"
+                  relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="insertInitData_2" author="ls">
+        <loadData tableName="nutrients_2"
+                  file="/../initialData/nutrients_2.csv"
+                  separator="^"
+                  relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="insertInitData_3" author="ls">
+        <loadData tableName="ingredients_3"
+                  file="/../initialData/ingredients_3.csv"
+                  separator="`"
+                  relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="insertInitData_4" author="ls">
+        <loadData tableName="images_4"
+                  file="/../initialData/images_4.csv"
+                  separator="^"
+                  relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="insertInitData_5" author="ls">
+        <loadData tableName="addition_5"
+                  file="/../initialData/addition_5.csv"
+                  separator="^"
+                  relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>
