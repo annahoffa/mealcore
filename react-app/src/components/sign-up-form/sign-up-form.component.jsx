@@ -1,21 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import apiCall from '../../utils/apiCall';
 
 import {
-    Button,
-    Checkbox,
-    Container,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    InputAdornment,
-    InputLabel,
-    makeStyles,
-    OutlinedInput,
-    Radio,
-    RadioGroup,
-    TextField,
-    Typography
+  Button, Checkbox, Container, FormControl, FormControlLabel, FormLabel,
+  InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup, TextField, Typography, makeStyles,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
@@ -156,7 +144,7 @@ const SignUpForm = ({ isCompleted }) => {
         >
           <FormControlLabel
             value='FEMALE'
-            control={<Radio required/>}
+            control={<Radio required />}
             label='Kobieta'
           />
           <FormControlLabel
@@ -225,7 +213,7 @@ const SignUpForm = ({ isCompleted }) => {
         >
           <FormControlLabel
             value='LACK_OF_ACTIVITY'
-            control={<Radio required/>}
+            control={<Radio required />}
             label={
               <>
                 <div>Siedzący tryb życia</div>
@@ -277,17 +265,17 @@ const SignUpForm = ({ isCompleted }) => {
       </FormControl>
 
       <Container className={input}>
-      <Typography variant='body2' align='center'>Kolejne alergeny wpisz w nowych liniach.</Typography>
+        <Typography variant='body2' align='center'>Kolejne alergeny wpisz w nowych liniach.</Typography>
         <br />
-      <TextField
-        multiline
-        rows={4}
-        label='Twoje alergeny'
-        value={formValues.allergens}
-        onChange={handleChange('allergens')}
-        placeholder='np. mleko'
-        variant='outlined'
-      />
+        <TextField
+          multiline
+          rows={4}
+          label='Twoje alergeny'
+          value={formValues.allergens}
+          onChange={handleChange('allergens')}
+          placeholder='np. mleko'
+          variant='outlined'
+        />
       </Container>
 
       <FormControlLabel
