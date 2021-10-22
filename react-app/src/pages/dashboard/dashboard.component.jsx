@@ -6,6 +6,7 @@ import apiCall from '../../utils/apiCall';
 //import MainContent from '../../components/main-content/main-content.component';
 import ShowNutritionalRequirements from '../../components/show-nutritional-requirements/show-nutritional-requirements.component';
 import DashboardProductsList from '../../components/dashboard-products-list/dashboard-products-list.component';
+import Calendar from '../../components/calendar/calendar.component';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { Grid, Typography } from '@material-ui/core';
 
@@ -53,6 +54,9 @@ const DashboardPage = () => {
       <div className='dashboard-container'>
         <Grid container style={{ width: '90%' }} spacing={8}>
           <Grid item xs={12} md={4}>
+            <Typography variant='h6'>Wybierz dzień:</Typography>
+            <Calendar setUserProducts={setUserProducts} />
+            <br />
             <Typography variant='h6'>Twoje dzienne zapotrzebowanie:</Typography>
             <br />
             {(maxNutritionalValues === undefined && userProducts === undefined)
