@@ -69,7 +69,7 @@ const DashboardProduct = ({ product }) => {
     <div className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''}`}>
       <div className='product-title'>
         <Typography noWrap>
-          {product.name} ({product.quantity})
+          {product.name} ({product.addedQuantity} g)
         </Typography>
         <div className='icons'>
           <IconButton onClick={openQuantityDialog} title='Zmień ilość'
@@ -87,14 +87,14 @@ const DashboardProduct = ({ product }) => {
         </div>
       </div>
       <ul className='nutrients'>
-        <li>Kcal: {product.nutrients?.kcal || '\u2014'}</li>
+        <li>Kcal: {product.nutrients?.energyKcal || '\u2014'}</li>
         <li>{product.nutrients?.proteins || '\u2014'}</li>
         <li>{product.nutrients?.carbohydrates || '\u2014'}</li>
         <li>{product.nutrients?.fat || '\u2014'}</li>
         <li>{product.nutrients?.fiber || '\u2014'}</li>
       </ul>
       <div className='quantity'>
-        <span>Ilość: {product.quantity || '\u003F'}</span>
+        <span>Ilość: {product.addedQuantity + " g" || '\u003F'}</span>
       </div>
     </div>
   );

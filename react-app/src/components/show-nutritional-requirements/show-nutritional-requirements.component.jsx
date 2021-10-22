@@ -19,7 +19,7 @@ const ShowNutritionalRequirements = ({ maxValues, currentValues }) => {
       </div>
       <div className='item'>
         <span><b>Tłuszcze:</b></span>
-        <span>{currentValues?.fats || '\u2014'} / {parseFloat(maxValues?.fat).toFixed(2)}</span>
+        <span>{currentValues?.fat || '\u2014'} / {parseFloat(maxValues?.fat).toFixed(2)}</span>
       </div>
       <div className='item'>
         <span><b>Błonnik:</b></span>

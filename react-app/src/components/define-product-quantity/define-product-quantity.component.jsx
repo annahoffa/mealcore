@@ -20,7 +20,7 @@ const DefineProductQuantity = ({ quantityProps, apiCall }) => {
             min: 0,
           }}
           InputProps={{
-            startAdornment: <InputAdornment position='start'>mg</InputAdornment>,
+            startAdornment: <InputAdornment position='start'>g</InputAdornment>,
           }}
           margin='dense'
           fullWidth
