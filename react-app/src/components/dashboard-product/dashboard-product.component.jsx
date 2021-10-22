@@ -5,6 +5,7 @@ import { Button, Popover, Typography, TextField, Dialog, DialogTitle, DialogCont
 import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import EditIcon from '@material-ui/icons/Edit';
+import DefineProductQuantity from '../define-product-quantity/define-product-quantity.component';
 
 import './dashboard-product.styles.scss';
 
@@ -35,6 +36,8 @@ const DashboardProduct = ({ product }) => {
     .catch(error => console.log(error));
   };
 
+  //--- Quantity modification dialog ---
+
   const [productQuantity, setProductQuantity] = useState('');
 
   const handleChange = (event) => {
@@ -51,6 +54,16 @@ const DashboardProduct = ({ product }) => {
     setOpen(false);
   };
 
+  const quantityProps = {
+    productQuantity,
+    setProductQuantity,
+    open,
+    openQuantityDialog,
+    closeQuantityDialog,
+    handleChange,
+  }
+  //------------------------------------
+
 
   return (
     <div className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''}`}>
@@ -64,33 +77,8 @@ const DashboardProduct = ({ product }) => {
             <EditIcon />
           </IconButton>
 
-          {/*Hidden modification dialog*/}
-          <Dialog open={open} onClose={closeQuantityDialog}>
-            <DialogContent>
-              <DialogContentText>
-                Zmień ilość produktu:
-              </DialogContentText>
-              <TextField
-                autoFocus
-                variant='standard'
-                value={productQuantity}
-                onChange={handleChange}
-                type='number'
-                inputProps={{
-                  min: 0,
-                }}
-                InputProps={{
-                  startAdornment: <InputAdornment position='start'>mg</InputAdornment>,
-                }}
-                margin='dense'
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={closeQuantityDialog}>Anuluj</Button>
-              <Button onClick={modifyProductQuantity}>Zapisz</Button>
-            </DialogActions>
-          </Dialog>
+          {/*hidden modification dialog*/}
+          <DefineProductQuantity quantityProps={quantityProps} apiCall={modifyProductQuantity} />
 
           <IconButton onClick={deleteProductFromDashboard} title='Usuń produkt'
             aria-label='Delete product from dashboard'>

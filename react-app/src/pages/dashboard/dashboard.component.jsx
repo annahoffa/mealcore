@@ -3,7 +3,7 @@ import { Redirect } from 'react-router';
 import { AuthContext } from '../../appContext/providers';
 import apiCall from '../../utils/apiCall';
 
-import MainContent from '../../components/main-content/main-content.component';
+//import MainContent from '../../components/main-content/main-content.component';
 import ShowNutritionalRequirements from '../../components/show-nutritional-requirements/show-nutritional-requirements.component';
 import DashboardProductsList from '../../components/dashboard-products-list/dashboard-products-list.component';
 import Skeleton from '@material-ui/lab/Skeleton';
