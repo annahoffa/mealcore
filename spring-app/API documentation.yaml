@@ -185,6 +185,7 @@ paths:
             - DINNER
             - SUPPER
             - SNACK
+            - OTHER
       responses:
         '200':
           description: Success
@@ -232,6 +233,48 @@ paths:
             $ref: '#/definitions/BasicResponse'
         '400':
           description: Bad quantity value
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/addReaction:
+    post:
+      tags:
+        - users
+      summary: Add reaction to category
+      operationId: addReaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: category
+          required: true
+          type: string
+          enum:
+            - BREAKFAST
+            - LUNCH
+            - DINNER
+            - SUPPER
+            - SNACK
+            - OTHER
+        - in: query
+          name: value
+          description: In (0, 10)
+          required: true
+          type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
           schema:
             $ref: '#/definitions/BasicResponse'
         '401':
@@ -347,6 +390,32 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/UserExercisesResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/getReactions:
+    get:
+      tags:
+        - users
+      summary: Get reactions for logged user
+      operationId: getReactions
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Reactions'
         '401':
           description: User not logged in
           schema:
@@ -1154,3 +1223,18 @@ definitions:
         type: string
       kcalPerHour:
         type: number
+  Reactions:
+    type: array
+    items:
+      properties:
+        category:
+          type: string
+          enum:
+            - BREAKFAST
+            - LUNCH
+            - DINNER
+            - SUPPER
+            - SNACK
+            - OTHER
+        value:
+          type: integer
