@@ -6,7 +6,6 @@
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
     <changeSet id="initCreateTables" author="ls">
         <sqlFile encoding="utf8" path="/db/changelog/sql/createTables.sql"/>
-        <sqlFile encoding="utf8" path="/db/changelog/sql/createTables.sql"/>
     </changeSet>
     <changeSet id="insertInitData_1" author="ls">
         <loadData tableName="products_1"

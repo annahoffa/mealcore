@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
   description: API documentation
-  version: 1.0.9
-  title: FoodCore
+  version: 2.0.0
+  title: MealCore
 tags:
   - name: products
   - name: users
@@ -175,6 +175,16 @@ paths:
           required: false
           type: string
           format: date
+        - in: query
+          name: category
+          required: false
+          type: string
+          enum:
+            - BREAKFAST
+            - LUNCH
+            - DINNER
+            - SUPPER
+            - SNACK
       responses:
         '200':
           description: Success
@@ -671,6 +681,14 @@ definitions:
         type: string
       addedQuantity:
         type: integer
+      category:
+        type: string
+        enum:
+          - BREAKFAST
+          - LUNCH
+          - DINNER
+          - SUPPER
+          - SNACK
       nutrients:
         $ref: '#/definitions/Nutrients'
       ingredients:
