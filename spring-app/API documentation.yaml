@@ -170,12 +170,6 @@ paths:
           required: false
           type: integer
         - in: query
-          name: date
-          description: Date in format 'YYYY-MM-DD'. Current day by default.
-          required: false
-          type: string
-          format: date
-        - in: query
           name: category
           required: false
           type: string
@@ -186,6 +180,12 @@ paths:
             - SUPPER
             - SNACK
             - OTHER
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
       responses:
         '200':
           description: Success
@@ -263,9 +263,40 @@ paths:
             - OTHER
         - in: query
           name: value
-          description: In (0, 10)
+          description: In (1, 5)
           required: true
           type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/addNote:
+    post:
+      tags:
+        - users
+      summary: Add note for day
+      operationId: addNote
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: Note
+          required: true
+          type: string
+          maxLength: 500
         - in: query
           name: date
           description: Date in format 'YYYY-MM-DD'. Current day by default.
@@ -420,6 +451,51 @@ paths:
           description: User not logged in
           schema:
             $ref: '#/definitions/BasicResponse'
+  /user/getNote:
+    get:
+      tags:
+        - users
+      summary: Get note for logged user
+      operationId: getNote
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Note'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/getProblematicProducts:
+    get:
+      tags:
+        - users
+      summary: Get problematic products for logged user
+      operationId: getProblematicProducts
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/UserProductsResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
   /user/editProduct:
     put:
       tags:
@@ -442,6 +518,17 @@ paths:
           required: false
           type: integer
         - in: query
+          name: category
+          required: false
+          type: string
+          enum:
+            - BREAKFAST
+            - LUNCH
+            - DINNER
+            - SUPPER
+            - SNACK
+            - OTHER
+        - in: query
           name: date
           description: Date in format 'YYYY-MM-DD'. Current day by default.
           required: false
@@ -462,6 +549,79 @@ paths:
             $ref: '#/definitions/BasicResponse'
         '404':
           description: Product not found
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/editReaction:
+    put:
+      tags:
+        - users
+      summary: Edit reaction
+      operationId: editReaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: category
+          required: true
+          type: string
+          enum:
+            - BREAKFAST
+            - LUNCH
+            - DINNER
+            - SUPPER
+            - SNACK
+            - OTHER
+        - in: query
+          name: value
+          description: In (1, 5)
+          required: true
+          type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/editNote:
+    put:
+      tags:
+        - users
+      summary: Edit note
+      operationId: editNote
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: Note
+          required: true
+          type: string
+          maxLength: 500
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
           schema:
             $ref: '#/definitions/BasicResponse'
   /user/editExercise:
@@ -725,6 +885,10 @@ definitions:
         items:
           $ref: '#/definitions/Image'
       allergenWarning:
+        type: boolean
+      badReaction:
+        type: boolean
+      goodReaction:
         type: boolean
   CompleteProduct:
     type: object
@@ -1238,3 +1402,11 @@ definitions:
             - OTHER
         value:
           type: integer
+  Note:
+    type: object
+    properties:
+      text:
+        type: string
+      date:
+        type: string
+        format: date

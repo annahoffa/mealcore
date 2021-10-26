@@ -12,12 +12,18 @@ SET time_zone = "+00:00";
 -- Baza danych: `mealcore`
 --
 SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS `products_1`, `nutrients_2`, `ingredients_3`, `images_4`, `addition_5`, `users_6`, `allergens_8`, `allergies_9`, `users_products_10`, `sports_11`, `users_exercises_12`;
+SET @tables = NULL;
+SELECT GROUP_CONCAT('`', table_name, '`') INTO @tables
+FROM information_schema.tables
+WHERE table_schema = (SELECT DATABASE())
+AND LOWER(TABLE_NAME) NOT LIKE 'databasechangelog%';
+SELECT IFNULL(@tables,'dummy') INTO @tables;
+
+SET @tables = CONCAT('DROP TABLE IF EXISTS ', @tables);
+PREPARE stmt FROM @tables;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 SET FOREIGN_KEY_CHECKS = 1;
-
-
--- --------------------------------------------------------
-
 --
 -- Struktura tabeli dla tabeli `addition_5`
 --
