@@ -13,6 +13,7 @@ import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.helper.DateHelper;
 import pl.mealcore.model.product.ProductCategory;
+import pl.mealcore.service.ProductService;
 import pl.mealcore.service.UserProductService;
 import pl.mealcore.service.UserService;
 
@@ -26,6 +27,7 @@ import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
 public class UserProductController {
     private final UserService userService;
     private final UserProductService userProductService;
+    private final ProductService productService;
 
     @ResponseBody
     @PostMapping("/addProduct")
@@ -107,7 +109,21 @@ public class UserProductController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
-            UserProductsResponse response = userProductService.getProductsWithNutrientsForUser(user, DateHelper.parse(date));
+            UserProductsResponse response = productService.getProductsWithNutrientsForUser(user, DateHelper.parse(date));
+            log.info("SUCCESSFUL get '{}' products", user.getLogin());
+            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
+        } else {
+            log.info("FAILED getUserProducts, no user in session");
+            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+        }
+    }
+    @ResponseBody
+    @GetMapping("/getProblematicProducts")
+    ResponseEntity<Object> getProblematicProducts() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
+        if (isAuthenticated(auth, user)) {
+            UserProductsResponse response = userProductService.getProblematicProductsForUser(user);
             log.info("SUCCESSFUL get '{}' products", user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {

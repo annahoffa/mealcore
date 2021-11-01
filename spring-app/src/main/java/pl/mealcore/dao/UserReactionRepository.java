@@ -13,5 +13,7 @@ import java.util.Optional;
 public interface UserReactionRepository extends JpaRepository<UserReactionEntity, Long> {
     List<UserReactionEntity> findAllByUserIdAndDate(Long userId, Date date);
 
+    List<UserReactionEntity> findAllByUserId(Long userId);
+
     Optional<UserReactionEntity> findByUserIdAndDateAndCategory(Long userId, Date date, ProductCategory category);
 }

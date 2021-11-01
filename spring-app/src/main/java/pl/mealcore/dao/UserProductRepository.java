@@ -13,7 +13,9 @@ import java.util.Optional;
 public interface UserProductRepository extends JpaRepository<UserProductEntity, Long> {
     List<UserProductEntity> findAllByUserIdAndDate(Long userId, Date date);
 
-    Optional<UserProductEntity> findByUserIdAndProductIdAndDateAndCategory(Long userId, Long productId, Date date, ProductCategory category);
+    List<UserProductEntity> findAllByUserId(Long userId);
+
+    List<UserProductEntity> findAllByUserIdAndDateAndCategory(Long userId, Date date, ProductCategory category);
 
     Optional<UserProductEntity> findByUserIdAndProductIdAndDate(Long userId, Long productId, Date date);
 }

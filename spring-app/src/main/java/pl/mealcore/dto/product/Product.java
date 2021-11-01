@@ -30,6 +30,8 @@ public class Product extends BaseDto<ProductEntity> {
     private List<Image> images = new ArrayList<>();
 
     private boolean allergenWarning = false;
+    private boolean badReaction = false;
+    private boolean goodReaction = false;
     private Integer addedQuantity;
     private ProductCategory category;
 
