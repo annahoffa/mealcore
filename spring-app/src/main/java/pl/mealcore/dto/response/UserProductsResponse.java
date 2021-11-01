@@ -1,20 +1,21 @@
 package pl.mealcore.dto.response;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pl.mealcore.dto.product.BasicNutrients;
 import pl.mealcore.dto.product.Product;
 
 import java.util.List;
 
 @Data
-public class UserProductsResponse {
+@EqualsAndHashCode(callSuper = true)
+public class UserProductsResponse extends BasicResponse {
     private List<Product> products;
     private double kcal;
     private double proteins;
     private double carbohydrates;
     private double fat;
     private double fiber;
-    private boolean success;
     private String date;
 
     public UserProductsResponse(List<Product> products, BasicNutrients nutrients, String date) {
@@ -27,6 +28,7 @@ public class UserProductsResponse {
         this.date = date;
     }
 
+    @Override
     public UserProductsResponse withSuccess(boolean success) {
         this.success = success;
         return this;

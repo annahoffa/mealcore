@@ -1,11 +1,17 @@
 package pl.mealcore.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BasicResponse {
-    private String message;
-    private boolean success;
+    protected String message;
+    protected boolean success;
 
     public BasicResponse withMessage(String message) {
         this.message = message;

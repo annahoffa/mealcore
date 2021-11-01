@@ -1,6 +1,7 @@
 package pl.mealcore.dto.response;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.model.account.AccountType;
 import pl.mealcore.model.account.ActivityLevel;
@@ -9,7 +10,8 @@ import pl.mealcore.model.account.Gender;
 import java.util.List;
 
 @Data
-public class UserDataResponse {
+@EqualsAndHashCode(callSuper = true)
+public class UserDataResponse extends BasicResponse{
     private String login;
     private AccountType type;
     private Gender gender;
@@ -18,7 +20,6 @@ public class UserDataResponse {
     private Double height;
     private ActivityLevel activityLevel;
     private List<String> allergens;
-    private boolean success;
 
     public UserDataResponse(User user) {
         this.login = user.getLogin();
@@ -31,6 +32,7 @@ public class UserDataResponse {
         this.allergens = user.getAllergens();
     }
 
+    @Override
     public UserDataResponse withSuccess(boolean success) {
         this.success = success;
         return this;

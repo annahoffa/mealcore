@@ -2,8 +2,7 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
     <changeSet id="initCreateTables" author="ls">
         <sqlFile encoding="utf8" path="/db/changelog/sql/createTables.sql"/>
     </changeSet>
@@ -42,5 +41,25 @@
                   file="/../initialData/sports_11.csv"
                   separator="^"
                   relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="Add notes" author="ls">
+        <createTable tableName="USERS_NOTES_13">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint(20)">
+                <constraints nullable="false" foreignKeyName="fk_user_note" referencedTableName="users_6" referencedColumnNames="id"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="varchar(1000)"/>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="bigint(20)"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="USERS_NOTES_13"/>
     </changeSet>
 </databaseChangeLog>

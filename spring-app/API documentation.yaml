@@ -293,7 +293,7 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: Note
+          name: note
           required: true
           type: string
           maxLength: 500
@@ -605,7 +605,7 @@ paths:
         - application/json
       parameters:
         - in: query
-          name: Note
+          name: note
           required: true
           type: string
           maxLength: 500

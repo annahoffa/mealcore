@@ -1,16 +1,17 @@
 package pl.mealcore.dto.response;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pl.mealcore.dto.sport.Sport;
 
 import java.util.List;
 
 @Data
-public class UserExercisesResponse {
+@EqualsAndHashCode(callSuper = true)
+public class UserExercisesResponse extends BasicResponse{
     private List<Sport> exercises;
     private double kcal;
     private String date;
-    private boolean success;
 
     public UserExercisesResponse(List<Sport> exercises, String date) {
         this.exercises = exercises;
@@ -20,6 +21,7 @@ public class UserExercisesResponse {
         this.date = date;
     }
 
+    @Override
     public UserExercisesResponse withSuccess(boolean success) {
         this.success = success;
         return this;
