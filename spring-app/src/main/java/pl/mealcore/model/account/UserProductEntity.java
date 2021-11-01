@@ -4,6 +4,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import pl.mealcore.model.BaseEntity;
+import pl.mealcore.model.converter.ProductCategoryConverter;
+import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.model.product.ProductEntity;
 
 import javax.persistence.*;
@@ -20,6 +22,7 @@ public class UserProductEntity extends BaseEntity {
     private ProductEntity product;
     private Date date;
     private Integer quantity;
+    private ProductCategory category;
 
     @Id
     @Override
@@ -36,5 +39,10 @@ public class UserProductEntity extends BaseEntity {
     @ManyToOne
     public ProductEntity getProduct() {
         return product;
+    }
+
+    @Convert(converter = ProductCategoryConverter.class)
+    public ProductCategory getCategory() {
+        return category;
     }
 }

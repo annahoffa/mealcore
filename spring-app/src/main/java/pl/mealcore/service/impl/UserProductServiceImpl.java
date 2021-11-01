@@ -14,6 +14,7 @@ import pl.mealcore.dto.product.Product;
 import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.helper.DateHelper;
 import pl.mealcore.model.account.UserProductEntity;
+import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.service.ProductService;
 import pl.mealcore.service.UserProductService;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
@@ -40,6 +42,7 @@ public class UserProductServiceImpl implements UserProductService {
             Product product = productService.createBaseProduct(userProduct.getProduct());
             productService.completeProduct(user, product);
             product.setAddedQuantity(userProduct.getQuantity());
+            product.setCategory(userProduct.getCategory());
             products.add(product);
             Nutrients productNutrients = product.getNutrients();
             if (nonNull(productNutrients)) {
@@ -56,21 +59,22 @@ public class UserProductServiceImpl implements UserProductService {
     }
 
     @Override
-    public void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date) {
+    public void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date, ProductCategory category) {
         date = DateHelper.getDateWithoutTime(date, new Date());
         UserProduct toSave = userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, date)
                 .map(UserProduct::new)
-                .orElse(new UserProduct(user, new Product(productId), date, 0));
+                .orElse(new UserProduct(user, new Product(productId), date, 0, isNull(category) ? ProductCategory.OTHER : category));
         toSave.addQuantity(quantity);
         userProductRepository.save(toSave.toEntity());
     }
 
     @Override
-    public boolean editUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date) {
+    public boolean editUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date, ProductCategory category) {
         date = DateHelper.getDateWithoutTime(date, new Date());
         UserProductEntity userProduct = userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, date).orElse(null);
         if (nonNull(userProduct)) {
             userProduct.setQuantity(quantity);
+            userProduct.setCategory(isNull(category) ? ProductCategory.OTHER : category);
             userProductRepository.save(userProduct);
             return true;
         }

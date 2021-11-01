@@ -12,6 +12,7 @@ import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.helper.DateHelper;
+import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.service.UserProductService;
 import pl.mealcore.service.UserService;
 
@@ -30,6 +31,7 @@ public class UserProductController {
     @PostMapping("/addProduct")
     ResponseEntity<Object> addProduct(@RequestParam(name = "productId") Long productId,
                                       @RequestParam(name = "quantity", required = false, defaultValue = "100") Integer quantity,
+                                      @RequestParam(name = "category", required = false) ProductCategory category,
                                       @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
@@ -41,7 +43,7 @@ public class UserProductController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
-            userProductService.addUserProduct(user, productId, quantity, DateHelper.parse(date));
+            userProductService.addUserProduct(user, productId, quantity, DateHelper.parse(date), category);
             log.info("SUCCESSFUL add product '{}' to user '{}' ", productId, user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {
@@ -54,6 +56,7 @@ public class UserProductController {
     @PutMapping("/editProduct")
     ResponseEntity<Object> editProduct(@RequestParam(name = "productId") Long productId,
                                       @RequestParam(name = "quantity") Integer quantity,
+                                       @RequestParam(name = "category", required = false) ProductCategory category,
                                       @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
@@ -65,7 +68,7 @@ public class UserProductController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
-            if(userProductService.editUserProduct(user, productId, quantity, DateHelper.parse(date))) {
+            if(userProductService.editUserProduct(user, productId, quantity, DateHelper.parse(date), category)) {
                 log.info("SUCCESSFUL edit product '{}' for user '{}' and date '{}'", productId, user.getLogin(), date);
                 return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
             } else {

@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.mealcore.dto.BaseDto;
 import pl.mealcore.model.product.ImageEntity;
+import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.model.product.ProductEntity;
 
 import java.util.ArrayList;
@@ -27,8 +28,10 @@ public class Product extends BaseDto<ProductEntity> {
     private Nutrients nutrients;
     private Ingredients ingredients;
     private List<Image> images = new ArrayList<>();
+
     private boolean allergenWarning = false;
     private Integer addedQuantity;
+    private ProductCategory category;
 
     public Product(ProductEntity entity) {
         super(entity);
