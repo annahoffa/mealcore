@@ -1,4 +1,4 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.user.basicData;
 
 import lombok.AllArgsConstructor;
 

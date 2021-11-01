@@ -3,10 +3,10 @@ package pl.mealcore.dto.account;
 import lombok.*;
 import pl.mealcore.dto.BaseDto;
 import pl.mealcore.dto.product.Product;
-import pl.mealcore.model.account.UserEntity;
-import pl.mealcore.model.account.UserProductEntity;
 import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.model.product.ProductEntity;
+import pl.mealcore.model.user.additionalData.UserProductEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import java.util.Date;
 

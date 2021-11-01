@@ -1,6 +1,6 @@
 package pl.mealcore.model.converter;
 
-import pl.mealcore.model.account.AccountType;
+import pl.mealcore.model.user.basicData.AccountType;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

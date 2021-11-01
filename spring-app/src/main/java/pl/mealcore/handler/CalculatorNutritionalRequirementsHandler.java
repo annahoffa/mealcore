@@ -3,14 +3,14 @@ package pl.mealcore.handler;
 import org.springframework.stereotype.Component;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.response.NutritionalRequirementsResponse;
-import pl.mealcore.model.account.Gender;
+import pl.mealcore.model.user.basicData.Gender;
 
 import static java.util.Objects.isNull;
 
 @Component
 public class CalculatorNutritionalRequirementsHandler {
 
-    public NutritionalRequirementsResponse calculate(User user){
+    public NutritionalRequirementsResponse calculate(User user) {
         if (isNull(user.getGender()) || isNull(user.getActivityLevel()) || isNull(user.getAge()) || isNull(user.getWeight()) || isNull(user.getHeight()))
             return new NutritionalRequirementsResponse().withSuccess(false);
         Gender gender = user.getGender();

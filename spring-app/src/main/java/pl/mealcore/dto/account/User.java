@@ -6,16 +6,16 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.mealcore.dto.BaseDto;
-import pl.mealcore.model.account.AccountType;
-import pl.mealcore.model.account.ActivityLevel;
-import pl.mealcore.model.account.Gender;
-import pl.mealcore.model.account.UserEntity;
+import pl.mealcore.model.user.basicData.AccountType;
+import pl.mealcore.model.user.basicData.ActivityLevel;
+import pl.mealcore.model.user.basicData.Gender;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static pl.mealcore.model.account.AccountType.NORMAL;
+import static pl.mealcore.model.user.basicData.AccountType.NORMAL;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

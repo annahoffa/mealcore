@@ -2,8 +2,8 @@ package pl.mealcore.dto.account;
 
 import lombok.*;
 import pl.mealcore.dto.BaseDto;
-import pl.mealcore.model.account.UserEntity;
-import pl.mealcore.model.account.UserNoteEntity;
+import pl.mealcore.model.user.additionalData.UserNoteEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import java.util.Date;
 

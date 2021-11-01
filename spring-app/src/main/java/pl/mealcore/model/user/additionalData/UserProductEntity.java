@@ -1,4 +1,4 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.user.additionalData;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,6 +7,7 @@ import pl.mealcore.model.BaseEntity;
 import pl.mealcore.model.converter.ProductCategoryConverter;
 import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.model.product.ProductEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import javax.persistence.*;
 import java.util.Date;

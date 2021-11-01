@@ -13,8 +13,8 @@ import pl.mealcore.dto.product.Nutrients;
 import pl.mealcore.dto.product.Product;
 import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.helper.DateHelper;
-import pl.mealcore.model.account.UserProductEntity;
 import pl.mealcore.model.product.ProductCategory;
+import pl.mealcore.model.user.additionalData.UserProductEntity;
 import pl.mealcore.service.ProductService;
 import pl.mealcore.service.UserProductService;
 

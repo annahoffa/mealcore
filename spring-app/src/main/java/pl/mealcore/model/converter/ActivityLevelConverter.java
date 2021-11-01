@@ -1,6 +1,6 @@
 package pl.mealcore.model.converter;
 
-import pl.mealcore.model.account.ActivityLevel;
+import pl.mealcore.model.user.basicData.ActivityLevel;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

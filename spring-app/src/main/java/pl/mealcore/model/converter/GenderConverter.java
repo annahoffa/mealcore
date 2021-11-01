@@ -1,6 +1,6 @@
 package pl.mealcore.model.converter;
 
-import pl.mealcore.model.account.Gender;
+import pl.mealcore.model.user.basicData.Gender;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

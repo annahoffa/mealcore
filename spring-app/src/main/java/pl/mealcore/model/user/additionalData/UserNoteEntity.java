@@ -1,21 +1,24 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.user.additionalData;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import pl.mealcore.model.BaseEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "allergens_8")
+@Table(name = "USERS_NOTES_13")
 @EqualsAndHashCode(callSuper = true)
-public class AllergenEntity extends BaseEntity {
+public class UserNoteEntity extends BaseEntity {
 
-    private String allergen;
     private UserEntity user;
+    private Date date;
+    private String text;
 
     @Id
     @Override
@@ -25,7 +28,7 @@ public class AllergenEntity extends BaseEntity {
     }
 
     @ManyToOne
-    public UserEntity getUser(){
+    public UserEntity getUser() {
         return user;
     }
 }

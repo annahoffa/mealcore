@@ -1,10 +1,11 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.user.additionalData;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import pl.mealcore.model.BaseEntity;
 import pl.mealcore.model.sport.SportEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import javax.persistence.*;
 import java.util.Date;

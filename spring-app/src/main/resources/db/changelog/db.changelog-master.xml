@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
     <changeSet id="initCreateTables" author="ls">
         <sqlFile encoding="utf8" path="/db/changelog/sql/createTables.sql"/>
@@ -68,5 +68,30 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
+    </changeSet>
+    <changeSet id="Add reactions" author="ls">
+        <createTable tableName="USERS_REACTIONS_14">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="category" type="tinyint" defaultValue="9">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="tinyint" defaultValue="3">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint(20)">
+                <constraints nullable="false" foreignKeyName="fk_user_reaction" referencedTableName="users_6" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="bigint(20)"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="USERS_REACTIONS_14"/>
     </changeSet>
 </databaseChangeLog>

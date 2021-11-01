@@ -1,11 +1,11 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.user.basicData;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
 
-import static pl.mealcore.model.account.UserRole.*;
+import static pl.mealcore.model.user.basicData.UserRole.*;
 
 
 @Getter
