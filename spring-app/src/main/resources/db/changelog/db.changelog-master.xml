@@ -94,4 +94,53 @@
                 startWith="1"
                 tableName="USERS_REACTIONS_14"/>
     </changeSet>
+
+    <changeSet id="Add allergic reactions" author="ls">
+        <createTable tableName="allergic_reactions_15">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="bigint(20)"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="allergic_reactions_15"/>
+        <createTable tableName="users_allergic_reactions_16">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="allergic_reaction_id" type="bigint(20)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_15_16"
+                             referencedTableName="allergic_reactions_15"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="user_id" type="bigint(20)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_6_16"
+                             referencedTableName="users_6"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="bigint(20)"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="users_allergic_reactions_16"/>
+    </changeSet>
+    <changeSet id="insertInitData_15" author="ls">
+        <loadData tableName="allergic_reactions_15"
+                  file="/../initialData/allergic_reactions_15.csv"
+                  separator="^"
+                  relativeToChangelogFile="true"/>
+    </changeSet>
 </databaseChangeLog>
