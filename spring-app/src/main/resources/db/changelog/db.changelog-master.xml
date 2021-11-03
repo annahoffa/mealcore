@@ -63,7 +63,7 @@
                 tableName="USERS_NOTES_13"/>
     </changeSet>
     <changeSet id="Add product category" author="ls">
-        <addColumn tableName="USERS_PRODUCTS_10">
+        <addColumn tableName="users_products_10">
             <column name="category" type="tinyint" defaultValue="9">
                 <constraints nullable="false"/>
             </column>
