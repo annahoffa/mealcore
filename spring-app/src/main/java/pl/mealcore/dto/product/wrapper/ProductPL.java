@@ -30,6 +30,8 @@ public class ProductPL {
     private Ingredients ingredients;
     private List<Image> images = new ArrayList<>();
     private boolean allergenWarning = false;
+    private boolean badReaction = false;
+    private boolean goodReaction = false;
     private Integer addedQuantity;
 
     public ProductPL(Product product) {
@@ -47,6 +49,8 @@ public class ProductPL {
         ingredients = product.getIngredients();
         images = product.getImages();
         allergenWarning = product.isAllergenWarning();
+        badReaction = product.isBadReaction();
+        goodReaction = product.isGoodReaction();
         addedQuantity = product.getAddedQuantity();
     }
 }

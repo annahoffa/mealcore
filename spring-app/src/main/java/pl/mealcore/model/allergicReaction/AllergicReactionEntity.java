@@ -1,4 +1,4 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.allergicReaction;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,22 +10,16 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "allergens_8")
+@Table(name = "allergic_reactions_15")
 @EqualsAndHashCode(callSuper = true)
-public class AllergenEntity extends BaseEntity {
+public class AllergicReactionEntity extends BaseEntity {
 
-    private String allergen;
-    private UserEntity user;
+    private String name;
 
     @Id
     @Override
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
-    }
-
-    @ManyToOne
-    public UserEntity getUser(){
-        return user;
     }
 }

@@ -27,6 +27,9 @@ public class UserProductsResponse extends BasicResponse {
         this.fiber = nutrients.getFiber();
         this.date = date;
     }
+    public UserProductsResponse(List<Product> products) {
+        this.products = products;
+    }
 
     @Override
     public UserProductsResponse withSuccess(boolean success) {

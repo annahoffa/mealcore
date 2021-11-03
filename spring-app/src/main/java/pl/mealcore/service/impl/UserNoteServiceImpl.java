@@ -8,7 +8,7 @@ import pl.mealcore.dao.UserNoteRepository;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.account.UserNote;
 import pl.mealcore.helper.DateHelper;
-import pl.mealcore.model.account.UserNoteEntity;
+import pl.mealcore.model.user.additionalData.UserNoteEntity;
 import pl.mealcore.service.UserNoteService;
 
 import java.util.Date;

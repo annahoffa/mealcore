@@ -3,15 +3,15 @@ package pl.mealcore.dto.response;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import pl.mealcore.dto.account.User;
-import pl.mealcore.model.account.AccountType;
-import pl.mealcore.model.account.ActivityLevel;
-import pl.mealcore.model.account.Gender;
+import pl.mealcore.model.user.basicData.AccountType;
+import pl.mealcore.model.user.basicData.ActivityLevel;
+import pl.mealcore.model.user.basicData.Gender;
 
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserDataResponse extends BasicResponse{
+public class UserDataResponse extends BasicResponse {
     private String login;
     private AccountType type;
     private Gender gender;

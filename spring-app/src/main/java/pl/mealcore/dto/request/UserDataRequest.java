@@ -1,8 +1,8 @@
 package pl.mealcore.dto.request;
 
 import lombok.Data;
-import pl.mealcore.model.account.ActivityLevel;
-import pl.mealcore.model.account.Gender;
+import pl.mealcore.model.user.basicData.ActivityLevel;
+import pl.mealcore.model.user.basicData.Gender;
 
 import java.util.List;
 

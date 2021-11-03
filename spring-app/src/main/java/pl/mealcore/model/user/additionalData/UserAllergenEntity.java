@@ -1,23 +1,22 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.user.additionalData;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import pl.mealcore.model.BaseEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "USERS_NOTES_13")
+@Table(name = "allergens_8")
 @EqualsAndHashCode(callSuper = true)
-public class UserNoteEntity extends BaseEntity {
+public class UserAllergenEntity extends BaseEntity {
 
+    private String allergen;
     private UserEntity user;
-    private Date date;
-    private String text;
 
     @Id
     @Override

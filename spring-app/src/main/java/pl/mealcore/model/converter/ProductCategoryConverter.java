@@ -1,6 +1,6 @@
 package pl.mealcore.model.converter;
 
-import pl.mealcore.model.user.basicData.AccountType;
+import pl.mealcore.model.product.ProductCategory;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -8,19 +8,19 @@ import javax.persistence.Converter;
 import static java.util.Objects.isNull;
 
 @Converter
-public class UserTypeConverter implements AttributeConverter<AccountType, Integer> {
+public class ProductCategoryConverter implements AttributeConverter<ProductCategory, Integer> {
 
     @Override
-    public Integer convertToDatabaseColumn(AccountType attribute) {
+    public Integer convertToDatabaseColumn(ProductCategory attribute) {
         if (isNull(attribute))
             return null;
         return attribute.getCode();
     }
 
     @Override
-    public AccountType convertToEntityAttribute(Integer code) {
+    public ProductCategory convertToEntityAttribute(Integer code) {
         if (isNull(code))
             return null;
-        return AccountType.fromCode(code);
+        return ProductCategory.fromCode(code);
     }
 }

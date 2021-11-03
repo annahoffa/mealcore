@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
     <changeSet id="initCreateTables" author="ls">
         <sqlFile encoding="utf8" path="/db/changelog/sql/createTables.sql"/>
@@ -43,7 +43,7 @@
                   relativeToChangelogFile="true"/>
     </changeSet>
     <changeSet id="Add notes" author="ls">
-        <createTable tableName="USERS_NOTES_13">
+        <createTable tableName="users_notes_13">
             <column name="id" type="bigint(20)">
                 <constraints primaryKey="true"/>
             </column>
@@ -60,6 +60,87 @@
                 columnName="id"
                 incrementBy="1"
                 startWith="1"
-                tableName="USERS_NOTES_13"/>
+                tableName="users_notes_13"/>
+    </changeSet>
+    <changeSet id="Add product category" author="ls">
+        <addColumn tableName="users_products_10">
+            <column name="category" type="tinyint" defaultValue="9">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="Add reactions" author="ls">
+        <createTable tableName="users_reactions_14">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="category" type="tinyint" defaultValue="9">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="tinyint" defaultValue="3">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint(20)">
+                <constraints nullable="false" foreignKeyName="fk_user_reaction" referencedTableName="users_6" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="bigint(20)"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="users_reactions_14"/>
+    </changeSet>
+
+    <changeSet id="Add allergic reactions" author="ls">
+        <createTable tableName="allergic_reactions_15">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="bigint(20)"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="allergic_reactions_15"/>
+        <createTable tableName="users_allergic_reactions_16">
+            <column name="id" type="bigint(20)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="allergic_reaction_id" type="bigint(20)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_15_16"
+                             referencedTableName="allergic_reactions_15"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="user_id" type="bigint(20)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_6_16"
+                             referencedTableName="users_6"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="bigint(20)"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="users_allergic_reactions_16"/>
+    </changeSet>
+    <changeSet id="insertInitData_15" author="ls">
+        <loadData tableName="allergic_reactions_15"
+                  file="/../initialData/allergic_reactions_15.csv"
+                  separator="^"
+                  relativeToChangelogFile="true"/>
     </changeSet>
 </databaseChangeLog>

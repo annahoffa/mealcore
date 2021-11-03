@@ -1,10 +1,11 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.user.additionalData;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import pl.mealcore.model.BaseEntity;
-import pl.mealcore.model.product.ProductEntity;
+import pl.mealcore.model.allergicReaction.AllergicReactionEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,14 +13,13 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "users_products_10")
+@Table(name = "users_allergic_reactions_16")
 @EqualsAndHashCode(callSuper = true)
-public class UserProductEntity extends BaseEntity {
+public class UserAllergicReactionEntity extends BaseEntity {
 
     private UserEntity user;
-    private ProductEntity product;
+    private AllergicReactionEntity allergicReaction;
     private Date date;
-    private Integer quantity;
 
     @Id
     @Override
@@ -34,7 +34,7 @@ public class UserProductEntity extends BaseEntity {
     }
 
     @ManyToOne
-    public ProductEntity getProduct() {
-        return product;
+    public AllergicReactionEntity getAllergicReaction() {
+        return allergicReaction;
     }
 }

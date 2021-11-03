@@ -11,8 +11,8 @@ import pl.mealcore.dto.account.Allergen;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.request.UserDataRequest;
 import pl.mealcore.error.*;
-import pl.mealcore.model.account.AccountType;
-import pl.mealcore.model.account.AllergenEntity;
+import pl.mealcore.model.user.additionalData.UserAllergenEntity;
+import pl.mealcore.model.user.basicData.AccountType;
 import pl.mealcore.service.UserService;
 
 import java.util.List;
@@ -80,10 +80,10 @@ public class UserServiceImpl implements UserService {
 
 
     private void saveAllergens(List<String> allergensFromUser, User saved) {
-        List<AllergenEntity> allergensFromDb = allergenRepository.findAllByUserId(saved.getId());
+        List<UserAllergenEntity> allergensFromDb = allergenRepository.findAllByUserId(saved.getId());
         List<String> allergensToSave = allergensFromUser.stream()
                 .filter(a -> !allergensFromDb.stream()
-                        .map(AllergenEntity::getAllergen)
+                        .map(UserAllergenEntity::getAllergen)
                         .collect(Collectors.toList())
                         .contains(a))
                 .collect(Collectors.toList());
@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
         if (isNull(user))
             return null;
         user.setAllergens(allergenRepository.findAllByUserId(user.getId()).stream()
-                .map(AllergenEntity::getAllergen)
+                .map(UserAllergenEntity::getAllergen)
                 .collect(Collectors.toList()));
         return user;
     }

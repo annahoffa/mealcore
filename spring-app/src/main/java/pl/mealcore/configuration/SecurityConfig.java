@@ -23,7 +23,7 @@ import pl.mealcore.service.impl.UserDetailsServiceImpl;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static pl.mealcore.model.account.UserRole.BASIC_USER_ROLE;
+import static pl.mealcore.model.user.basicData.UserRole.BASIC_USER_ROLE;
 
 
 @Configuration

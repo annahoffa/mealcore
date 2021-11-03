@@ -1,4 +1,4 @@
-package pl.mealcore.model.account;
+package pl.mealcore.model.user.basicData;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,6 +7,7 @@ import pl.mealcore.model.BaseEntity;
 import pl.mealcore.model.converter.ActivityLevelConverter;
 import pl.mealcore.model.converter.GenderConverter;
 import pl.mealcore.model.converter.UserTypeConverter;
+import pl.mealcore.model.user.additionalData.UserAllergenEntity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,7 +27,7 @@ public class UserEntity extends BaseEntity {
     private Double weight;
     private Double height;
     private ActivityLevel exercise_type;
-    private List<AllergenEntity> allergens;
+    private List<UserAllergenEntity> allergens;
 
 
     @Id
@@ -52,7 +53,7 @@ public class UserEntity extends BaseEntity {
     }
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    public List<AllergenEntity> getAllergens() {
+    public List<UserAllergenEntity> getAllergens() {
         return allergens;
     }
 }

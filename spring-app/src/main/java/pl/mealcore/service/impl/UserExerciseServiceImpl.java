@@ -10,7 +10,7 @@ import pl.mealcore.dto.account.UserExercise;
 import pl.mealcore.dto.response.UserExercisesResponse;
 import pl.mealcore.dto.sport.Sport;
 import pl.mealcore.helper.DateHelper;
-import pl.mealcore.model.account.UserExerciseEntity;
+import pl.mealcore.model.user.additionalData.UserExerciseEntity;
 import pl.mealcore.service.UserExerciseService;
 
 import java.util.ArrayList;

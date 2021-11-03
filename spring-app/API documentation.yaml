@@ -239,6 +239,36 @@ paths:
           description: User not logged in
           schema:
             $ref: '#/definitions/BasicResponse'
+  /user/addAllergicReaction:
+    post:
+      tags:
+        - users
+      summary: Add allergic reaction to logged user
+      operationId: addAllergicReaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: allergicReactionId
+          required: true
+          type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
   /user/addReaction:
     post:
       tags:
@@ -423,6 +453,36 @@ paths:
             $ref: '#/definitions/UserExercisesResponse'
         '401':
           description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+  /user/getUserAllergicReaction:
+    get:
+      tags:
+        - users
+      summary: Get allergic reaction for logged user
+      operationId: getUserAllergicReaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/AllergicReaction'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '404':
+          description: Reaction not found
           schema:
             $ref: '#/definitions/BasicResponse'
   /user/getReactions:
@@ -668,6 +728,36 @@ paths:
           description: Exercise not found
           schema:
             $ref: '#/definitions/BasicResponse'
+  /user/editAllergicReaction:
+    put:
+      tags:
+        - users
+      summary: Edit allergic reaction for logged user
+      operationId: editAllergicReaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: allergicReactionId
+          required: true
+          type: integer
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
   /user/changePassword:
     put:
       tags:
@@ -834,12 +924,38 @@ paths:
           description: User not logged in
           schema:
             $ref: '#/definitions/BasicResponse'
+  /user/removeAllergicReaction:
+    delete:
+      tags:
+        - users
+      summary: Remove allergic reaction from logged user
+      operationId: removeAllergicReaction
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: date
+          description: Date in format 'YYYY-MM-DD'. Current day by default.
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '401':
+          description: User not logged in
+          schema:
+            $ref: '#/definitions/BasicResponse'
   /sport/getAll:
     get:
       tags:
         - sports
       summary: Find all sports
-      operationId: getAll
+      operationId: sportGetAll
       consumes:
         - application/json
       produces:
@@ -851,10 +967,27 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Sport'
-        '400':
-          description: Bad request
         '404':
-          description: Product not found
+          description: Sports not found
+  /allergicReaction/getAll:
+    get:
+      tags:
+        - allergicReaction
+      summary: Find all allergic reaction
+      operationId: allergicReactionGetAll
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AllergicReaction'
+        '404':
+          description: AllergicReactions not found
 definitions:
   BasicProduct:
     type: object
@@ -922,6 +1055,7 @@ definitions:
           - DINNER
           - SUPPER
           - SNACK
+          - OTHER
       nutrients:
         $ref: '#/definitions/Nutrients'
       ingredients:
@@ -931,6 +1065,10 @@ definitions:
         items:
           $ref: '#/definitions/Image'
       allergenWarning:
+        type: boolean
+      badReaction:
+        type: boolean
+      goodReaction:
         type: boolean
   Nutrients:
     type: object
@@ -1363,6 +1501,14 @@ definitions:
         format: date
       success:
         type: boolean
+  AllergicReaction:
+    type: object
+    properties:
+      name:
+        type: string
+      id:
+        type: integer
+        format: int64
   Exercises:
     type: object
     properties:
