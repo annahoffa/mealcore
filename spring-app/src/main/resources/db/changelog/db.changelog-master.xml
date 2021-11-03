@@ -43,7 +43,7 @@
                   relativeToChangelogFile="true"/>
     </changeSet>
     <changeSet id="Add notes" author="ls">
-        <createTable tableName="USERS_NOTES_13">
+        <createTable tableName="users_notes_13">
             <column name="id" type="bigint(20)">
                 <constraints primaryKey="true"/>
             </column>
@@ -60,7 +60,7 @@
                 columnName="id"
                 incrementBy="1"
                 startWith="1"
-                tableName="USERS_NOTES_13"/>
+                tableName="users_notes_13"/>
     </changeSet>
     <changeSet id="Add product category" author="ls">
         <addColumn tableName="users_products_10">
@@ -70,7 +70,7 @@
         </addColumn>
     </changeSet>
     <changeSet id="Add reactions" author="ls">
-        <createTable tableName="USERS_REACTIONS_14">
+        <createTable tableName="users_reactions_14">
             <column name="id" type="bigint(20)">
                 <constraints primaryKey="true"/>
             </column>
@@ -92,7 +92,7 @@
                 columnName="id"
                 incrementBy="1"
                 startWith="1"
-                tableName="USERS_REACTIONS_14"/>
+                tableName="users_reactions_14"/>
     </changeSet>
 
     <changeSet id="Add allergic reactions" author="ls">

@@ -12,7 +12,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "USERS_NOTES_13")
+@Table(name = "users_notes_13")
 @EqualsAndHashCode(callSuper = true)
 public class UserNoteEntity extends BaseEntity {
 
