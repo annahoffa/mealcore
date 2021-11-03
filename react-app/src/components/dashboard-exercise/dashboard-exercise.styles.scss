@@ -1,0 +1,24 @@
+.dashboard-exercise {
+    width: 35em;
+    background-color: #F6F6F6;
+    border-radius: 5px;
+    padding: 0.2em 1em;
+    margin: 1em;
+
+    .exercise-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .exercise-details {
+        display: inline-flex;
+        flex-direction: column;
+        width: 80%; //of the parent container
+        padding-bottom: 1em;
+
+        & > * {
+            padding: 2px;
+        }
+    }
+}
