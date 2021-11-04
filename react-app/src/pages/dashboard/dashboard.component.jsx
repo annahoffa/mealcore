@@ -5,7 +5,11 @@ import apiCall from '../../utils/apiCall';
 
 //import MainContent from '../../components/main-content/main-content.component';
 import ShowNutritionalRequirements from '../../components/show-nutritional-requirements/show-nutritional-requirements.component';
-import DashboardProductsList from '../../components/dashboard-products-list/dashboard-products-list.component';
+import DashboardElementsColumn from '../../components/dashboard-elements-column/dashboard-elements-column.component';
+import DashboardProductsToolbar from '../../components/dashboard-products-toolbar/dashboard-products-toolbar.component';
+import DashboardProduct from '../../components/dashboard-product/dashboard-product.component';
+import DashboardExercisesToolbar from '../../components/dashboard-exercises-toolbar/dashboard-exercises-toolbar.component';
+import DashboardExercise from '../../components/dashboard-exercise/dashboard-exercise.component';
 import Calendar from '../../components/calendar/calendar.component';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { Grid, Typography } from '@material-ui/core';
@@ -17,6 +21,7 @@ const DashboardPage = () => {
   const authContext = useContext(AuthContext);
   const [maxNutritionalValues, setMaxNutritionalValues] = useState();
   const [userProducts, setUserProducts] = useState();
+  const [userExercises, setUserExercises] = useState();
 
   const getNutritionalRequirements = () => {
     if(authContext.isLoggedIn) {
@@ -44,9 +49,23 @@ const DashboardPage = () => {
     }
   };
 
+  const getUserExercises = () => {
+    if(authContext.isLoggedIn) {
+      apiCall('/api/user/getUserExercises', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(data => setUserExercises(data))
+      .catch(error => console.log(error));
+    }
+  };
+
   useEffect(() => {
     getNutritionalRequirements();
     getUserProducts();
+    getUserExercises();
   }, []);
 
   return (
@@ -63,10 +82,17 @@ const DashboardPage = () => {
               ? <Skeleton />
               : <ShowNutritionalRequirements maxValues={maxNutritionalValues} currentValues={userProducts} />}
           </Grid>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={4}>
             <Typography variant='h6'>Lista zjedzonych produktów:</Typography>
             <br />
-            {userProducts === undefined ? <Skeleton /> : <DashboardProductsList productsList={userProducts.products} />}
+            <DashboardProductsToolbar />
+            {userProducts === undefined ? <Skeleton /> : <DashboardElementsColumn items={userProducts.products} component={DashboardProduct} />}
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography variant='h6'>Dzienna aktywność:</Typography>
+            <br />
+            <DashboardExercisesToolbar />
+            {userExercises === undefined ? <Skeleton /> : <DashboardElementsColumn items={userExercises.exercises} component={DashboardExercise} />}
           </Grid>
         </Grid>
       </div>

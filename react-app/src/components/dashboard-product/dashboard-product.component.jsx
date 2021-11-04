@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import apiCall from '../../utils/apiCall';
 
-import { Button, Popover, Typography, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, InputAdornment } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import EditIcon from '@material-ui/icons/Edit';
@@ -10,7 +10,7 @@ import DefineProductQuantity from '../define-product-quantity/define-product-qua
 import './dashboard-product.styles.scss';
 
 
-const DashboardProduct = ({ product }) => {
+const DashboardProduct = ({ item: product }) => {
 
   const modifyProductQuantity = () => {
     apiCall(`/api/user/editProduct?productId=${product.id}&quantity=${productQuantity}`, {
