@@ -14,7 +14,7 @@ const Homepage = () => {
       <section className='section-item'>
         <img className='background-image' src={mainPicture} alt='Salad'/>
         <Typography className='overline' variant='overline'>Zdrowe jedzenie</Typography>
-        <span className='content'>Skuteczne diety.</span>
+        <span className='content'>Skuteczne diety</span>
       </section>
       <section className='section' style={{ height: '30rem', backgroundColor: '#F3F3F4' }}>
         <Typography variant='h4'>Dlaczego warto wybrać nas?</Typography>

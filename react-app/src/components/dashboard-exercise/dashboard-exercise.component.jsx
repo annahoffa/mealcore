@@ -13,7 +13,7 @@ import './dashboard-exercise.styles.scss';
 const DashboardExercise = ({ item: exercise }) => {
 
   const modifyExerciseDuration = () => {
-    apiCall(`/api/user/editExercise?exerciseId=${exercise.id}&duration=${exerciseDuration}`, {
+    apiCall(`/api/user/editExercise?sportId=${exercise.id}&duration=${exerciseDuration}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const DashboardExercise = ({ item: exercise }) => {
   };
 
   const deleteExerciseFromDashboard = () => {
-    apiCall(`/api/user/removeExercise?exerciseId=${exercise.id}`, {
+    apiCall(`/api/user/removeExercise?sportId=${exercise.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +67,6 @@ const DashboardExercise = ({ item: exercise }) => {
     handleChange,
   };
   //------------------------------------
-
 
   return (
     <div className='dashboard-exercise'>

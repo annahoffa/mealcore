@@ -6,7 +6,7 @@ const DefineProductQuantity = ({ quantityProps, apiCall }) => (
   <Dialog open={quantityProps.open} onClose={quantityProps.closeQuantityDialog}>
     <DialogContent>
       <DialogContentText>
-        Zmień ilość produktu:
+        Zmień ilość produktu
       </DialogContentText>
       <TextField
         autoFocus
