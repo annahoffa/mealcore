@@ -6,7 +6,7 @@ const DefineExerciseDuration = ({ durationProps, apiCall }) => (
   <Dialog open={durationProps.open} onClose={durationProps.closeQuantityDialog}>
     <DialogContent>
       <DialogContentText>
-        Zmień czas trwania aktywności:
+        Zmień czas trwania aktywności
       </DialogContentText>
       <TextField
         autoFocus

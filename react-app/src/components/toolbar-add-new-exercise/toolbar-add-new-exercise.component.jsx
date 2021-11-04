@@ -13,11 +13,6 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#F6F6F6',
       borderRadius: '5px',
     },
-    dialog: {
-      minWidth: '300px',
-      minHeight: '300px',
-      overflowY: 'visible',
-    },
     popper: {
       zIndex: 200,
     },
@@ -25,7 +20,7 @@ const useStyles = makeStyles(() => ({
 ));
 
 const ToolbarAddNewExercise = () => {
-  const { icon, dialog, popper } = useStyles();
+  const { icon, popper } = useStyles();
   const [availableExercises, setAvailableExercises] = useState([]);
   const [exerciseDuration, setExerciseDuration] = useState('');
   const [value, setValue] = useState('');
@@ -76,7 +71,7 @@ const ToolbarAddNewExercise = () => {
 
       {/*hidden modification dialog*/}
       <Dialog open={open} onClose={closeNewExerciseDialog}>
-        <DialogContent className={dialog}>
+        <DialogContent>
           <DialogContentText>
             Dodaj nową aktywność
           </DialogContentText>
@@ -107,6 +102,7 @@ const ToolbarAddNewExercise = () => {
               startAdornment: <InputAdornment position='start'>h</InputAdornment>,
             }}
             margin='dense'
+            fullWidth
           />
         </DialogContent>
         <DialogActions>
