@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +21,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         HttpSession session = request.getSession();
         User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         session.setAttribute("user", authUser);
