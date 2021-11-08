@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import apiCall from '../../utils/apiCall';
 import IconButton from '@material-ui/core/IconButton';
 import { FaAllergies } from 'react-icons/fa';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, FormControlLabel, FormGroup, makeStyles, TextField, Tooltip, Typography } from '@material-ui/core';
-import apiCall from '../../utils/apiCall';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, FormControlLabel, FormGroup, makeStyles, Tooltip } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 
 
 const useStyles = makeStyles(() => ({
@@ -19,28 +18,28 @@ const useStyles = makeStyles(() => ({
 
 const ToolbarManageAllergySymptoms = () => {
   const { icon } = useStyles();
-  const [availableAllergySymptoms, setAvailableAllergySymptoms] = useState([]);
-  const [checkedValues, setCheckedValues] = useState({
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-    6: false,
-    7: false,
-  })
 
-  // let checkboxList = []
-  const checkboxList = {
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-    6: false,
-    7: false,
-  }
+  // function to get checkboxes with all allergies (unchecked) + user's allergies (checked)
+  const prepareCheckboxes = (allSymptoms, userSymptoms) => {
+    let checkboxes = {};
+    allSymptoms.forEach(obj => {
+      checkboxes[obj.id] = false;
+    });
+    userSymptoms.forEach(obj => {
+      checkboxes[obj.id] = true;
+    });
+    console.log('log checkboxes');
+    console.log(checkboxes);
+    return checkboxes;
+  };
 
+  const [allAllergySymptoms, setAllAllergySymptoms] = useState([]);
+  const [userAllergySymptoms, setUserAllergySymptoms] = useState([]);
+  const [checkboxes, setCheckboxes] = useState({});
+  useEffect(() => setCheckboxes(prepareCheckboxes(Array.from(allAllergySymptoms), Array.from(userAllergySymptoms))),
+    [allAllergySymptoms, userAllergySymptoms]);
+
+  //TODO: Refactor the endpoint names
   useEffect(() => {
     apiCall('/api/allergicReaction/getAll', {
       method: 'GET',
@@ -48,34 +47,42 @@ const ToolbarManageAllergySymptoms = () => {
         'Content-Type': 'application/json',
       },
     })
-    .then(data => setAvailableAllergySymptoms(data))
+    .then(data => setAllAllergySymptoms(data))
+    .catch(error => console.log(error));
+
+    apiCall('/api/user/getUserAllergicReaction', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(data => setUserAllergySymptoms(data))
     .catch(error => console.log(error));
   }, []);
 
   const editUserAllergySymptoms = () => {
-    apiCall(`/api/user/addAllergicReaction?allergicReactionId=${checkedValues}`, {
+    const symptomIds = Object.keys(checkboxes);
+    const userSymptomIds = symptomIds.filter((symptomId) => (checkboxes[symptomId])).map(Number);
+    console.log('user symptom ids');
+    console.log(userSymptomIds);
+
+    apiCall(`/api/user/editAllergySymptoms`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+      },
+      body: {
+        symptomIds: userSymptomIds,
       },
     })
     .catch(error => console.log(error));
   };
 
-  const handleChange = (event) => {
-    setCheckedValues({
-      ...checkedValues, [event.target.name]: event.target.checked,
-    });
-    console.log(checkedValues)
+  const handleChange = (props) => (event) => {
+    setCheckboxes({ ...checkboxes, [props]: event.target.checked });
   };
 
   const [open, setOpen] = useState(false);
-
-  // const setCheckboxes = (items, array) => {
-  //   items.map(item => {array.push(item.id[false])})
-  //   console.log(checkboxList)
-  // }
-
 
   const openAllergySymptomsDialog = () => {
     setOpen(true);
@@ -100,11 +107,10 @@ const ToolbarManageAllergySymptoms = () => {
             Edytuj objawy alergiczne
           </DialogContentText>
           <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
-            <FormLabel component='legend'>Określ objawy jakich dziś doświadczyłeś/aś.</FormLabel>
             <FormGroup>
-              {availableAllergySymptoms.map(checkboxItem =>
+              {allAllergySymptoms.map(checkboxItem =>
                 <FormControlLabel
-                  control={<Checkbox checked={checkedValues} onChange={handleChange} name={checkboxItem.id} />}
+                  control={<Checkbox checked={checkboxes[checkboxItem.id]} onChange={handleChange(checkboxItem.id)} />}
                   label={checkboxItem.name}
                 />)}
             </FormGroup>
