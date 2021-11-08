@@ -20,6 +20,7 @@ import pl.mealcore.model.product.ProductEntity;
 import pl.mealcore.model.user.additionalData.UserProductEntity;
 import pl.mealcore.service.AdditionService;
 import pl.mealcore.service.ProductService;
+import pl.mealcore.service.UserExerciseService;
 import pl.mealcore.service.UserProductService;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
     private final UserProductRepository userProductRepository;
     private final AdditionService additionService;
     private final UserProductService userProductService;
+    private final UserExerciseService userExerciseService;
 
     @Override
     public List<Product> getSuggestionsByName(User user, String text, int page) {
@@ -96,6 +98,8 @@ public class ProductServiceImpl implements ProductService {
                 nutrients.addFiber(NumberUtils.toDouble(productNutrients.getFiber()));
             }
         }
+        double burnedKcal = userExerciseService.getExercisesForUser(user, date).getKcal();
+        nutrients.addKcal(-burnedKcal);
         return new UserProductsResponse(products, nutrients, DateHelper.format(date));
     }
 
