@@ -28,8 +28,6 @@ const ToolbarManageAllergySymptoms = () => {
     userSymptoms.forEach(obj => {
       checkboxes[obj.id] = true;
     });
-    console.log('log checkboxes');
-    console.log(checkboxes);
     return checkboxes;
   };
 
@@ -63,17 +61,15 @@ const ToolbarManageAllergySymptoms = () => {
   const editUserAllergySymptoms = () => {
     const symptomIds = Object.keys(checkboxes);
     const userSymptomIds = symptomIds.filter((symptomId) => (checkboxes[symptomId])).map(Number);
-    console.log('user symptom ids');
-    console.log(userSymptomIds);
 
-    apiCall(`/api/user/editAllergySymptoms`, {
-      method: 'POST',
+    apiCall('/api/user/editAllergySymptoms', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: {
+      body: JSON.stringify({
         symptomIds: userSymptomIds,
-      },
+      }),
     })
     .catch(error => console.log(error));
   };
