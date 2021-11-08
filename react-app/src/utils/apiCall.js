@@ -19,8 +19,7 @@ const apiCall = async(url, params) => {
   if(!response.ok) throw new Error(response.statusText);
   //return response;
 
-  let jsonResponse = await response.json();
-  return jsonResponse;
+  return await response.json();
 };
 
 export default apiCall;

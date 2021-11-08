@@ -40,16 +40,14 @@ public class UserNoteServiceImpl implements UserNoteService {
 
     @Override
     public boolean editUserNote(@NonNull User user, @NonNull String text, Date date) {
-        date = DateHelper.getDateWithoutTime(date, new Date());
-        UserNoteEntity found = userNoteRepository.findByUserIdAndDate(user.getId(), date)
-                .orElse(null);
-        if (nonNull(found)) {
-            found.setText(text);
-            userNoteRepository.save(found);
-            return true;
-        } else {
-            return false;
-        }
+        Date truncatedDate = DateHelper.getDateWithoutTime(date, new Date());
+        Optional<UserNoteEntity> found = userNoteRepository.findByUserIdAndDate(user.getId(), truncatedDate);
+        found.ifPresentOrElse(note -> {
+                    note.setText(text);
+                    userNoteRepository.save(note);
+                },
+                () -> addUserNote(user, text, truncatedDate));
+        return true;
     }
 
     @Override

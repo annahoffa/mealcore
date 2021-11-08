@@ -11,23 +11,18 @@ export const FOOTER_DATA = [
     items: [
       {
         id: 1,
-        label: 'Umowa użytkownika',
-        href: '/terms',
+        label: 'Polityka Prywatności',
+        href: '/privacypolicy'
       },
       {
         id: 2,
-        label: 'Polityka Prywatności',
-        href: '/privacypolicy',
+        label: 'Warunki użytkowania',
+        href: '/terms',
       },
       {
         id: 3,
-        label: 'Cennik',
-        href: '/',
-      },
-      {
-        id: 4,
         label: 'Zarządzanie plikami cookies',
-        href: '/',
+        href: '/cookies',
       },
     ],
   },
@@ -38,12 +33,12 @@ export const FOOTER_DATA = [
       {
         id: 1,
         label: 'O nas',
-        href: '/',
+        href: '/aboutus',
       },
       {
         id: 2,
         label: 'Zespół',
-        href: '/',
+        href: '/team',
       },
     ],
   },

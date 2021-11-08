@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface UserAllergicReactionRepository extends JpaRepository<UserAllergicReactionEntity, Long> {
     Optional<UserAllergicReactionEntity> findByUserIdAndDate(Long userId, Date date);
+    void deleteAllByUserIdAndDate(Long userId, Date date);
 }

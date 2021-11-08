@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.mealcore.annotations.RestApiController;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.allergicReaction.AllergicReaction;
+import pl.mealcore.dto.allergicReaction.AllergySymptomsList;
 import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.helper.DateHelper;
 import pl.mealcore.service.UserAllergicReactionService;
@@ -61,6 +62,21 @@ public class UserAllergicReactionController {
         } else {
             log.info("FAILED addAllergicReaction, no user in session");
             return new ResponseEntity<>(response.withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @ResponseBody
+    @PutMapping("/editAllergySymptoms")
+    ResponseEntity<Void> editAllergicReaction(@RequestBody AllergySymptomsList allergySymptomsList) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
+        if (isAuthenticated(auth, user)) {
+            userAllergicReactionService.updateAllergySymptoms(allergySymptomsList.getSymptomIds(), allergySymptomsList.getDate(), user);
+            log.info("SUCCESSFUL add AllergicSymptoms to user '{}' ", user.getLogin());
+            return ResponseEntity.ok().build();
+        } else {
+            log.info("FAILED addAllergicReaction, no user in session");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 
