@@ -74,7 +74,7 @@ const DashboardPage = () => {
         <Grid container style={{ width: '90%' }} spacing={8}>
           <Grid item xs={12} md={4}>
             <Typography variant='h6'>Wybierz dzień:</Typography>
-            <Calendar setUserProducts={setUserProducts} />
+            <Calendar setUserProducts={setUserProducts} setUserExercises={setUserExercises} />
             <br />
             <Typography variant='h6'>Twoje dzienne zapotrzebowanie:</Typography>
             <br />
