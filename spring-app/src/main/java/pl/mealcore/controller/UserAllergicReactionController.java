@@ -16,6 +16,8 @@ import pl.mealcore.helper.DateHelper;
 import pl.mealcore.service.UserAllergicReactionService;
 import pl.mealcore.service.UserService;
 
+import java.util.List;
+
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
@@ -26,44 +28,6 @@ import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
 public class UserAllergicReactionController {
     private final UserService userService;
     private final UserAllergicReactionService userAllergicReactionService;
-
-    @ResponseBody
-    @PostMapping("/addAllergicReaction")
-    ResponseEntity<Object> addAllergicReaction(@RequestParam(name = "allergicReactionId") Long allergicReactionId,
-                                               @RequestParam(name = "date", required = false) String date) {
-        BasicResponse response = new BasicResponse().withSuccess(false);
-        if (nonNull(date) && isNull(DateHelper.parse(date)))
-            return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
-            userAllergicReactionService.addEditUserAllergicReaction(user, allergicReactionId, DateHelper.parse(date));
-            log.info("SUCCESSFUL add AllergicReaction '{}' to user '{}' ", allergicReactionId, user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED addAllergicReaction, no user in session");
-            return new ResponseEntity<>(response.withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @ResponseBody
-    @PutMapping("/editAllergicReaction")
-    ResponseEntity<Object> editAllergicReaction(@RequestParam(name = "allergicReactionId") Long allergicReactionId,
-                                                @RequestParam(name = "date", required = false) String date) {
-        BasicResponse response = new BasicResponse().withSuccess(false);
-        if (nonNull(date) && isNull(DateHelper.parse(date)))
-            return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
-            userAllergicReactionService.addEditUserAllergicReaction(user, allergicReactionId, DateHelper.parse(date));
-            log.info("SUCCESSFUL add AllergicReaction '{}' to user '{}' ", allergicReactionId, user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED addAllergicReaction, no user in session");
-            return new ResponseEntity<>(response.withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
-        }
-    }
 
     @ResponseBody
     @PutMapping("/editAllergySymptoms")
@@ -80,25 +44,6 @@ public class UserAllergicReactionController {
         }
     }
 
-    //    ----Delete endpoints----
-    @ResponseBody
-    @DeleteMapping("/removeAllergicReaction")
-    ResponseEntity<Object> removeAllergicReaction(@RequestParam(name = "date", required = false) String date) {
-        BasicResponse response = new BasicResponse().withSuccess(false);
-        if (nonNull(date) && isNull(DateHelper.parse(date)))
-            return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
-            userAllergicReactionService.deleteUserAllergicReaction(user, DateHelper.parse(date));
-            log.info("SUCCESSFUL deleted AllergicReaction '{}' from user '{}' ", date, user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED addAllergicReaction, no user in session");
-            return new ResponseEntity<>(response.withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
-        }
-    }
-
     @ResponseBody
     @GetMapping("/getUserAllergicReaction")
     ResponseEntity<Object> getUserAllergicReaction(@RequestParam(name = "date", required = false) String date) {
@@ -106,7 +51,7 @@ public class UserAllergicReactionController {
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
             log.info("SUCCESSFUL get '{}' AllergicReaction", user.getLogin());
-            AllergicReaction allergicReactions = userAllergicReactionService.getAllergicReactionsForUser(user, DateHelper.parse(date));
+            List<AllergicReaction> allergicReactions = userAllergicReactionService.getAllergicReactionsForUser(user, DateHelper.parse(date));
             if (isNull(allergicReactions))
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             else

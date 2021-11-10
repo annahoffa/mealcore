@@ -5,16 +5,16 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
-import static pl.mealcore.model.user.basicData.UserRole.*;
+import static pl.mealcore.model.user.basicData.UserRole.ADMIN_ROLE;
+import static pl.mealcore.model.user.basicData.UserRole.BASIC_USER_ROLE;
 
 
 @Getter
 @AllArgsConstructor
 public enum AccountType {
     NORMAL(0, new String[]{BASIC_USER_ROLE.toString()}),
-    PREMIUM(1, new String[]{BASIC_USER_ROLE.toString(), PREMIUM_USER_ROLE.toString()}),
-    DIETICIAN(2, new String[]{BASIC_USER_ROLE.toString(), DIETICIAN_ROLE.toString()}),
-    ADMIN(5, new String[]{BASIC_USER_ROLE.toString(), PREMIUM_USER_ROLE.toString(), DIETICIAN_ROLE.toString(), ADMIN_ROLE.toString()});
+//    PREMIUM(1, new String[]{BASIC_USER_ROLE.toString(), PREMIUM_USER_ROLE.toString()}),
+    ADMIN(5, new String[]{BASIC_USER_ROLE.toString(), ADMIN_ROLE.toString()});
 
     private final Integer code;
     private final String[] roles;

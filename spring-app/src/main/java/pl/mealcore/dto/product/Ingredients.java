@@ -1,5 +1,6 @@
 package pl.mealcore.dto.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import static pl.mealcore.service.impl.AdditionServiceImpl.ADDITIVES_SEPARATOR;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Ingredients extends BaseDto<IngredientsEntity> {
 

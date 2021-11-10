@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: API documentation
-  version: 2.0.0
+  version: 2.0.1
   title: MealCore
 tags:
   - name: products
@@ -70,6 +70,35 @@ paths:
           description: Bad request
         '404':
           description: Product not found
+  /products/add:
+    post:
+      tags:
+        - products
+      summary: Add product to database
+      operationId: addNewProduct
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: product
+          required: true
+          schema:
+            $ref: '#/definitions/NewProductRequest'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/BasicResponse'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/BasicResponse'
   /user/register:
     post:
       tags:
@@ -233,36 +262,6 @@ paths:
             $ref: '#/definitions/BasicResponse'
         '400':
           description: Bad quantity value
-          schema:
-            $ref: '#/definitions/BasicResponse'
-        '401':
-          description: User not logged in
-          schema:
-            $ref: '#/definitions/BasicResponse'
-  /user/addAllergicReaction:
-    post:
-      tags:
-        - users
-      summary: Add allergic reaction to logged user
-      operationId: addAllergicReaction
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: allergicReactionId
-          required: true
-          type: integer
-        - in: query
-          name: date
-          description: Date in format 'YYYY-MM-DD'. Current day by default.
-          required: false
-          type: string
-          format: date
-      responses:
-        '200':
-          description: Success
           schema:
             $ref: '#/definitions/BasicResponse'
         '401':
@@ -728,36 +727,27 @@ paths:
           description: Exercise not found
           schema:
             $ref: '#/definitions/BasicResponse'
-  /user/editAllergicReaction:
+  /user/editAllergySymptoms:
     put:
       tags:
         - users
       summary: Edit allergic reaction for logged user
-      operationId: editAllergicReaction
+      operationId: editAllergySymptoms
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
-        - in: query
+        - in: body
           name: allergicReactionId
           required: true
-          type: integer
-        - in: query
-          name: date
-          description: Date in format 'YYYY-MM-DD'. Current day by default.
-          required: false
-          type: string
-          format: date
+          schema:
+            $ref: '#/definitions/AllergySymptomsList'
       responses:
         '200':
           description: Success
-          schema:
-            $ref: '#/definitions/BasicResponse'
         '401':
           description: User not logged in
-          schema:
-            $ref: '#/definitions/BasicResponse'
   /user/changePassword:
     put:
       tags:
@@ -924,32 +914,6 @@ paths:
           description: User not logged in
           schema:
             $ref: '#/definitions/BasicResponse'
-  /user/removeAllergicReaction:
-    delete:
-      tags:
-        - users
-      summary: Remove allergic reaction from logged user
-      operationId: removeAllergicReaction
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: query
-          name: date
-          description: Date in format 'YYYY-MM-DD'. Current day by default.
-          required: false
-          type: string
-          format: date
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/BasicResponse'
-        '401':
-          description: User not logged in
-          schema:
-            $ref: '#/definitions/BasicResponse'
   /sport/getAll:
     get:
       tags:
@@ -1070,6 +1034,35 @@ definitions:
         type: boolean
       goodReaction:
         type: boolean
+  NewProductRequest:
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      brands:
+        type: string
+      countriesTags:
+        type: string
+      servingQuantity:
+        type: string
+      servingSize:
+        type: string
+      embCodesTags:
+        type: string
+      quantity:
+        type: string
+      addedQuantity:
+        type: integer
+      nutrients:
+        $ref: '#/definitions/Nutrients'
+      ingredients:
+        $ref: '#/definitions/Ingredients'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/Image'
   Nutrients:
     type: object
     properties:
@@ -1553,6 +1546,17 @@ definitions:
     properties:
       text:
         type: string
+      date:
+        type: string
+        format: date
+  AllergySymptomsList:
+    type: object
+    properties:
+      symptomIds:
+        type: array
+        items:
+          type: integer
+          format: int64
       date:
         type: string
         format: date

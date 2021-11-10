@@ -1,11 +1,15 @@
 package pl.mealcore.dto.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import pl.mealcore.dto.BaseDto;
 import pl.mealcore.model.product.AdditionEntity;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Addition extends BaseDto<AdditionEntity> {
 
@@ -16,11 +20,6 @@ public class Addition extends BaseDto<AdditionEntity> {
         super(entity);
         name = entity.getName();
         description = entity.getDescription();
-    }
-
-    public Addition(String name, String description) {
-        this.name = name;
-        this.description = description;
     }
 
     @Override

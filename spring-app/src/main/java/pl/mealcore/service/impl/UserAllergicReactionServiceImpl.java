@@ -26,27 +26,11 @@ public class UserAllergicReactionServiceImpl implements UserAllergicReactionServ
     private final UserAllergicReactionRepository userAllergicReactionRepository;
 
     @Override
-    public void addEditUserAllergicReaction(@NonNull User user, @NonNull Long allergicReactionId, Date date) {
-        date = DateHelper.getDateWithoutTime(date, new Date());
-        UserAllergicReaction toSave = userAllergicReactionRepository.findByUserIdAndDate(user.getId(), date)
-                .map(UserAllergicReaction::new)
-                .orElse(new UserAllergicReaction(user, new AllergicReaction(allergicReactionId), date));
-        toSave.setAllergicReaction(new AllergicReaction(allergicReactionId));
-        userAllergicReactionRepository.save(toSave.toEntity());
-    }
-
-    @Override
-    public void deleteUserAllergicReaction(@NonNull User user, Date date) {
-        userAllergicReactionRepository.findByUserIdAndDate(user.getId(), DateHelper.getDateWithoutTime(date, new Date()))
-                .ifPresent(userAllergicReactionRepository::delete);
-    }
-
-    @Override
-    public AllergicReaction getAllergicReactionsForUser(@NonNull User user, Date date) {
-        return userAllergicReactionRepository.findByUserIdAndDate(user.getId(), DateHelper.getDateWithoutTime(date, new Date()))
+    public List<AllergicReaction> getAllergicReactionsForUser(@NonNull User user, Date date) {
+        return userAllergicReactionRepository.findAllByUserIdAndDate(user.getId(), DateHelper.getDateWithoutTime(date, new Date())).stream()
                 .map(UserAllergicReactionEntity::getAllergicReaction)
                 .map(AllergicReaction::new)
-                .orElse(null);
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -54,12 +38,11 @@ public class UserAllergicReactionServiceImpl implements UserAllergicReactionServ
         Date truncatedDate = Date.from(
                 Optional.ofNullable(date).orElse(Instant.now())
                         .truncatedTo(ChronoUnit.DAYS));
-        userAllergicReactionRepository.deleteAllByUserIdAndDate(user.getId(), truncatedDate);
+        userAllergicReactionRepository.deleteAllByUserIdAndDate(user.getId(), DateHelper.getDateWithoutTime(truncatedDate, new Date()));
         var reactions = symptomIds.stream().map(id -> UserAllergicReaction.builder()
-                        .allergicReaction(new AllergicReaction(id))
-                        .user(user)
-                        .date(truncatedDate)
-                        .build())
+                .allergicReaction(new AllergicReaction(id))
+                .user(user)
+                .date(truncatedDate).build())
                 .map(UserAllergicReaction::toEntity)
                 .collect(Collectors.toList());
         userAllergicReactionRepository.saveAll(reactions);

@@ -2,18 +2,13 @@ package pl.mealcore.service.impl;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mealcore.dao.IngredientsRepository;
-import pl.mealcore.dao.NutrientsRepository;
-import pl.mealcore.dao.ProductRepository;
-import pl.mealcore.dao.UserProductRepository;
+import pl.mealcore.dao.*;
 import pl.mealcore.dto.account.User;
-import pl.mealcore.dto.product.BasicNutrients;
-import pl.mealcore.dto.product.Ingredients;
-import pl.mealcore.dto.product.Nutrients;
-import pl.mealcore.dto.product.Product;
+import pl.mealcore.dto.product.*;
 import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.helper.DateHelper;
 import pl.mealcore.model.product.ProductEntity;
@@ -30,6 +25,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -40,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
     private final NutrientsRepository nutrientsRepository;
     private final IngredientsRepository ingredientsRepository;
     private final UserProductRepository userProductRepository;
+    private final ImageRepository imageRepository;
     private final AdditionService additionService;
     private final UserProductService userProductService;
     private final UserExerciseService userExerciseService;
@@ -103,7 +100,6 @@ public class ProductServiceImpl implements ProductService {
         return new UserProductsResponse(products, nutrients, DateHelper.format(date));
     }
 
-
     @Override
     public Product createBaseProduct(ProductEntity entity) {
         Product product = new Product(entity);
@@ -120,6 +116,38 @@ public class ProductServiceImpl implements ProductService {
                     .map(Nutrients::new)
                     .orElse(null));
             userProductService.checkWarningsAndReactions(user, product);
+        }
+    }
+
+    @Override
+    public boolean addProduct(Product product) {
+        try {
+            if (nonNull(product) && nonNull(product.getName())) {
+                Ingredients ingredients = product.getIngredients();
+                Nutrients nutrients = product.getNutrients();
+                List<Image> images = product.getImages();
+                Long savedId = productRepository.save(product.toEntity()).getId();
+                if (nonNull(ingredients)) {
+                    ingredients.setProductId(savedId);
+                    ingredientsRepository.save(ingredients.toEntity());
+                }
+                if (nonNull(ingredients)) {
+                    nutrients.setProductId(savedId);
+                    nutrientsRepository.save(nutrients.toEntity());
+                }
+                if (nonNull(ingredients)) {
+                    images.forEach(i -> i.setProductId(savedId));
+                    imageRepository.saveAll(
+                            images.stream()
+                                    .map(Image::toEntity)
+                                    .collect(Collectors.toList()));
+                }
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            log.error("Adding product broke by: ", e);
+            return false;
         }
     }
 
