@@ -1,5 +1,5 @@
 .daily-requirements-container {
-    width: 300px;
+    width: 500px;
     background-color: #F6F6F6;
     border-radius: 5px;
     padding: 0.2em 1em;
@@ -7,6 +7,20 @@
     .item {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         padding: 5px;
+
+        .percentage-bar {
+            width: 300px;
+            position: relative;
+
+            .numbers {
+                position: absolute;
+                z-index: 1;
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+            }
+        }
     }
 }
