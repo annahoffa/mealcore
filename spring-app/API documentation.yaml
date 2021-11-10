@@ -159,7 +159,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/BasicResponse'
+            $ref: '#/definitions/LoginResponse'
         '404':
           description: Invalid username or password
           schema:
@@ -1448,6 +1448,25 @@ definitions:
         type: string
       success:
         type: boolean
+  LoginResponse:
+    type: object
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+      authorities:
+        type: array
+        items:
+          $ref: '#/definitions/Authority'
+  Authority:
+    type: object
+    properties:
+      authority:
+        type: string
+        enum:
+          - BASIC_USER
+          - ADMIN
   Addition:
     type: object
     properties:
