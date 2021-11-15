@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
-
-import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@material-ui/core';
+import { Grid, Tooltip, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -14,6 +14,7 @@ import './product-info.styles.scss';
 
 const ProductInfoPage = (props) => {
     const productId = props.match.params.id; // query extracted from the browser's url field
+    let history = useHistory();
     const [state, setState] = useState();
 
     useEffect(() => {
@@ -30,8 +31,8 @@ const ProductInfoPage = (props) => {
         },
       })
       .then(() => {
-        alert('Dodano produkt do panelu.');
         closeQuantityDialog();
+        history.push({ pathname: '/dashboard' });
       })
       .catch(error => console.log(error));
     };
@@ -60,7 +61,7 @@ const ProductInfoPage = (props) => {
       open,
       openQuantityDialog,
       closeQuantityDialog,
-      handleChange
+      handleChange,
     };
     //------------------------------------
 

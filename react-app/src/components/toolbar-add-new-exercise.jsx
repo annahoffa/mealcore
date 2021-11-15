@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import apiCall from '../../utils/apiCall';
+import apiCall from '../utils/apiCall';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, InputAdornment, makeStyles, TextField, Tooltip } from '@material-ui/core';

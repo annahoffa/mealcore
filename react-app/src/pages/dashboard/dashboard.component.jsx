@@ -10,7 +10,7 @@ import DashboardProductsToolbar from '../../components/dashboard-products-toolba
 import DashboardProduct from '../../components/dashboard-product/dashboard-product.component';
 import DashboardExercisesToolbar from '../../components/dashboard-exercises-toolbar/dashboard-exercises-toolbar.component';
 import DashboardExercise from '../../components/dashboard-exercise/dashboard-exercise.component';
-import Calendar from '../../components/calendar/calendar.component';
+import Calendar from '../../components/calendar';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { Grid, Typography } from '@material-ui/core';
 

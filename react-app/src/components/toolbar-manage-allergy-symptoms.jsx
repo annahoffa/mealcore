@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import apiCall from '../../utils/apiCall';
+import apiCall from '../utils/apiCall';
 import IconButton from '@material-ui/core/IconButton';
 import { FaAllergies } from 'react-icons/fa';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, FormControlLabel, FormGroup, makeStyles, Tooltip } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, FormControl, FormControlLabel, FormGroup, makeStyles, Tooltip } from '@material-ui/core';
 
 
 const useStyles = makeStyles(() => ({
@@ -71,6 +70,7 @@ const ToolbarManageAllergySymptoms = () => {
         symptomIds: userSymptomIds,
       }),
     })
+    .then(closeAllergySymptomsDialog())
     .catch(error => console.log(error));
   };
 

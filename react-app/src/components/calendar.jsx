@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { format } from 'date-fns';
-import apiCall from '../../utils/apiCall';
-import { AuthContext } from '../../appContext/providers';
-
+import apiCall from '../utils/apiCall';
+import { AuthContext } from '../appContext/providers';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';

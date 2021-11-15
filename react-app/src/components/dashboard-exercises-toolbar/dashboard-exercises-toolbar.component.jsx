@@ -1,5 +1,5 @@
 import React from 'react';
-import ToolbarAddNewExercise from '../toolbar-add-new-exercise/toolbar-add-new-exercise.component';
+import ToolbarAddNewExercise from '../toolbar-add-new-exercise';
 import { makeStyles } from '@material-ui/core';
 
 
