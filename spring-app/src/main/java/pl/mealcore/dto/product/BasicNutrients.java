@@ -1,6 +1,7 @@
 package pl.mealcore.dto.product;
 
 import lombok.Data;
+import pl.mealcore.helper.NumberHelper;
 
 @Data
 public class BasicNutrients {
@@ -11,18 +12,18 @@ public class BasicNutrients {
     private double fiber = 0.0;
 
     public void addKcal(double value){
-        kcal += value;
+        kcal = NumberHelper.round(kcal + value);
     }
     public void addProteins(double value){
-        proteins += value;
+        proteins = NumberHelper.round(proteins + value);
     }
     public void addCarbohydrates(double value){
-        carbohydrates += value;
+        carbohydrates = NumberHelper.round(carbohydrates + value);
     }
     public void addFat(double value){
-        fat += value;
+        fat = NumberHelper.round(fat + value);
     }
     public void addFiber(double value){
-        fiber += value;
+        fiber = NumberHelper.round(fiber + value);
     }
 }

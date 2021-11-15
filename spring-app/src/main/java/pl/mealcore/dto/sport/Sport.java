@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.mealcore.dto.BaseDto;
+import pl.mealcore.helper.NumberHelper;
 import pl.mealcore.model.sport.SportEntity;
 
 @Data
@@ -35,6 +36,6 @@ public class Sport extends BaseDto<SportEntity> {
     }
 
     public void calculateKcal() {
-        calculatedKcal = Math.floor(duration * kcalPerHour * 100) / 100;
+        calculatedKcal = NumberHelper.round(duration * kcalPerHour);
     }
 }

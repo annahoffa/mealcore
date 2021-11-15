@@ -11,6 +11,7 @@ import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.product.*;
 import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.helper.DateHelper;
+import pl.mealcore.helper.NumberHelper;
 import pl.mealcore.model.product.ProductEntity;
 import pl.mealcore.model.user.additionalData.UserProductEntity;
 import pl.mealcore.service.AdditionService;
@@ -166,15 +167,10 @@ public class ProductServiceImpl implements ProductService {
         else if (nonNull(nutrients.getEnergy()))
             kcal = NumberUtils.toDouble(nutrients.getEnergy()) * 0.2390 * scale;
 
-        if (kcal > 0)
-            nutrients.setEnergyKcal(String.valueOf(Math.floor(kcal * 100) / 100));
-        if (carbohydrates > 0)
-            nutrients.setCarbohydrates(String.valueOf(Math.floor(carbohydrates * 100) / 100));
-        if (fat > 0)
-            nutrients.setFat(String.valueOf(Math.floor(fat * 100) / 100));
-        if (proteins > 0)
-            nutrients.setProteins(String.valueOf(Math.floor(proteins * 100) / 100));
-        if (fiber > 0)
-            nutrients.setFiber(String.valueOf(Math.floor(fiber * 100) / 100));
+        nutrients.setEnergyKcal(NumberHelper.format(kcal));
+        nutrients.setCarbohydrates(NumberHelper.format(carbohydrates));
+        nutrients.setFat(NumberHelper.format(fat));
+        nutrients.setProteins(NumberHelper.format(proteins));
+        nutrients.setFiber(NumberHelper.format(fiber));
     }
 }
