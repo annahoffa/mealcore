@@ -31,10 +31,10 @@ public class UserProductController {
 
     @ResponseBody
     @PostMapping("/addProduct")
-    ResponseEntity<Object> addProduct(@RequestParam(name = "productId") Long productId,
-                                      @RequestParam(name = "quantity", required = false, defaultValue = "100") Integer quantity,
-                                      @RequestParam(name = "category", required = false) ProductCategory category,
-                                      @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> addProduct(@RequestParam(name = "productId") Long productId,
+                                             @RequestParam(name = "quantity", required = false, defaultValue = "100") Integer quantity,
+                                             @RequestParam(name = "category", required = false) ProductCategory category,
+                                             @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -56,10 +56,10 @@ public class UserProductController {
 
     @ResponseBody
     @PutMapping("/editProduct")
-    ResponseEntity<Object> editProduct(@RequestParam(name = "productId") Long productId,
-                                      @RequestParam(name = "quantity") Integer quantity,
-                                       @RequestParam(name = "category", required = false) ProductCategory category,
-                                      @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> editProduct(@RequestParam(name = "productId") Long productId,
+                                              @RequestParam(name = "quantity") Integer quantity,
+                                              @RequestParam(name = "category", required = false) ProductCategory category,
+                                              @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -70,7 +70,7 @@ public class UserProductController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
-            if(userProductService.editUserProduct(user, productId, quantity, DateHelper.parse(date), category)) {
+            if (userProductService.editUserProduct(user, productId, quantity, DateHelper.parse(date), category)) {
                 log.info("SUCCESSFUL edit product '{}' for user '{}' and date '{}'", productId, user.getLogin(), date);
                 return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
             } else {
@@ -86,8 +86,8 @@ public class UserProductController {
     //    ----Delete endpoints----
     @ResponseBody
     @DeleteMapping("/removeProduct")
-    ResponseEntity<Object> removeProduct(@RequestParam(name = "productId") Long productId,
-                                         @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> removeProduct(@RequestParam(name = "productId") Long productId,
+                                                @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -105,7 +105,7 @@ public class UserProductController {
 
     @ResponseBody
     @GetMapping("/getUserProducts")
-    ResponseEntity<Object> getUserProducts(@RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<UserProductsResponse> getUserProducts(@RequestParam(name = "date", required = false) String date) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
@@ -114,12 +114,13 @@ public class UserProductController {
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {
             log.info("FAILED getUserProducts, no user in session");
-            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
     @ResponseBody
     @GetMapping("/getProblematicProducts")
-    ResponseEntity<Object> getProblematicProducts() {
+    ResponseEntity<UserProductsResponse> getProblematicProducts() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
@@ -128,7 +129,7 @@ public class UserProductController {
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {
             log.info("FAILED getUserProducts, no user in session");
-            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

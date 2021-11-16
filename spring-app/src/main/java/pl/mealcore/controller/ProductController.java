@@ -31,7 +31,7 @@ public class ProductController {
 
     @ResponseBody
     @GetMapping("/suggestions/{name}")
-    ResponseEntity<Object> suggestions(@PathVariable String name, @RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+    ResponseEntity<List<Product>> suggestions(@PathVariable String name, @RequestParam(name = "page", required = false, defaultValue = "0") int page) {
         if (name.length() >= 2) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
@@ -49,7 +49,7 @@ public class ProductController {
 
     @ResponseBody
     @GetMapping("/findById")
-    ResponseEntity<Object> findById(@RequestParam(name = "productId") Long productId) {
+    ResponseEntity<ProductPL> findById(@RequestParam(name = "productId") Long productId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         Product product = productService.getProduct(user, productId);
@@ -63,7 +63,7 @@ public class ProductController {
 
     @ResponseBody
     @PostMapping("/add")
-    ResponseEntity<Object> addProduct(@RequestBody Product product) {
+    ResponseEntity<BasicResponse> addProduct(@RequestBody Product product) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (isAdmin(auth)) {
             if (productService.addProduct(product)) {

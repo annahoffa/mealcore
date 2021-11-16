@@ -22,7 +22,7 @@ public class AllergicReactionController {
 
     @ResponseBody
     @GetMapping("/getAll")
-    ResponseEntity<Object> getAll() {
+    ResponseEntity<List<AllergicReaction>> getAll() {
         List<AllergicReaction> allergicReactions = allergicReactionRepository.findAll().stream()
                 .map(AllergicReaction::new)
                 .collect(Collectors.toList());

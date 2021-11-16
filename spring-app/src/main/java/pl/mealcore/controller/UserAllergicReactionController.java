@@ -11,7 +11,6 @@ import pl.mealcore.annotations.RestApiController;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.allergicReaction.AllergicReaction;
 import pl.mealcore.dto.allergicReaction.AllergySymptomsList;
-import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.helper.DateHelper;
 import pl.mealcore.service.UserAllergicReactionService;
 import pl.mealcore.service.UserService;
@@ -46,7 +45,7 @@ public class UserAllergicReactionController {
 
     @ResponseBody
     @GetMapping("/getUserAllergicReaction")
-    ResponseEntity<Object> getUserAllergicReaction(@RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<List<AllergicReaction>> getUserAllergicReaction(@RequestParam(name = "date", required = false) String date) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
@@ -58,7 +57,7 @@ public class UserAllergicReactionController {
                 return new ResponseEntity<>(allergicReactions, HttpStatus.OK);
         } else {
             log.info("FAILED getUserAllergicReaction, no user in session");
-            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

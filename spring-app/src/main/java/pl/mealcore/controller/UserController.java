@@ -1,5 +1,6 @@
 package pl.mealcore.controller;
 
+import io.swagger.annotations.ApiOperation;
 import javassist.tools.web.BadHttpRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.mealcore.annotations.RestApiController;
@@ -20,6 +22,7 @@ import pl.mealcore.handler.CalculatorNutritionalRequirementsHandler;
 import pl.mealcore.service.UserProductService;
 import pl.mealcore.service.UserService;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -37,7 +40,7 @@ public class UserController {
     //    ----Create endpoints----
     @ResponseBody
     @PostMapping("/register")
-    ResponseEntity<Object> register(@RequestBody User user) {
+    ResponseEntity<BasicResponse> register(@RequestBody User user) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         try {
             userService.registerNewUser(user);
@@ -61,7 +64,7 @@ public class UserController {
     //    ----Get data endpoints----
     @ResponseBody
     @GetMapping("/getPersonalData")
-    ResponseEntity<Object> getPersonalData() {
+    ResponseEntity<UserDataResponse> getPersonalData() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
@@ -69,13 +72,13 @@ public class UserController {
             return new ResponseEntity<>(new UserDataResponse(user).withSuccess(true), HttpStatus.OK);
         } else {
             log.info("FAILED get personal data, no user in session");
-            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @ResponseBody
     @GetMapping("/getLogin")
-    ResponseEntity<Object> getLogin() {
+    ResponseEntity<BasicResponse> getLogin() {
         BasicResponse response = new BasicResponse().withSuccess(false);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String login = Optional.ofNullable(auth)
@@ -92,7 +95,7 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/getNutritionalRequirements")
-    ResponseEntity<Object> getNutritionalRequirements() {
+    ResponseEntity<NutritionalRequirementsResponse> getNutritionalRequirements() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
@@ -113,8 +116,8 @@ public class UserController {
     //    ----Edit data endpoints----
     @ResponseBody
     @PutMapping("/changePassword")
-    ResponseEntity<Object> changePassword(@RequestParam(name = "oldPassword") String oldPassword,
-                                          @RequestParam(name = "newPassword") String newPassword) {
+    ResponseEntity<BasicResponse> changePassword(@RequestParam(name = "oldPassword") String oldPassword,
+                                                 @RequestParam(name = "newPassword") String newPassword) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -141,8 +144,8 @@ public class UserController {
 
     @ResponseBody
     @PutMapping("/changeLogin")
-    ResponseEntity<Object> changeLogin(@RequestParam(name = "newLogin") String newLogin,
-                                       @RequestParam(name = "password") String password) {
+    ResponseEntity<BasicResponse> changeLogin(@RequestParam(name = "newLogin") String newLogin,
+                                              @RequestParam(name = "password") String password) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -172,7 +175,7 @@ public class UserController {
 
     @ResponseBody
     @PutMapping("/changePersonalData")
-    ResponseEntity<Object> changePersonalData(@RequestBody UserDataRequest userDataRequest) {
+    ResponseEntity<BasicResponse> changePersonalData(@RequestBody UserDataRequest userDataRequest) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -191,4 +194,28 @@ public class UserController {
         }
     }
 
+    /**
+     * Implemented by Spring Security
+     */
+    @ApiOperation(value = "Login", notes = "Login with the given credentials.")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<AuthResponse> login(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password
+    ) {
+        throw new IllegalStateException("Add Spring Security to handle authentication");
+    }
+
+    private class AuthResponse extends BasicResponse {
+        public Collection<GrantedAuthority> authorities;
+    }
+
+    /**
+     * Implemented by Spring Security
+     */
+    @ApiOperation(value = "Logout", notes = "Logout the current user.")
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public ResponseEntity<Void> logout() {
+        throw new IllegalStateException("Add Spring Security to handle authentication");
+    }
 }
