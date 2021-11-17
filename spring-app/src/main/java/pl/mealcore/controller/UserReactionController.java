@@ -31,9 +31,9 @@ public class UserReactionController {
 
     @ResponseBody
     @PostMapping("/addReaction")
-    ResponseEntity<Object> addReaction(@RequestParam(name = "category") ProductCategory category,
-                                       @RequestParam(name = "value") Integer value,
-                                       @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> addReaction(@RequestParam(name = "category") ProductCategory category,
+                                              @RequestParam(name = "value") Integer value,
+                                              @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -58,9 +58,9 @@ public class UserReactionController {
 
     @ResponseBody
     @PutMapping("/editReaction")
-    ResponseEntity<Object> editReaction(@RequestParam(name = "category") ProductCategory category,
-                                        @RequestParam(name = "value") Integer value,
-                                        @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> editReaction(@RequestParam(name = "category") ProductCategory category,
+                                               @RequestParam(name = "value") Integer value,
+                                               @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -85,23 +85,21 @@ public class UserReactionController {
 
     @ResponseBody
     @GetMapping("/getReactions")
-    ResponseEntity<Object> getReaction(@RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<List<UserReaction>> getReaction(@RequestParam(name = "date", required = false) String date) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
             List<UserReaction> reactions = userReactionService.getReactions(user, DateHelper.parse(date));
             if (reactions.isEmpty()) {
                 log.info("SUCCESSFUL get Reaction '{}'", user.getLogin());
-                return new ResponseEntity<>(new BasicResponse().withMessage("Nie znaleziono reakcji z dnia " + DateHelper.parse(date))
-                        .withSuccess(false),
-                        HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
                 log.info("SUCCESSFUL get Reaction '{}'", user.getLogin());
                 return new ResponseEntity<>(reactions, HttpStatus.OK);
             }
         } else {
             log.info("FAILED getReaction, no user in session");
-            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

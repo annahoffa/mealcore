@@ -1,13 +1,17 @@
 package pl.mealcore.dto.product;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import pl.mealcore.dto.BaseDto;
 import pl.mealcore.model.product.ImageEntity;
 import pl.mealcore.model.product.ImageType;
 import pl.mealcore.model.product.ProductEntity;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Image extends BaseDto<ImageEntity> {
 

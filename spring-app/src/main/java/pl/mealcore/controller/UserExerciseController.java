@@ -28,9 +28,9 @@ public class UserExerciseController {
 
     @ResponseBody
     @PostMapping("/addExercise")
-    ResponseEntity<Object> addExercise(@RequestParam(name = "sportId") Long sportId,
-                                       @RequestParam(name = "duration", required = false, defaultValue = "1") Double duration,
-                                       @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> addExercise(@RequestParam(name = "sportId") Long sportId,
+                                              @RequestParam(name = "duration", required = false, defaultValue = "1") Double duration,
+                                              @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -52,9 +52,9 @@ public class UserExerciseController {
 
     @ResponseBody
     @PutMapping("/editExercise")
-    ResponseEntity<Object> editExercise(@RequestParam(name = "sportId") Long sportId,
-                                        @RequestParam(name = "duration") Double duration,
-                                        @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> editExercise(@RequestParam(name = "sportId") Long sportId,
+                                               @RequestParam(name = "duration") Double duration,
+                                               @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -81,8 +81,8 @@ public class UserExerciseController {
     //    ----Delete endpoints----
     @ResponseBody
     @DeleteMapping("/removeExercise")
-    ResponseEntity<Object> removeExercise(@RequestParam(name = "sportId") Long sportId,
-                                          @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> removeExercise(@RequestParam(name = "sportId") Long sportId,
+                                                 @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -100,7 +100,7 @@ public class UserExerciseController {
 
     @ResponseBody
     @GetMapping("/getUserExercises")
-    ResponseEntity<Object> getUserExercises(@RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<UserExercisesResponse> getUserExercises(@RequestParam(name = "date", required = false) String date) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
@@ -109,7 +109,7 @@ public class UserExerciseController {
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {
             log.info("FAILED getUserExercises, no user in session");
-            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

@@ -5,10 +5,10 @@ import org.springframework.stereotype.Repository;
 import pl.mealcore.model.user.additionalData.UserAllergicReactionEntity;
 
 import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface UserAllergicReactionRepository extends JpaRepository<UserAllergicReactionEntity, Long> {
-    Optional<UserAllergicReactionEntity> findByUserIdAndDate(Long userId, Date date);
-    void deleteAllByUserIdAndDate(Long userId, Date date);
+    List<UserAllergicReactionEntity> findAllByUserIdAndDate(Long userId, Date date);
+    long deleteAllByUserIdAndDate(Long userId, Date date);
 }

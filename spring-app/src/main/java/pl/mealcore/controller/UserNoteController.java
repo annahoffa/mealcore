@@ -28,8 +28,8 @@ public class UserNoteController {
 
     @ResponseBody
     @PostMapping("/addNote")
-    ResponseEntity<Object> addNote(@RequestParam(name = "note") String note,
-                                   @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> addNote(@RequestParam(name = "note") String note,
+                                          @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -52,8 +52,8 @@ public class UserNoteController {
 
     @ResponseBody
     @PutMapping("/editNote")
-    ResponseEntity<Object> editNote(@RequestParam(name = "note") String note,
-                                    @RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<BasicResponse> editNote(@RequestParam(name = "note") String note,
+                                           @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
@@ -76,7 +76,7 @@ public class UserNoteController {
 
     @ResponseBody
     @GetMapping("/getNote")
-    ResponseEntity<Object> getNote(@RequestParam(name = "date", required = false) String date) {
+    ResponseEntity<UserNote> getNote(@RequestParam(name = "date", required = false) String date) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
@@ -86,13 +86,11 @@ public class UserNoteController {
                 return new ResponseEntity<>(note, HttpStatus.OK);
             } else {
                 log.info("SUCCESSFUL get note '{}'", user.getLogin());
-                return new ResponseEntity<>(new BasicResponse().withMessage("Nie znaleziono notatki z dnia " + DateHelper.parse(date))
-                        .withSuccess(false),
-                        HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } else {
             log.info("FAILED getNote, no user in session");
-            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

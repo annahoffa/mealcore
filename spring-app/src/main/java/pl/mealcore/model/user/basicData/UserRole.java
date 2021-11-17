@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum UserRole {
     BASIC_USER_ROLE("BASIC_USER"),
-    PREMIUM_USER_ROLE("PREMIUM_USER"),
-    DIETICIAN_ROLE("DIETICIAN"),
+//    PREMIUM_USER_ROLE("PREMIUM_USER"),
     ADMIN_ROLE("ADMIN");
 
     private final String name;

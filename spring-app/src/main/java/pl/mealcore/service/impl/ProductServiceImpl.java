@@ -2,20 +2,16 @@ package pl.mealcore.service.impl;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.mealcore.dao.IngredientsRepository;
-import pl.mealcore.dao.NutrientsRepository;
-import pl.mealcore.dao.ProductRepository;
-import pl.mealcore.dao.UserProductRepository;
+import pl.mealcore.dao.*;
 import pl.mealcore.dto.account.User;
-import pl.mealcore.dto.product.BasicNutrients;
-import pl.mealcore.dto.product.Ingredients;
-import pl.mealcore.dto.product.Nutrients;
-import pl.mealcore.dto.product.Product;
+import pl.mealcore.dto.product.*;
 import pl.mealcore.dto.response.UserProductsResponse;
 import pl.mealcore.helper.DateHelper;
+import pl.mealcore.helper.NumberHelper;
 import pl.mealcore.model.product.ProductEntity;
 import pl.mealcore.model.user.additionalData.UserProductEntity;
 import pl.mealcore.service.AdditionService;
@@ -30,6 +26,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -40,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
     private final NutrientsRepository nutrientsRepository;
     private final IngredientsRepository ingredientsRepository;
     private final UserProductRepository userProductRepository;
+    private final ImageRepository imageRepository;
     private final AdditionService additionService;
     private final UserProductService userProductService;
     private final UserExerciseService userExerciseService;
@@ -103,7 +101,6 @@ public class ProductServiceImpl implements ProductService {
         return new UserProductsResponse(products, nutrients, DateHelper.format(date));
     }
 
-
     @Override
     public Product createBaseProduct(ProductEntity entity) {
         Product product = new Product(entity);
@@ -123,6 +120,38 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public boolean addProduct(Product product) {
+        try {
+            if (nonNull(product) && nonNull(product.getName())) {
+                Ingredients ingredients = product.getIngredients();
+                Nutrients nutrients = product.getNutrients();
+                List<Image> images = product.getImages();
+                Long savedId = productRepository.save(product.toEntity()).getId();
+                if (nonNull(ingredients)) {
+                    ingredients.setProductId(savedId);
+                    ingredientsRepository.save(ingredients.toEntity());
+                }
+                if (nonNull(ingredients)) {
+                    nutrients.setProductId(savedId);
+                    nutrientsRepository.save(nutrients.toEntity());
+                }
+                if (nonNull(ingredients)) {
+                    images.forEach(i -> i.setProductId(savedId));
+                    imageRepository.saveAll(
+                            images.stream()
+                                    .map(Image::toEntity)
+                                    .collect(Collectors.toList()));
+                }
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            log.error("Adding product broke by: ", e);
+            return false;
+        }
+    }
+
     //  PRIVS
     private void updateNutrientsByScale(Double scale, Nutrients nutrients) {
         double kcal = 0;
@@ -138,15 +167,10 @@ public class ProductServiceImpl implements ProductService {
         else if (nonNull(nutrients.getEnergy()))
             kcal = NumberUtils.toDouble(nutrients.getEnergy()) * 0.2390 * scale;
 
-        if (kcal > 0)
-            nutrients.setEnergyKcal(String.valueOf(Math.floor(kcal * 100) / 100));
-        if (carbohydrates > 0)
-            nutrients.setCarbohydrates(String.valueOf(Math.floor(carbohydrates * 100) / 100));
-        if (fat > 0)
-            nutrients.setFat(String.valueOf(Math.floor(fat * 100) / 100));
-        if (proteins > 0)
-            nutrients.setProteins(String.valueOf(Math.floor(proteins * 100) / 100));
-        if (fiber > 0)
-            nutrients.setFiber(String.valueOf(Math.floor(fiber * 100) / 100));
+        nutrients.setEnergyKcal(NumberHelper.format(kcal));
+        nutrients.setCarbohydrates(NumberHelper.format(carbohydrates));
+        nutrients.setFat(NumberHelper.format(fat));
+        nutrients.setProteins(NumberHelper.format(proteins));
+        nutrients.setFiber(NumberHelper.format(fiber));
     }
 }

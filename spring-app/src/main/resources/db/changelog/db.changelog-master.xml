@@ -143,4 +143,19 @@
                   separator="^"
                   relativeToChangelogFile="true"/>
     </changeSet>
+    <changeSet id="insertInitAdminAccount" author="ls">
+        <delete tableName="users_6">
+            <where>login='admin@test.pl'</where>
+        </delete>
+        <insert tableName="users_6">
+            <column name="login" value="admin@test.pl"/>
+            <column name="password" value="$2a$10$rjh4G6itvA6omGJY.cld5eW.SMydwas1/DYg3PJuQwem8jDtQ7whm"/><!--adminadmin-->
+            <column name="account_type" value="5"/>
+            <column name="sex" value="m"/>
+            <column name="age" value="23"/>
+            <column name="weight" value="70"/>
+            <column name="height" value="180"/>
+            <column name="exercise_type" value="0"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

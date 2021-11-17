@@ -22,7 +22,7 @@ public class SportController {
 
     @ResponseBody
     @GetMapping("/getAll")
-    ResponseEntity<Object> getAll() {
+    ResponseEntity<List<Sport>> getAll() {
         List<Sport> sports = sportRepository.findAll().stream()
                 .map(Sport::new)
                 .collect(Collectors.toList());

@@ -34,6 +34,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         Map<String, Object> data = new HashMap<>();
         data.put("message", "Pomyślnie zalogowano użytkownika");
         data.put("success", true);
+        data.put("authorities", authUser.getAuthorities());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();

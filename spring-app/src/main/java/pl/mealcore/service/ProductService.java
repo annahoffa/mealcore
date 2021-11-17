@@ -18,4 +18,6 @@ public interface ProductService {
     void completeProduct(User user, Product product);
 
     UserProductsResponse getProductsWithNutrientsForUser(User user, Date parse);
+
+    boolean addProduct(Product product);
 }
