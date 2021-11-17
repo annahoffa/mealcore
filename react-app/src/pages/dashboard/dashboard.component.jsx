@@ -2,17 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router';
 import { AuthContext } from '../../appContext/providers';
 import apiCall from '../../utils/apiCall';
-
-//import MainContent from '../../components/main-content/main-content.component';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { Grid, Typography } from '@material-ui/core';
 import ShowNutritionalRequirements from '../../components/show-nutritional-requirements/show-nutritional-requirements.component';
 import DashboardElementsColumn from '../../components/dashboard-elements-column/dashboard-elements-column.component';
 import DashboardProductsToolbar from '../../components/dashboard-products-toolbar/dashboard-products-toolbar.component';
-import DashboardProduct from '../../components/dashboard-product/dashboard-product.component';
 import DashboardExercisesToolbar from '../../components/dashboard-exercises-toolbar/dashboard-exercises-toolbar.component';
 import DashboardExercise from '../../components/dashboard-exercise/dashboard-exercise.component';
-import Calendar from '../../components/calendar/calendar.component';
-import Skeleton from '@material-ui/lab/Skeleton';
-import { Grid, Typography } from '@material-ui/core';
+import Calendar from '../../components/calendar';
+import CategorizeProducts from '../../components/categorize-products';
 
 import './dashboard.styles.scss';
 
@@ -86,13 +84,14 @@ const DashboardPage = () => {
             <Typography variant='h6'>Lista zjedzonych produktów:</Typography>
             <br />
             <DashboardProductsToolbar />
-            {userProducts === undefined ? <Skeleton /> : <DashboardElementsColumn items={userProducts.products} component={DashboardProduct} />}
+            {userProducts === undefined ? <Skeleton /> : <CategorizeProducts userProducts={userProducts.products} />}
           </Grid>
           <Grid item xs={12} md={4}>
             <Typography variant='h6'>Dzienna aktywność:</Typography>
             <br />
             <DashboardExercisesToolbar />
-            {userExercises === undefined ? <Skeleton /> : <DashboardElementsColumn items={userExercises.exercises} component={DashboardExercise} />}
+            {userExercises === undefined ? <Skeleton /> :
+              <DashboardElementsColumn items={userExercises.exercises} component={DashboardExercise} />}
           </Grid>
         </Grid>
       </div>

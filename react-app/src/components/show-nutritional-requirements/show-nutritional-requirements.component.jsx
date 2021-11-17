@@ -1,5 +1,5 @@
 import React from 'react';
-import PercentageBar from '../percentage-bar/percentage-bar';
+import PercentageBar from '../percentage-bar';
 
 import './show-nutritional-requirements.styles.scss';
 

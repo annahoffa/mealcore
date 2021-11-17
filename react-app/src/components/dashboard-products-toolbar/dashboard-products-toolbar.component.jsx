@@ -1,7 +1,7 @@
 import React from 'react';
-import ToolbarAddNewProduct from '../toolbar-add-new-product/toolbar-add-new-product.component';
-import ToolbarManageNote from '../toolbar-manage-note/toolbar-manage-note.component';
-import ToolbarManageAllergySymptoms from '../toolbar-manage-allergy-symptoms/toolbar-manage-allergy-symptoms.component';
+import ToolbarAddNewProduct from '../toolbar-add-new-product';
+import ToolbarManageNote from '../toolbar-manage-note';
+import ToolbarManageAllergySymptoms from '../toolbar-manage-allergy-symptoms';
 import { makeStyles } from '@material-ui/core';
 
 
