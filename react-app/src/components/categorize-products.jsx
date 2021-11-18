@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 import DashboardElementsColumn from './dashboard-elements-column/dashboard-elements-column.component';
 import DashboardProduct from './dashboard-product/dashboard-product.component';
+import ReactionRatingBar from './reaction-rating-bar';
+import apiCall from '../utils/apiCall';
 
 
 const useStyles = makeStyles(() => ({
   dishCategory: {
     margin: '15px 0;',
+  },
+  // TODO: add restraints to the parent container so that the reactions can be on the right side
+  // titleContainer: {
+  //   display: 'flex',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  // },
+  titleContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    '&>*': {
+      marginRight: '20px',
+    },
   },
 }));
 
@@ -43,46 +58,89 @@ const CategorizeProducts = ({ userProducts }) => {
   // TODO: refactor
   userProducts.forEach(item => assignProductToCategory(item));
 
+  // const { isLoading, isError, data } = useQuery('reactions', getUserReactions);
+  // const userReactions = data;
+  // console.log('reactions');
+  // console.log(data);
+  // if(isLoading || isError) return (<div>loading</div>);
+
+  const [userReactions, setUserReactions] = useState([]);
+  useEffect(() => {
+    apiCall('/api/user/getReactions', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(data => setUserReactions(data))
+    .catch(error => console.log(error));
+  }, []);
+
+  if(!Array.isArray(userReactions) || !userReactions.length) return (<div>Data is loading...</div>);
+
   return (
     <>
       {DISH_CATEGORIES['BREAKFAST'].length === 0 ? null :
         <div className={classes.dishCategory}>
-          <Typography variant='h6'>Śniadanie</Typography>
+          <div className={classes.titleContainer}>
+            <Typography variant='h6'>Śniadanie</Typography>
+            <ReactionRatingBar category='BREAKFAST'
+              savedReaction={userReactions.find(item => item.category === 'BREAKFAST')?.value} />
+          </div>
           <DashboardElementsColumn items={DISH_CATEGORIES['BREAKFAST']} component={DashboardProduct} />
         </div>
       }
 
       {DISH_CATEGORIES['LUNCH'].length === 0 ? null :
         <div className={classes.dishCategory}>
-          <Typography variant='h6'>Lunch</Typography>
+          <div className={classes.titleContainer}>
+            <Typography variant='h6'>Lunch</Typography>
+            <ReactionRatingBar category='LUNCH'
+              savedReaction={userReactions.find(item => item.category === 'LUNCH')?.value} />
+          </div>
           <DashboardElementsColumn items={DISH_CATEGORIES['LUNCH']} component={DashboardProduct} />
         </div>
       }
 
       {DISH_CATEGORIES['DINNER'].length === 0 ? null :
         <div className={classes.dishCategory}>
-          <Typography variant='h6'>Obiad</Typography>
+          <div className={classes.titleContainer}>
+            <Typography variant='h6'>Obiad</Typography>
+            <ReactionRatingBar category='DINNER'
+              savedReaction={userReactions.find(item => item.category === 'DINNER')?.value} />
+          </div>
           <DashboardElementsColumn items={DISH_CATEGORIES['DINNER']} component={DashboardProduct} />
         </div>
       }
 
       {DISH_CATEGORIES['SUPPER'].length === 0 ? null :
         <div className={classes.dishCategory}>
-          <Typography variant='h6'>Kolacja</Typography>
+          <div className={classes.titleContainer}>
+            <Typography variant='h6'>Kolacja</Typography>
+            <ReactionRatingBar category='SUPPER'
+              savedReaction={userReactions.find(item => item.category === 'SUPPER')?.value} />
+          </div>
           <DashboardElementsColumn items={DISH_CATEGORIES['SUPPER']} component={DashboardProduct} />
         </div>
       }
 
       {DISH_CATEGORIES['SNACK'].length === 0 ? null :
         <div className={classes.dishCategory}>
-          <Typography variant='h6'>Przekąska</Typography>
+          <div className={classes.titleContainer}>
+            <Typography variant='h6'>Przekąska</Typography>
+            <ReactionRatingBar category='SNACK'
+              savedReaction={userReactions.find(item => item.category === 'SNACK')?.value} />
+          </div>
           <DashboardElementsColumn items={DISH_CATEGORIES['SNACK']} component={DashboardProduct} />
         </div>
       }
 
       {DISH_CATEGORIES['OTHER'].length === 0 ? null :
         <div className={classes.dishCategory}>
-          <Typography variant='h6'>Inne</Typography>
+          <div className={classes.titleContainer}>
+            <Typography variant='h6'>Inne</Typography>
+            <ReactionRatingBar category='OTHER'
+              savedReaction={userReactions.find(item => item.category === 'OTHER')?.value} />
+          </div>
           <DashboardElementsColumn items={DISH_CATEGORIES['OTHER']} component={DashboardProduct} />
         </div>
       }
