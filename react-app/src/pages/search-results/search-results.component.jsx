@@ -19,7 +19,7 @@ const SearchResultsPage = (props) => {
   return (
     <MainContent>
       <h1>Wynik wyszukiwania:</h1>
-      {state === undefined ? <Skeleton /> : (<ItemsGrid items={state} />)}
+      {state === undefined ? <Skeleton /> : <ItemsGrid items={state} />}
     </MainContent>
   );
 };
