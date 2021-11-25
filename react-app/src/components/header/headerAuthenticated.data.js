@@ -8,6 +8,10 @@ export const HEADER_DATA_AUTHENTICATED = [
     href: '/dashboard',
   },
   {
+    label: 'Raport produktów problematycznych',
+    href: '/summary'
+  },
+  {
     label: 'Kalkulator BMI',
     href: '/bmicalculator',
   },
