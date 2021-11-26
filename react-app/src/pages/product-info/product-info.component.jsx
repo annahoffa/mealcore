@@ -24,7 +24,7 @@ const ProductInfoPage = (props) => {
     }, []);
 
     const sendProductToDashboard = () => {
-      apiCall(`/api/user/addProduct?productId=${productId}&quantity=${productQuantity}`, {
+      apiCall(`/api/user/addProduct?productId=${productId}&quantity=${productQuantity}&category=${productCategory || 'OTHER'}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,11 +35,22 @@ const ProductInfoPage = (props) => {
         history.push({ pathname: '/dashboard' });
       })
       .catch(error => console.log(error));
+      console.log(productCategory);
     };
 
     //--- Quantity modification dialog ---
 
+    const dishCategories = [
+      { id: 0, label: 'Śniadanie', query: 'BREAKFAST' },
+      { id: 1, label: 'Lunch', query: 'LUNCH' },
+      { id: 2, label: 'Obiad', query: 'DINNER' },
+      { id: 3, label: 'Kolacja', query: 'SUPPER' },
+      { id: 4, label: 'Przekąska', query: 'SNACK' },
+      { id: 9, label: 'Inne', query: 'OTHER' },
+    ];
+
     const [productQuantity, setProductQuantity] = useState('');
+    const [productCategory, setProductCategory] = useState(dishCategories[6]);
 
     const handleChange = (event) => {
       setProductQuantity(event.target.value);
@@ -58,6 +69,9 @@ const ProductInfoPage = (props) => {
     const quantityProps = {
       productQuantity,
       setProductQuantity,
+      dishCategories,
+      productCategory,
+      setProductCategory,
       open,
       openQuantityDialog,
       closeQuantityDialog,
