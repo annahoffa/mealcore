@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, InputAdornment, TextField } from '@material-ui/core';
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const DefineProductQuantity = ({ quantityProps, apiCall }) => (
@@ -22,6 +23,18 @@ const DefineProductQuantity = ({ quantityProps, apiCall }) => (
         }}
         margin='dense'
         fullWidth
+      />
+      <Autocomplete
+        value={quantityProps.productCategory}
+        onChange={(event, newValue) => {
+          quantityProps.setProductCategory(newValue?.query);
+        }}
+        id='select-dish-category'
+        sx={{ width: 300 }}
+        options={quantityProps.dishCategories}
+        getOptionLabel={(option) => option.label}
+        noOptionsText='Nie znaleziono'
+        renderInput={(params) => <TextField {...params} label='Wybierz kategorię posiłku...' />}
       />
     </DialogContent>
     <DialogActions>
