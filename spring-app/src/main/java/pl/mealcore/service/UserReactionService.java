@@ -10,9 +10,7 @@ import java.util.List;
 
 public interface UserReactionService {
 
-    boolean addUserReaction(@NonNull User user, @NonNull ProductCategory category, @NonNull Integer value, Date date);
-
-    boolean editUserReaction(@NonNull User user, @NonNull ProductCategory category, @NonNull Integer value, Date date);
+    void addEditUserReaction(@NonNull User user, @NonNull ProductCategory category, @NonNull Integer value, Date date);
 
     List<UserReaction> getReactions(@NonNull User user, Date date);
 }

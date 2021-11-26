@@ -50,8 +50,7 @@ const ReactionRatingBar = ({ category, savedReaction }) => {
   useEffect(() => (sendReaction(category, value)), [value]);
 
   const sendReaction = (category, value) => {
-    //TODO: change POST to PUT for all reactions (new & modified)
-    apiCall(`/api/user/addReaction?category=${category}&value=${value}`, {
+    apiCall(`/api/user/addEditReaction?category=${category}&value=${value}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
