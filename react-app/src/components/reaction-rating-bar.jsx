@@ -45,8 +45,6 @@ IconContainer.propTypes = {
 
 const ReactionRatingBar = ({ category, savedReaction }) => {
   const [value, setValue] = React.useState(savedReaction);
-  console.log('saved reaction');
-  console.log(savedReaction);
   useEffect(() => (sendReaction(category, value)), [value]);
 
   const sendReaction = (category, value) => {
@@ -62,6 +60,8 @@ const ReactionRatingBar = ({ category, savedReaction }) => {
   return (
     <Rating
       value={value}
+      max={5}
+      name='reaction-rating'
       onChange={(event, newValue) => {
         setValue(newValue);
       }}

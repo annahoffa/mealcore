@@ -6,6 +6,7 @@ import { CssBaseline, makeStyles } from '@material-ui/core';
 import Header from './components/header/header.component';
 import BMICalculatorPage from './pages/BMI-calculator/BMI-calculator.component';
 import DashboardPage from './pages/dashboard/dashboard.component';
+import ProblematicProductsSummaryPage from './pages/problematic-products-summary/problematic-products-summary';
 import Homepage from './pages/homepage/homepage.component';
 import ProductSearchPage from './pages/product-search/product-search.component';
 import SearchResultsPage from './pages/search-results/search-results.component';
@@ -59,6 +60,7 @@ const App = () => {
 
           {/* Authenticated-only pages: */}
           <Route path='/dashboard' component={DashboardPage} />
+          <Route path='/summary' component={ProblematicProductsSummaryPage} />
           <Route exact path='/myaccount' component={MyAccountPage} />
           <Route exact path='/logout' component={LogOutPage} />
 

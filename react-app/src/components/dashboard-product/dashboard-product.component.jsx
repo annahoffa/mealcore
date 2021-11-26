@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
 
 import { Typography } from '@material-ui/core';
@@ -61,15 +62,19 @@ const DashboardProduct = ({ item: product }) => {
     openQuantityDialog,
     closeQuantityDialog,
     handleChange,
-  }
+  };
   //------------------------------------
 
 
   return (
-    <div className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''}`}>
+    // TODO: Adjust for products which have both allergen warnings and reaction warnings
+
+    <div className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''} ${!product.allergenWarning && product.badReaction ? 'dashboard-product-with-reaction-warning' : ''}`}>
       <div className='product-title'>
         <Typography noWrap>
-          {product.name} ({product.addedQuantity} g)
+          <Link className='product-link' to={{ pathname: `/productinfo/${product.id}` }}>
+            {product.name} ({product.addedQuantity} g)
+          </Link>
         </Typography>
         <div className='icons'>
           <IconButton onClick={openQuantityDialog} title='Zmień ilość'
@@ -94,7 +99,7 @@ const DashboardProduct = ({ item: product }) => {
         <li>{product.nutrients?.fiber || '\u2014'}</li>
       </ul>
       <div className='quantity'>
-        <span>Ilość: {product.addedQuantity + " g" || '\u003F'}</span>
+        <span>Ilość: {product.addedQuantity + ' g' || '\u003F'}</span>
       </div>
     </div>
   );
