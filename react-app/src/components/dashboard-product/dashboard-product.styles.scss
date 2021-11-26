@@ -9,6 +9,14 @@
         display: flex;
         justify-content: space-between;
         align-items: baseline;
+
+        .product-link {
+            text-decoration: none;
+
+            &:hover {
+                color: #3976bb;
+            }
+        }
     }
 
     .nutrients {
