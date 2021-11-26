@@ -12,7 +12,8 @@ const ItemsGrid = ({ items }) => {
   const getGridItems = (items) => (
     items.map((item) => (
         <Grid item xs={12} id={item.id}>
-          <Link className={`grid-link ${item.allergenWarning ? 'grid-link-with-warning' : ''}`} to={{ pathname: `/productinfo/${item.id}` }}>
+          {/*TODO: Adjust for products which have both allergen warnings and reaction warnings*/}
+          <Link className={`grid-link ${item.allergenWarning ? 'grid-link-with-warning' : ''} ${!item.allergenWarning && item.badReaction ? 'grid-link-with-bad-reaction' : ''}`} to={{ pathname: `/productinfo/${item.id}` }}>
             <div className='grid-item'>
               <div className='image-container'>
                 <img src={item.images.find(obj => obj.url)?.url ?? ''} alt='Product' />

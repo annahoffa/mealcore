@@ -66,7 +66,8 @@ const DashboardProduct = ({ item: product }) => {
 
 
   return (
-    <div className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''}`}>
+    // TODO: Adjust for products which have both allergen warnings and reaction warnings
+    <div className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''} ${!product.allergenWarning && product.badReaction ? 'dashboard-product-with-reaction-warning' : ''}`}>
       <div className='product-title'>
         <Typography noWrap>
           {product.name} ({product.addedQuantity} g)
