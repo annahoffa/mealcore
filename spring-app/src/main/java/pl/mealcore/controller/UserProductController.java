@@ -58,7 +58,7 @@ public class UserProductController {
     @PutMapping("/editProduct")
     ResponseEntity<BasicResponse> editProduct(@RequestParam(name = "productId") Long productId,
                                               @RequestParam(name = "quantity") Integer quantity,
-                                              @RequestParam(name = "category", required = false) ProductCategory category,
+                                              @RequestParam(name = "category") ProductCategory category,
                                               @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
@@ -87,6 +87,7 @@ public class UserProductController {
     @ResponseBody
     @DeleteMapping("/removeProduct")
     ResponseEntity<BasicResponse> removeProduct(@RequestParam(name = "productId") Long productId,
+                                                @RequestParam(name = "category") ProductCategory category,
                                                 @RequestParam(name = "date", required = false) String date) {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
@@ -94,7 +95,7 @@ public class UserProductController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
         if (isAuthenticated(auth, user)) {
-            userProductService.deleteUserProduct(user, productId, DateHelper.parse(date));
+            userProductService.deleteUserProduct(user, productId, category, DateHelper.parse(date));
             log.info("SUCCESSFUL deleted product '{}' from user '{}' ", productId, user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {

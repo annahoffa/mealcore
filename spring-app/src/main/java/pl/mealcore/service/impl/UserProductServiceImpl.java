@@ -35,7 +35,7 @@ public class UserProductServiceImpl implements UserProductService {
     @Override
     public void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date, ProductCategory category) {
         date = DateHelper.getDateWithoutTime(date, new Date());
-        UserProduct toSave = userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, date)
+        UserProduct toSave = userProductRepository.findByUserIdAndProductIdAndDateAndCategory(user.getId(), productId, date, category)
                 .map(UserProduct::new)
                 .orElse(new UserProduct(user, new Product(productId), date, 0, isNull(category) ? ProductCategory.OTHER : category));
         toSave.addQuantity(quantity);
@@ -45,7 +45,7 @@ public class UserProductServiceImpl implements UserProductService {
     @Override
     public boolean editUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date, ProductCategory category) {
         date = DateHelper.getDateWithoutTime(date, new Date());
-        UserProductEntity userProduct = userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, date).orElse(null);
+        UserProductEntity userProduct = userProductRepository.findByUserIdAndProductIdAndDateAndCategory(user.getId(), productId, date, category).orElse(null);
         if (nonNull(userProduct)) {
             userProduct.setQuantity(quantity);
             userProduct.setCategory(isNull(category) ? ProductCategory.OTHER : category);
@@ -56,8 +56,8 @@ public class UserProductServiceImpl implements UserProductService {
     }
 
     @Override
-    public void deleteUserProduct(User user, Long productId, Date date) {
-        userProductRepository.findByUserIdAndProductIdAndDate(user.getId(), productId, DateHelper.getDateWithoutTime(date, new Date()))
+    public void deleteUserProduct(User user, Long productId, ProductCategory category, Date date) {
+        userProductRepository.findByUserIdAndProductIdAndDateAndCategory(user.getId(), productId, DateHelper.getDateWithoutTime(date, new Date()), category)
                 .ifPresent(userProductRepository::delete);
     }
 
@@ -91,21 +91,22 @@ public class UserProductServiceImpl implements UserProductService {
 
     @Override
     public void checkWarningsAndReactions(User user, Product product) {
-        if (isNull(product) || isNull(product.getIngredients()))
+        if (isNull(product) || isNull(user))
             return;
-        if (nonNull(user)) {
+        if (nonNull(product.getIngredients())) {
             for (String allergen : user.getAllergens()) {
                 if (StringUtils.containsIgnoreCase(product.getIngredients().getIngredientsText(), allergen)) {
                     product.setAllergenWarning(true);
                     break;
                 }
             }
-            ReactionValue reaction = getReactionForProduct(user, product.getId());
-            if (ReactionValue.GOOD.equals(reaction))
-                product.setGoodReaction(true);
-            if (ReactionValue.BAD.equals(reaction))
-                product.setBadReaction(true);
         }
+        ReactionValue reaction = getReactionForProduct(user, product.getId());
+        if (ReactionValue.GOOD.equals(reaction))
+            product.setGoodReaction(true);
+        if (ReactionValue.BAD.equals(reaction))
+            product.setBadReaction(true);
+
     }
 
     private List<Product> getProductsForReaction(UserReactionEntity reaction) {

@@ -17,5 +17,5 @@ public interface UserProductRepository extends JpaRepository<UserProductEntity, 
 
     List<UserProductEntity> findAllByUserIdAndDateAndCategory(Long userId, Date date, ProductCategory category);
 
-    Optional<UserProductEntity> findByUserIdAndProductIdAndDate(Long userId, Long productId, Date date);
+    Optional<UserProductEntity> findByUserIdAndProductIdAndDateAndCategory(Long userId, Long productId, Date date, ProductCategory category);
 }

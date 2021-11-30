@@ -13,9 +13,9 @@ public interface UserProductService {
 
     void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date, ProductCategory category);
 
-    boolean editUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date, ProductCategory category);
+    boolean editUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date, @NonNull ProductCategory category);
 
-    void deleteUserProduct(@NonNull User user, @NonNull Long productId, Date date);
+    void deleteUserProduct(@NonNull User user, @NonNull Long productId, ProductCategory category, Date date);
 
     UserProductsResponse getProblematicProductsForUser(User user);
 
