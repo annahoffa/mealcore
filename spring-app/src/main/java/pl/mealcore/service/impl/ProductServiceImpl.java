@@ -14,17 +14,18 @@ import pl.mealcore.helper.DateHelper;
 import pl.mealcore.helper.NumberHelper;
 import pl.mealcore.model.product.ProductEntity;
 import pl.mealcore.model.user.additionalData.UserProductEntity;
-import pl.mealcore.service.AdditionService;
-import pl.mealcore.service.ProductService;
-import pl.mealcore.service.UserExerciseService;
-import pl.mealcore.service.UserProductService;
+import pl.mealcore.service.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
+import static pl.mealcore.helper.AuthenticationHelper.getLoggedUserLogin;
+import static pl.mealcore.helper.AuthenticationHelper.isAdmin;
+import static pl.mealcore.helper.CollectionsHelper.distinctById;
 
 @Slf4j
 @Service
@@ -40,24 +41,25 @@ public class ProductServiceImpl implements ProductService {
     private final ImageRepository imageRepository;
     private final AdditionService additionService;
     private final UserProductService userProductService;
+    private final UserService userService;
     private final UserExerciseService userExerciseService;
 
     @Override
     public List<Product> getSuggestionsByName(User user, String text, int page) {
-        List<Product> suggestions = productRepository.findAllByNameIgnoreCase(text).stream()
+        List<Product> suggestions = productRepository.findAllByNameIgnoreCaseAndApprovedIsTrue(text).stream()
                 .map(this::createBaseProduct)
                 .collect(Collectors.toList());
-        productRepository.findAllByNameStartsWith(text).stream()
+        productRepository.findAllByNameStartsWithAndApprovedIsTrue(text).stream()
                 .map(this::createBaseProduct)
                 .forEach(suggestions::add);
-        productRepository.findAllByNameContains(" " + text + " ").stream()
+        productRepository.findAllByNameContainsAndApprovedIsTrue(" " + text + " ").stream()
                 .map(this::createBaseProduct)
                 .forEach(suggestions::add);
-        productRepository.findAllByNameContains(text).stream()
+        productRepository.findAllByNameContainsAndApprovedIsTrue(text).stream()
                 .map(this::createBaseProduct)
                 .forEach(suggestions::add);
         return suggestions.stream()
-                .distinct()
+                .filter(distinctById())
                 .skip((long) PAGE_SIZE * page)
                 .limit(PAGE_SIZE)
                 .peek(product -> userProductService.checkWarningsAndReactions(user, product))
@@ -66,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProduct(User user, Long id) {
-        Product product = productRepository.findById(id)
+        Product product = productRepository.findByIdAndApprovedIsTrue(id)
                 .map(this::createBaseProduct)
                 .orElse(null);
         completeProduct(user, product);
@@ -121,9 +123,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean addProduct(Product product) {
+    public boolean addProduct(Product product, User user) {
         try {
             if (nonNull(product) && nonNull(product.getName())) {
+                product.setInsertDate(new Date());
+                product.setInsertBy(user);
+                product.setApproved(false);
+                if (isAdmin()) {
+                    product.setApproved(true);
+                    product.setApprovedBy(user);
+                    product.setApprovedDate(new Date());
+                }
                 Ingredients ingredients = product.getIngredients();
                 Nutrients nutrients = product.getNutrients();
                 List<Image> images = product.getImages();
@@ -132,11 +142,11 @@ public class ProductServiceImpl implements ProductService {
                     ingredients.setProductId(savedId);
                     ingredientsRepository.save(ingredients.toEntity());
                 }
-                if (nonNull(ingredients)) {
+                if (nonNull(nutrients)) {
                     nutrients.setProductId(savedId);
                     nutrientsRepository.save(nutrients.toEntity());
                 }
-                if (nonNull(ingredients)) {
+                if (nonNull(images)) {
                     images.forEach(i -> i.setProductId(savedId));
                     imageRepository.saveAll(
                             images.stream()
@@ -150,6 +160,39 @@ public class ProductServiceImpl implements ProductService {
             log.error("Adding product broke by: ", e);
             return false;
         }
+    }
+
+    @Override
+    public List<Product> getUnapprovedProducts() {
+        if (isAdmin())
+            return productRepository.findAllByApprovedIsFalse().stream()
+                    .map(this::createBaseProduct)
+                    .peek(p -> completeProduct(null, p))
+                    .collect(Collectors.toList());
+        else
+            return Collections.emptyList();
+    }
+
+    @Override
+    public void approveProduct(Long productId) {
+        if (isAdmin()) {
+            productRepository.findById(productId)
+                    .ifPresent(productEntity -> {
+                        Product product = new Product(productEntity);
+                        product.setApproved(true);
+                        product.setApprovedBy(userService.getByLogin(getLoggedUserLogin()));
+                        product.setApprovedDate(new Date());
+                        productRepository.save(product.toEntity());
+                    });
+        }
+    }
+
+    @Override
+    public void dismissProduct(Long productId) {
+        if (isAdmin() && !productRepository.findById(productId)
+                .map(ProductEntity::isApproved)
+                .orElse(true))
+            productRepository.deleteById(productId);
     }
 
     //  PRIVS

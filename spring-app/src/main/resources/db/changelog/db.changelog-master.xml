@@ -158,4 +158,29 @@
             <column name="exercise_type" value="0"/>
         </insert>
     </changeSet>
+    <changeSet id="userProductSuggestions_01" author="ls">
+        <addColumn tableName="products_1">
+            <column name="approved" type="bit" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inserted_date" type="datetime"/>
+            <column name="inserted_by_id" type="bigint(20)">
+                <constraints nullable="true"
+                             foreignKeyName="fk_6_1_1"
+                             referencedTableName="users_6"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="approved_date" type="datetime"/>
+            <column name="approved_by_id" type="bigint(20)">
+                <constraints nullable="true"
+                             foreignKeyName="fk_6_1_2"
+                             referencedTableName="users_6"
+                             referencedColumnNames="id"/>
+            </column>
+        </addColumn>
+        <update tableName="products_1">
+            <column name="approved" valueBoolean="true"/>
+        </update>
+    </changeSet>
+
 </databaseChangeLog>

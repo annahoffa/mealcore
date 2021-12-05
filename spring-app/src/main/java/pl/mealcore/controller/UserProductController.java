@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.mealcore.annotations.RestApiController;
 import pl.mealcore.dto.account.User;
@@ -19,6 +17,7 @@ import pl.mealcore.service.UserService;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static pl.mealcore.helper.AuthenticationHelper.getLoggedUserLogin;
 import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
 
 @Slf4j
@@ -42,9 +41,8 @@ public class UserProductController {
             log.info("FAILED addProduct, invalid quantity: '{}'", quantity);
             return new ResponseEntity<>(response.withMessage("Ilość musi być liczbą z zakresu od 1 do 15000"), HttpStatus.BAD_REQUEST);
         }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             userProductService.addUserProduct(user, productId, quantity, DateHelper.parse(date), category);
             log.info("SUCCESSFUL add product '{}' to user '{}' ", productId, user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -67,9 +65,8 @@ public class UserProductController {
             log.info("FAILED editProduct, invalid quantity: '{}'", quantity);
             return new ResponseEntity<>(response.withMessage("Ilość musi być liczbą z zakresu od 1 do 15000"), HttpStatus.BAD_REQUEST);
         }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             if (userProductService.editUserProduct(user, productId, quantity, DateHelper.parse(date), category)) {
                 log.info("SUCCESSFUL edit product '{}' for user '{}' and date '{}'", productId, user.getLogin(), date);
                 return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -92,9 +89,8 @@ public class UserProductController {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             userProductService.deleteUserProduct(user, productId, category, DateHelper.parse(date));
             log.info("SUCCESSFUL deleted product '{}' from user '{}' ", productId, user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -107,9 +103,8 @@ public class UserProductController {
     @ResponseBody
     @GetMapping("/getUserProducts")
     ResponseEntity<UserProductsResponse> getUserProducts(@RequestParam(name = "date", required = false) String date) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             UserProductsResponse response = productService.getProductsWithNutrientsForUser(user, DateHelper.parse(date));
             log.info("SUCCESSFUL get '{}' products", user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -122,9 +117,8 @@ public class UserProductController {
     @ResponseBody
     @GetMapping("/getProblematicProducts")
     ResponseEntity<UserProductsResponse> getProblematicProducts() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             UserProductsResponse response = userProductService.getProblematicProductsForUser(user);
             log.info("SUCCESSFUL get '{}' products", user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);

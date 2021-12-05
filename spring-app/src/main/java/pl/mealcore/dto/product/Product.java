@@ -4,11 +4,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.mealcore.dto.BaseDto;
+import pl.mealcore.dto.account.User;
 import pl.mealcore.model.product.ImageEntity;
 import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.model.product.ProductEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,11 @@ public class Product extends BaseDto<ProductEntity> {
     private Nutrients nutrients;
     private Ingredients ingredients;
     private List<Image> images = new ArrayList<>();
+    private boolean approved;
+    private Date insertDate;
+    private User insertBy;
+    private Date approvedDate;
+    private User approvedBy;
 
     private boolean allergenWarning = false;
     private boolean badReaction = false;
@@ -48,6 +56,11 @@ public class Product extends BaseDto<ProductEntity> {
         this.images = entity.getImages().stream()
                 .map(i -> createDto(Image::new, i))
                 .collect(Collectors.toList());
+        this.approved = entity.isApproved();
+        this.insertDate = entity.getInserted_date();
+        this.insertBy = createDto(User::new, entity.getInserted_by());
+        this.approvedDate = entity.getApproved_date();
+        this.approvedBy = createDto(User::new, entity.getApproved_by());
     }
 
     public Product(Long id) {
@@ -69,6 +82,11 @@ public class Product extends BaseDto<ProductEntity> {
         entity.setImages(this.images.stream()
                 .map(i -> createEntityReference(ImageEntity.class, i))
                 .collect(Collectors.toList()));
+        entity.setApproved(this.approved);
+        entity.setInserted_date(this.insertDate);
+        entity.setInserted_by(createEntityReference(UserEntity.class, this.insertBy));
+        entity.setApproved_date(this.approvedDate);
+        entity.setApproved_by(createEntityReference(UserEntity.class, this.approvedBy));
         return entity;
     }
 }

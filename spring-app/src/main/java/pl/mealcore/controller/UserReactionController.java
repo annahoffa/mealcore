@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +21,7 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static pl.mealcore.helper.AuthenticationHelper.getLoggedUserLogin;
 import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
 
 @Slf4j
@@ -42,9 +41,8 @@ public class UserReactionController {
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
         if (value < 1 || value > 5)
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy zakres wartości"), HttpStatus.BAD_REQUEST);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             userReactionService.addEditUserReaction(user, category, value, DateHelper.parse(date));
             log.info("SUCCESSFUL add/edit Reaction for user '{}' ", user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -57,9 +55,8 @@ public class UserReactionController {
     @ResponseBody
     @GetMapping("/getReactions")
     ResponseEntity<List<UserReaction>> getReaction(@RequestParam(name = "date", required = false) String date) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             List<UserReaction> reactions = userReactionService.getReactions(user, DateHelper.parse(date));
 
             log.info("SUCCESSFUL get Reaction '{}'", user.getLogin());

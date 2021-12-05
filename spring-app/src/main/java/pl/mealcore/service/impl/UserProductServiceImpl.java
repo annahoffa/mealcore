@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static pl.mealcore.helper.CollectionsHelper.distinctById;
 
 @Service
 @Transactional
@@ -65,8 +66,8 @@ public class UserProductServiceImpl implements UserProductService {
     public UserProductsResponse getProblematicProductsForUser(User user) {
         return new UserProductsResponse(userProductRepository.findAllByUserId(user.getId()).stream()
                 .map(UserProductEntity::getProduct)
-                .distinct()
                 .map(Product::new)
+                .filter(distinctById())
                 .filter(product -> ReactionValue.BAD.equals(getReactionForProduct(user, product.getId())))
                 .collect(Collectors.toList()));
     }

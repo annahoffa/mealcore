@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.mealcore.annotations.RestApiController;
 import pl.mealcore.dto.account.User;
@@ -18,7 +16,7 @@ import pl.mealcore.service.UserService;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
+import static pl.mealcore.helper.AuthenticationHelper.getLoggedUserLogin;
 import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
 
 @Slf4j
@@ -31,9 +29,8 @@ public class UserAllergicReactionController {
     @ResponseBody
     @PutMapping("/editAllergySymptoms")
     ResponseEntity<Void> editAllergicReaction(@RequestBody AllergySymptomsList allergySymptomsList) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             userAllergicReactionService.updateAllergySymptoms(allergySymptomsList.getSymptomIds(), allergySymptomsList.getDate(), user);
             log.info("SUCCESSFUL add AllergicSymptoms to user '{}' ", user.getLogin());
             return ResponseEntity.ok().build();
@@ -46,9 +43,8 @@ public class UserAllergicReactionController {
     @ResponseBody
     @GetMapping("/getUserAllergicReaction")
     ResponseEntity<List<AllergicReaction>> getUserAllergicReaction(@RequestParam(name = "date", required = false) String date) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             log.info("SUCCESSFUL get '{}' AllergicReaction", user.getLogin());
             List<AllergicReaction> allergicReactions = userAllergicReactionService.getAllergicReactionsForUser(user, DateHelper.parse(date));
             if (isNull(allergicReactions))

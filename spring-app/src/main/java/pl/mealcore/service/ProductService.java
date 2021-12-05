@@ -19,5 +19,11 @@ public interface ProductService {
 
     UserProductsResponse getProductsWithNutrientsForUser(User user, Date parse);
 
-    boolean addProduct(Product product);
+    boolean addProduct(Product product, User user);
+
+    List<Product> getUnapprovedProducts();
+
+    void approveProduct(Long productId);
+
+    void dismissProduct(Long productId);
 }

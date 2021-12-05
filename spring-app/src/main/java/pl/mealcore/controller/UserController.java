@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
+import static pl.mealcore.helper.AuthenticationHelper.getLoggedUserLogin;
 import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
 
 @Slf4j
@@ -65,9 +66,8 @@ public class UserController {
     @ResponseBody
     @GetMapping("/getPersonalData")
     ResponseEntity<UserDataResponse> getPersonalData() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             log.info("SUCCESSFUL get personal data for user '{}'", user.getLogin());
             return new ResponseEntity<>(new UserDataResponse(user).withSuccess(true), HttpStatus.OK);
         } else {
@@ -84,7 +84,7 @@ public class UserController {
         String login = Optional.ofNullable(auth)
                 .map(Authentication::getName)
                 .orElse(null);
-        if (isAuthenticated(auth, login)) {
+        if (isAuthenticated()) {
             log.info("SUCCESSFUL get login, for user '{}'", login);
             return new ResponseEntity<>(response.withSuccess(true).withMessage(login), HttpStatus.OK);
         } else {
@@ -96,15 +96,14 @@ public class UserController {
     @ResponseBody
     @GetMapping("/getNutritionalRequirements")
     ResponseEntity<NutritionalRequirementsResponse> getNutritionalRequirements() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             NutritionalRequirementsResponse nutritionalRequirements = calculatorNutritionalRequirementsHandler.calculate(user);
             if (nutritionalRequirements.isSuccess()) {
-                log.info("SUCCESSFUL get nutritional requirements, for user '{}'", auth.getName());
+                log.info("SUCCESSFUL get nutritional requirements, for user '{}'", user.getLogin());
                 return new ResponseEntity<>(nutritionalRequirements, HttpStatus.OK);
             } else {
-                log.info("FAILED get nutritional requirements, user some required data is empty for user: '{}'", auth.getName());
+                log.info("FAILED get nutritional requirements, user some required data is empty for user: '{}'", user.getLogin());
                 return new ResponseEntity<>(nutritionalRequirements, HttpStatus.BAD_REQUEST);
             }
         } else {
@@ -180,7 +179,7 @@ public class UserController {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-            if (isAuthenticated(auth, user)) {
+            if (isAuthenticated()) {
                 userService.changeUserData(user, userDataRequest);
                 log.info("SUCCESSFUL changed personal data, for user '{}'", auth.getName());
                 return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);

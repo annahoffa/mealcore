@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface AdditionService {
     List<Addition> extractAdditivesFromString(String additivesString);
+
+    List<Addition> getAll();
 }

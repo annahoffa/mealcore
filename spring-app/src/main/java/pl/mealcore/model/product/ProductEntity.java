@@ -4,8 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import pl.mealcore.model.BaseEntity;
+import pl.mealcore.model.user.basicData.UserEntity;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -24,6 +26,11 @@ public class ProductEntity extends BaseEntity {
     private String emb_codes_tags;
     private String quantity;
     private List<ImageEntity> images;
+    private boolean approved;
+    private Date inserted_date;
+    private UserEntity inserted_by;
+    private Date approved_date;
+    private UserEntity approved_by;
 
     @Id
     @Override
@@ -40,5 +47,15 @@ public class ProductEntity extends BaseEntity {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     public List<ImageEntity> getImages() {
         return images;
+    }
+
+    @ManyToOne
+    public UserEntity getInserted_by() {
+        return inserted_by;
+    }
+
+    @ManyToOne
+    public UserEntity getApproved_by() {
+        return approved_by;
     }
 }

@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.mealcore.annotations.RestApiController;
 import pl.mealcore.dto.account.User;
@@ -17,6 +15,7 @@ import pl.mealcore.service.UserService;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static pl.mealcore.helper.AuthenticationHelper.getLoggedUserLogin;
 import static pl.mealcore.helper.AuthenticationHelper.isAuthenticated;
 
 @Slf4j
@@ -33,9 +32,8 @@ public class UserNoteController {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             if (userNoteService.addUserNote(user, note, DateHelper.parse(date))) {
                 log.info("SUCCESSFUL add note for user '{}' ", user.getLogin());
                 return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -57,9 +55,8 @@ public class UserNoteController {
         BasicResponse response = new BasicResponse().withSuccess(false);
         if (nonNull(date) && isNull(DateHelper.parse(date)))
             return new ResponseEntity<>(response.withMessage("Nieprawidłowy format daty"), HttpStatus.BAD_REQUEST);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             if (userNoteService.editUserNote(user, note, DateHelper.parse(date))) {
                 log.info("SUCCESSFUL edit note for user '{}' ", user.getLogin());
                 return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -77,9 +74,8 @@ public class UserNoteController {
     @ResponseBody
     @GetMapping("/getNote")
     ResponseEntity<UserNote> getNote(@RequestParam(name = "date", required = false) String date) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
-        if (isAuthenticated(auth, user)) {
+        User user = userService.getByLogin(getLoggedUserLogin());
+        if (isAuthenticated()) {
             UserNote note = userNoteService.getNote(user, DateHelper.parse(date));
             if (nonNull(note)) {
                 log.info("SUCCESSFUL get note '{}'", user.getLogin());

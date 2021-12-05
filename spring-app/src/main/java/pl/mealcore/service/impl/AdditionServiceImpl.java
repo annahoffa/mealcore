@@ -8,6 +8,7 @@ import pl.mealcore.service.AdditionService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
@@ -28,5 +29,12 @@ public class AdditionServiceImpl implements AdditionService {
                         .map(Addition::new)
                         .orElse(new Addition(name, NO_INFORMATION_MESSAGE)));
         return result;
+    }
+
+    @Override
+    public List<Addition> getAll() {
+        return additivesRepository.findAll().stream()
+                .map(Addition::new)
+                .collect(Collectors.toList());
     }
 }
