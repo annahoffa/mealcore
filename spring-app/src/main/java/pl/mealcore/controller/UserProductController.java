@@ -41,8 +41,8 @@ public class UserProductController {
             log.info("FAILED addProduct, invalid quantity: '{}'", quantity);
             return new ResponseEntity<>(response.withMessage("Ilość musi być liczbą z zakresu od 1 do 15000"), HttpStatus.BAD_REQUEST);
         }
-        User user = userService.getByLogin(getLoggedUserLogin());
         if (isAuthenticated()) {
+            User user = userService.getByLogin(getLoggedUserLogin());
             userProductService.addUserProduct(user, productId, quantity, DateHelper.parse(date), category);
             log.info("SUCCESSFUL add product '{}' to user '{}' ", productId, user.getLogin());
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -65,8 +65,8 @@ public class UserProductController {
             log.info("FAILED editProduct, invalid quantity: '{}'", quantity);
             return new ResponseEntity<>(response.withMessage("Ilość musi być liczbą z zakresu od 1 do 15000"), HttpStatus.BAD_REQUEST);
         }
-        User user = userService.getByLogin(getLoggedUserLogin());
         if (isAuthenticated()) {
+            User user = userService.getByLogin(getLoggedUserLogin());
             if (userProductService.editUserProduct(user, productId, quantity, DateHelper.parse(date), category)) {
                 log.info("SUCCESSFUL edit product '{}' for user '{}' and date '{}'", productId, user.getLogin(), date);
                 return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -77,6 +77,34 @@ public class UserProductController {
         } else {
             log.info("FAILED editProduct, no user in session");
             return new ResponseEntity<>(response.withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/getUserProducts")
+    ResponseEntity<UserProductsResponse> getUserProducts(@RequestParam(name = "date", required = false) String date) {
+        if (isAuthenticated()) {
+            User user = userService.getByLogin(getLoggedUserLogin());
+            UserProductsResponse response = productService.getProductsWithNutrientsForUser(user, DateHelper.parse(date));
+            log.info("SUCCESSFUL get '{}' products", user.getLogin());
+            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
+        } else {
+            log.info("FAILED getUserProducts, no user in session");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/getProblematicProducts")
+    ResponseEntity<UserProductsResponse> getProblematicProducts() {
+        if (isAuthenticated()) {
+            User user = userService.getByLogin(getLoggedUserLogin());
+            UserProductsResponse response = userProductService.getProblematicProductsForUser(user);
+            log.info("SUCCESSFUL get '{}' products", user.getLogin());
+            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
+        } else {
+            log.info("FAILED getUserProducts, no user in session");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -97,34 +125,6 @@ public class UserProductController {
         } else {
             log.info("FAILED addProduct, no user in session");
             return new ResponseEntity<>(response.withMessage("Nie znaleziono zalogowanego użytkownika."), HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @ResponseBody
-    @GetMapping("/getUserProducts")
-    ResponseEntity<UserProductsResponse> getUserProducts(@RequestParam(name = "date", required = false) String date) {
-        User user = userService.getByLogin(getLoggedUserLogin());
-        if (isAuthenticated()) {
-            UserProductsResponse response = productService.getProductsWithNutrientsForUser(user, DateHelper.parse(date));
-            log.info("SUCCESSFUL get '{}' products", user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED getUserProducts, no user in session");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @ResponseBody
-    @GetMapping("/getProblematicProducts")
-    ResponseEntity<UserProductsResponse> getProblematicProducts() {
-        User user = userService.getByLogin(getLoggedUserLogin());
-        if (isAuthenticated()) {
-            UserProductsResponse response = userProductService.getProblematicProductsForUser(user);
-            log.info("SUCCESSFUL get '{}' products", user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED getUserProducts, no user in session");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

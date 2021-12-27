@@ -9,6 +9,7 @@ import pl.mealcore.annotations.RestApiController;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.product.Addition;
 import pl.mealcore.dto.product.Product;
+import pl.mealcore.dto.product.ProductSortType;
 import pl.mealcore.dto.product.wrapper.ProductPL;
 import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.service.AdditionService;
@@ -30,19 +31,24 @@ public class ProductController {
     private final UserService userService;
 
     @ResponseBody
-    @GetMapping("/suggestions/{name}")
-    ResponseEntity<List<Product>> suggestions(@PathVariable String name, @RequestParam(name = "page", required = false, defaultValue = "0") int page) {
-        if (name.length() >= 2) {
+    @GetMapping("/suggestions")
+    ResponseEntity<List<Product>> suggestions(@RequestParam String query,
+                                              @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                                              @RequestParam(name = "kcalFrom", required = false) int kcalFrom,
+                                              @RequestParam(name = "kcalTo", required = false) int kcalTo,
+                                              @RequestParam(name = "make", required = false) String makeQuery,
+                                              @RequestParam(name = "sortBy", required = false) ProductSortType sortType) {
+        if (query.length() >= 2) {
             User user = userService.getByLogin(getLoggedUserLogin());
-            List<Product> suggestions = productService.getSuggestionsByName(user, name, page);
+            List<Product> suggestions = productService.getSuggestionsByName(user, query, page);
             if (suggestions.isEmpty()) {
-                log.info("FAILED products suggestions, no product was found for query: '{}'", name);
+                log.info("FAILED products suggestions, no product was found for query: '{}'", query);
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            log.info("SUCCESS products suggestions, query: '{}'", name);
+            log.info("SUCCESS products suggestions, query: '{}'", query);
             return new ResponseEntity<>(suggestions, HttpStatus.OK);
         }
-        log.info("FAILED products suggestions, query is to short: '{}'", name);
+        log.info("FAILED products suggestions, query is to short: '{}'", query);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 

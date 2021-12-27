@@ -11,7 +11,7 @@ const SearchResultsPage = (props) => {
   const [state, setState] = useState();
 
   useEffect(() => {
-    apiCall(`/api/products/suggestions/${userQuery}`)
+    apiCall(`/api/products/suggestions?query=${userQuery}`)
     .then(data => setState(data))
     .catch(error => console.log(error));
   }, []);

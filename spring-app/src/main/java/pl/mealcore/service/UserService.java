@@ -3,7 +3,11 @@ package pl.mealcore.service;
 import javassist.tools.web.BadHttpRequest;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.request.UserDataRequest;
+import pl.mealcore.dto.statistic.StatisticNutrients;
 import pl.mealcore.error.*;
+
+import java.util.Date;
+import java.util.List;
 
 public interface UserService {
     User save(User user, boolean hashPassword);
@@ -19,4 +23,6 @@ public interface UserService {
     void changeUserLogin(User user, String newLogin, String password) throws BadSessionException, UserWrongPasswordException, UserInvalidCredentialsException, UserAlreadyExistException;
 
     void changeUserData(User user, UserDataRequest request) throws BadHttpRequest;
+
+    List<StatisticNutrients> getStatistics(User user, Date fromDate, Date toDate);
 }
