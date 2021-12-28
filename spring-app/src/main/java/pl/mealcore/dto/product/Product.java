@@ -5,9 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.mealcore.dto.BaseDto;
 import pl.mealcore.dto.account.User;
-import pl.mealcore.model.product.ImageEntity;
-import pl.mealcore.model.product.ProductCategory;
-import pl.mealcore.model.product.ProductEntity;
+import pl.mealcore.model.product.*;
 import pl.mealcore.model.user.basicData.UserEntity;
 
 import java.util.ArrayList;
@@ -56,6 +54,8 @@ public class Product extends BaseDto<ProductEntity> {
         this.images = entity.getImages().stream()
                 .map(i -> createDto(Image::new, i))
                 .collect(Collectors.toList());
+        this.nutrients = createDto(Nutrients::new, entity.getNutrients());
+        this.ingredients = createDto(Ingredients::new, entity.getIngredients());
         this.approved = entity.isApproved();
         this.insertDate = entity.getInserted_date();
         this.insertBy = createDto(User::new, entity.getInserted_by());
@@ -82,6 +82,8 @@ public class Product extends BaseDto<ProductEntity> {
         entity.setImages(this.images.stream()
                 .map(i -> createEntityReference(ImageEntity.class, i))
                 .collect(Collectors.toList()));
+        entity.setNutrients(createEntityReference(NutrientsEntity.class, this.nutrients));
+        entity.setIngredients(createEntityReference(IngredientsEntity.class, this.ingredients));
         entity.setApproved(this.approved);
         entity.setInserted_date(this.insertDate);
         entity.setInserted_by(createEntityReference(UserEntity.class, this.insertBy));

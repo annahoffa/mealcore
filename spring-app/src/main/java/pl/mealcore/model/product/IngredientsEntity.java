@@ -15,7 +15,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 public class IngredientsEntity extends BaseEntity {
 
-    private Long productId;
+    private ProductEntity product;
     private String ingredients_text;
     private String allergens;
     private String traces_tags;
@@ -28,5 +28,11 @@ public class IngredientsEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    public ProductEntity getProduct() {
+        return product;
     }
 }

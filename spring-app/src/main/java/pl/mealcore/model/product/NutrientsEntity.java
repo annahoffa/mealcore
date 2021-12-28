@@ -14,7 +14,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 public class NutrientsEntity extends BaseEntity {
 
-    private Long productId;
+    private ProductEntity product;
     private String energy_kj_100g;
     private String energy_kcal_100g;
     private String energy_100g;
@@ -132,4 +132,9 @@ public class NutrientsEntity extends BaseEntity {
         return id;
     }
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    public ProductEntity getProduct() {
+        return product;
+    }
 }

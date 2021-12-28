@@ -38,8 +38,28 @@ public class DateHelper {
         }
     }
 
-    public static String format(Date date) {
+    /**
+     * Format date to string "yyyy-MM-dd"
+     *
+     * @param date to format
+     * @return formatted string
+     */
+    public String format(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
         return formatter.format(date);
+    }
+
+    /**
+     * Add days to date
+     *
+     * @param date date
+     * @param toAdd number of days to add
+     * @return date + toAdd
+     */
+    public Date addDays(Date date, int toAdd) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, toAdd);
+        return c.getTime();
     }
 }

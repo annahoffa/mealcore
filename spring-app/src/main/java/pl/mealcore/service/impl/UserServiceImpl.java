@@ -10,15 +10,11 @@ import pl.mealcore.dao.UserRepository;
 import pl.mealcore.dto.account.Allergen;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.request.UserDataRequest;
-import pl.mealcore.dto.statistic.StatisticNutrients;
 import pl.mealcore.error.*;
 import pl.mealcore.model.user.additionalData.UserAllergenEntity;
 import pl.mealcore.model.user.basicData.AccountType;
 import pl.mealcore.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -138,21 +134,6 @@ public class UserServiceImpl implements UserService {
         user.setHeight(request.getHeight());
         user.setWeight(request.getWeight());
         save(user, false);
-    }
-
-    @Override
-    public List<StatisticNutrients> getStatistics(User user, Date fromDate, Date toDate) {
-        ArrayList<StatisticNutrients> result = new ArrayList<>();
-        while(!fromDate.after(toDate)){
-            StatisticNutrients item = new StatisticNutrients();
-            item.setDate(fromDate);
-            result.add(item);
-            Calendar c = Calendar.getInstance();
-            c.setTime(fromDate);
-            c.add(Calendar.DATE, 1);
-            fromDate = c.getTime();
-        }
-        return result;
     }
 
     //  PRIVS

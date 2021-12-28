@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.mealcore.dto.BaseDto;
 import pl.mealcore.model.product.IngredientsEntity;
+import pl.mealcore.model.product.ProductEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Ingredients extends BaseDto<IngredientsEntity> {
 
     public Ingredients(IngredientsEntity entity) {
         super(entity);
-        productId = entity.getProductId();
+        productId = entity.getProduct().getId();
         if (nonNull(entity.getIngredients_text()))
             ingredientsText = entity.getIngredients_text().replace("_", "");
         allergens = entity.getAllergens();
@@ -49,7 +50,7 @@ public class Ingredients extends BaseDto<IngredientsEntity> {
     public IngredientsEntity toEntity() {
         IngredientsEntity entity = new IngredientsEntity();
         entity.setId(id);
-        entity.setProductId(productId);
+        entity.setProduct(createEntityReference(ProductEntity.class, productId));
         entity.setIngredients_text(ingredientsText);
         entity.setAllergens(allergens);
         entity.setTraces_tags(tracesTags);

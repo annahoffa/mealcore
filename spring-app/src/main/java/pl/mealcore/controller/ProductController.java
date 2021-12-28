@@ -17,6 +17,7 @@ import pl.mealcore.service.ProductService;
 import pl.mealcore.service.UserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static pl.mealcore.helper.AuthenticationHelper.*;
@@ -29,18 +30,25 @@ public class ProductController {
     private final ProductService productService;
     private final AdditionService additionService;
     private final UserService userService;
+    private static final int PAGE_SIZE = 25;
 
     @ResponseBody
     @GetMapping("/suggestions")
     ResponseEntity<List<Product>> suggestions(@RequestParam String query,
                                               @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-                                              @RequestParam(name = "kcalFrom", required = false) int kcalFrom,
-                                              @RequestParam(name = "kcalTo", required = false) int kcalTo,
+                                              @RequestParam(name = "kcalFrom", required = false) Integer kcalFrom,
+                                              @RequestParam(name = "kcalTo", required = false) Integer kcalTo,
                                               @RequestParam(name = "make", required = false) String makeQuery,
-                                              @RequestParam(name = "sortBy", required = false) ProductSortType sortType) {
+                                              @RequestParam(name = "sortBy", required = false) ProductSortType sortType,
+                                              @RequestParam(name = "reverseSort", required = false) boolean reverseSort) {
         if (query.length() >= 2) {
             User user = userService.getByLogin(getLoggedUserLogin());
-            List<Product> suggestions = productService.getSuggestionsByName(user, query, page);
+            List<Product> suggestions = productService.getSuggestionsByName(user, query);
+            suggestions = productService.applyFilters(suggestions, kcalFrom, kcalTo, makeQuery);
+            suggestions = productService.sort(suggestions, sortType, reverseSort).stream()
+                    .skip((long) PAGE_SIZE * page)
+                    .limit(PAGE_SIZE)
+                    .collect(Collectors.toList());
             if (suggestions.isEmpty()) {
                 log.info("FAILED products suggestions, no product was found for query: '{}'", query);
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

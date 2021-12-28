@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import pl.mealcore.dto.BaseDto;
 import pl.mealcore.model.product.NutrientsEntity;
+import pl.mealcore.model.product.ProductEntity;
 
 @Data
 @NoArgsConstructor
@@ -126,7 +127,7 @@ public class Nutrients extends BaseDto<NutrientsEntity> {
 
     public Nutrients(NutrientsEntity entity) {
         super(entity);
-        this.productId = entity.getProductId();
+        this.productId = entity.getProduct().getId();
         this.energyKj = entity.getEnergy_kj_100g();
         this.energyKcal = entity.getEnergy_kcal_100g();
         this.energy = entity.getEnergy_100g();
@@ -242,7 +243,7 @@ public class Nutrients extends BaseDto<NutrientsEntity> {
     public NutrientsEntity toEntity() {
         NutrientsEntity entity = new NutrientsEntity();
         entity.setId(id);
-        entity.setProductId(productId);
+        entity.setProduct(createEntityReference(ProductEntity.class, productId));
         entity.setEnergy_kj_100g(energyKj);
         entity.setEnergy_kcal_100g(energyKcal);
         entity.setEnergy_100g(energy);

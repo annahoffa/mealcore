@@ -31,6 +31,8 @@ public class ProductEntity extends BaseEntity {
     private UserEntity inserted_by;
     private Date approved_date;
     private UserEntity approved_by;
+    private IngredientsEntity ingredients;
+    private NutrientsEntity nutrients;
 
     @Id
     @Override
@@ -57,5 +59,15 @@ public class ProductEntity extends BaseEntity {
     @ManyToOne
     public UserEntity getApproved_by() {
         return approved_by;
+    }
+
+    @OneToOne(mappedBy = "product")
+    public IngredientsEntity getIngredients() {
+        return ingredients;
+    }
+
+    @OneToOne(mappedBy = "product")
+    public NutrientsEntity getNutrients() {
+        return nutrients;
     }
 }

@@ -2,22 +2,28 @@ package pl.mealcore.service;
 
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.product.Product;
+import pl.mealcore.dto.product.ProductSortType;
 import pl.mealcore.dto.response.UserProductsResponse;
+import pl.mealcore.dto.statistic.StatisticNutrients;
 import pl.mealcore.model.product.ProductEntity;
 
 import java.util.Date;
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getSuggestionsByName(User user, String text, int page);
+    List<Product> getSuggestionsByName(User user, String text);
+
+    List<Product> applyFilters(List<Product> suggestions, Integer kcalFrom, Integer kcalTo, String makeQuery);
+
+    List<Product> sort(List<Product> suggestions, ProductSortType sortType, boolean reverseSort);
 
     Product getProduct(User user, Long id);
 
-    Product createBaseProduct(ProductEntity entity);
-
-    void completeProduct(User user, Product product);
+    List<StatisticNutrients> getStatisticsForUser(User user, Date fromDate, Date toDate);
 
     UserProductsResponse getProductsWithNutrientsForUser(User user, Date parse);
+
+    Product createBaseProduct(ProductEntity entity, User user);
 
     boolean addProduct(Product product, User user);
 

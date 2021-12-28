@@ -17,10 +17,8 @@ import pl.mealcore.dto.request.UserDataRequest;
 import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.dto.response.NutritionalRequirementsResponse;
 import pl.mealcore.dto.response.UserDataResponse;
-import pl.mealcore.dto.response.UserStatisticsResponse;
 import pl.mealcore.error.*;
 import pl.mealcore.handler.CalculatorNutritionalRequirementsHandler;
-import pl.mealcore.helper.DateHelper;
 import pl.mealcore.service.UserProductService;
 import pl.mealcore.service.UserService;
 
@@ -192,22 +190,6 @@ public class UserController {
         } catch (BadHttpRequest e) {
             log.info("FAILED to change personal data, bad request");
             return new ResponseEntity<>(response.withMessage("Błędne zapytanie."), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @ResponseBody
-    @GetMapping("/getUserStatistics")
-    ResponseEntity<UserStatisticsResponse> getUserStatistics(@RequestParam(name = "fromDate") String fromDate,
-                                                             @RequestParam(name = "toDate") String toDate) {
-        if (isAuthenticated()) {
-            User user = userService.getByLogin(getLoggedUserLogin());
-            UserStatisticsResponse response = new UserStatisticsResponse(userService.getStatistics(user, DateHelper.parse(fromDate),
-                    DateHelper.parse(toDate)));
-            log.info("SUCCESSFUL get '{}' statistics", user.getLogin());
-            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
-        } else {
-            log.info("FAILED getUserStatistics, no user in session");
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

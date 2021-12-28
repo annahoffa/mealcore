@@ -9,6 +9,7 @@ import pl.mealcore.annotations.RestApiController;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.dto.response.UserProductsResponse;
+import pl.mealcore.dto.response.UserStatisticsResponse;
 import pl.mealcore.helper.DateHelper;
 import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.service.ProductService;
@@ -104,6 +105,22 @@ public class UserProductController {
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
         } else {
             log.info("FAILED getUserProducts, no user in session");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/getUserStatistics")
+    ResponseEntity<UserStatisticsResponse> getUserStatistics(@RequestParam(name = "fromDate") String fromDate,
+                                                             @RequestParam(name = "toDate") String toDate) {
+        if (isAuthenticated()) {
+            User user = userService.getByLogin(getLoggedUserLogin());
+            UserStatisticsResponse response = new UserStatisticsResponse(productService.getStatisticsForUser(user, DateHelper.parse(fromDate),
+                    DateHelper.parse(toDate)));
+            log.info("SUCCESSFUL get '{}' statistics", user.getLogin());
+            return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
+        } else {
+            log.info("FAILED getUserStatistics, no user in session");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }

@@ -3,6 +3,7 @@ package pl.mealcore.service.impl;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,19 +11,19 @@ import pl.mealcore.dao.*;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.product.*;
 import pl.mealcore.dto.response.UserProductsResponse;
+import pl.mealcore.dto.statistic.StatisticNutrients;
 import pl.mealcore.helper.DateHelper;
 import pl.mealcore.helper.NumberHelper;
 import pl.mealcore.model.product.ProductEntity;
 import pl.mealcore.model.user.additionalData.UserProductEntity;
 import pl.mealcore.service.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static pl.mealcore.dto.product.ProductSortType.ALPHABETIC;
 import static pl.mealcore.helper.AuthenticationHelper.getLoggedUserLogin;
 import static pl.mealcore.helper.AuthenticationHelper.isAdmin;
 import static pl.mealcore.helper.CollectionsHelper.distinctById;
@@ -33,7 +34,6 @@ import static pl.mealcore.helper.CollectionsHelper.distinctById;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private static final int PAGE_SIZE = 25;
     private final ProductRepository productRepository;
     private final NutrientsRepository nutrientsRepository;
     private final IngredientsRepository ingredientsRepository;
@@ -45,34 +45,67 @@ public class ProductServiceImpl implements ProductService {
     private final UserExerciseService userExerciseService;
 
     @Override
-    public List<Product> getSuggestionsByName(User user, String text, int page) {
+    public List<Product> getSuggestionsByName(User user, String text) {
         List<Product> suggestions = productRepository.findAllByNameIgnoreCaseAndApprovedIsTrue(text).stream()
-                .map(this::createBaseProduct)
+                .map(p -> createBaseProduct(p, user))
                 .collect(Collectors.toList());
         productRepository.findAllByNameStartsWithAndApprovedIsTrue(text).stream()
-                .map(this::createBaseProduct)
+                .map(p -> createBaseProduct(p, user))
                 .forEach(suggestions::add);
         productRepository.findAllByNameContainsAndApprovedIsTrue(" " + text + " ").stream()
-                .map(this::createBaseProduct)
+                .map(p -> createBaseProduct(p, user))
                 .forEach(suggestions::add);
         productRepository.findAllByNameContainsAndApprovedIsTrue(text).stream()
-                .map(this::createBaseProduct)
+                .map(p -> createBaseProduct(p, user))
                 .forEach(suggestions::add);
         return suggestions.stream()
                 .filter(distinctById())
-                .skip((long) PAGE_SIZE * page)
-                .limit(PAGE_SIZE)
-                .peek(product -> userProductService.checkWarningsAndReactions(user, product))
                 .collect(Collectors.toList());
     }
 
     @Override
+    public List<Product> applyFilters(List<Product> suggestions, Integer kcalFrom, Integer kcalTo, String makeQuery) {
+        return suggestions.stream()
+                .filter(p -> {
+                    if (isNull(kcalFrom) || isNull(p.getNutrients()))
+                        return true;
+                    return kcalFrom <= NumberUtils.toDouble(p.getNutrients().getEnergyKcal());
+                })
+                .filter(p -> {
+                    if (isNull(kcalTo) || isNull(p.getNutrients()))
+                        return true;
+                    return kcalTo >= NumberUtils.toDouble(p.getNutrients().getEnergyKcal());
+                })
+                .filter(p -> isNull(makeQuery) || StringUtils.containsIgnoreCase(p.getBrands(), makeQuery))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> sort(List<Product> suggestions, ProductSortType sortType, boolean reverseSort) {
+        if (nonNull(sortType)) {
+            if (!ALPHABETIC.equals(sortType))
+                suggestions = suggestions.stream()
+                        .filter(p -> nonNull(p.getNutrients()))
+                        .collect(Collectors.toList());
+            Comparator<Product> comparator;
+            double defaultValue = reverseSort ? Double.MIN_VALUE : Double.MAX_VALUE;
+            switch (sortType) {
+                case KCAL -> comparator = Comparator.comparing((Product p) -> NumberUtils.toDouble(p.getNutrients().getEnergyKcal(), defaultValue));
+                case FAT -> comparator = Comparator.comparing((Product p) -> NumberUtils.toDouble(p.getNutrients().getFat(), defaultValue));
+                case PROTEINS -> comparator = Comparator.comparing((Product p) -> NumberUtils.toDouble(p.getNutrients().getProteins(), defaultValue));
+                case CARBOHYDRATES -> comparator = Comparator.comparing((Product p) -> NumberUtils.toDouble(p.getNutrients().getCarbohydrates(), defaultValue));
+                default -> comparator = Comparator.comparing(Product::getName);
+            }
+            suggestions.sort(reverseSort ? comparator.reversed() : comparator);
+        }
+        return suggestions;
+    }
+
+    @Override
     public Product getProduct(User user, Long id) {
-        Product product = productRepository.findByIdAndApprovedIsTrue(id)
-                .map(this::createBaseProduct)
+        return productRepository.findByIdAndApprovedIsTrue(id)
+                .map(p -> createBaseProduct(p, user))
                 .orElse(null);
-        completeProduct(user, product);
-        return product;
     }
 
     @Override
@@ -82,8 +115,7 @@ public class ProductServiceImpl implements ProductService {
         BasicNutrients nutrients = new BasicNutrients();
         List<UserProductEntity> userProducts = userProductRepository.findAllByUserIdAndDate(user.getId(), date);
         for (UserProductEntity userProduct : userProducts) {
-            Product product = createBaseProduct(userProduct.getProduct());
-            completeProduct(user, product);
+            Product product = createBaseProduct(userProduct.getProduct(), user);
             product.setAddedQuantity(userProduct.getQuantity());
             product.setCategory(userProduct.getCategory());
             products.add(product);
@@ -104,22 +136,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createBaseProduct(ProductEntity entity) {
-        Product product = new Product(entity);
-        product.setIngredients(ingredientsRepository.findByProductId(product.getId())
-                .map(e -> new Ingredients(e, additionService.extractAdditivesFromString(e.getAdditives_tags())))
-                .orElse(null));
-        return product;
+    public List<StatisticNutrients> getStatisticsForUser(User user, Date fromDate, Date toDate) {
+        ArrayList<StatisticNutrients> result = new ArrayList<>();
+        Date date = fromDate;
+        while (!date.after(toDate)) {
+            StatisticNutrients item = new StatisticNutrients();
+            UserProductsResponse productsForDay = getProductsWithNutrientsForUser(user, date);
+            item.setKcal(productsForDay.getKcal());
+            item.setCarbohydrates(productsForDay.getCarbohydrates());
+            item.setFat(productsForDay.getFat());
+            item.setProteins(productsForDay.getProteins());
+            item.setFiber(productsForDay.getFiber());
+            item.setDate(DateHelper.format(date));
+            result.add(item);
+            date = DateHelper.addDays(date, 1);
+        }
+        return result;
     }
 
     @Override
-    public void completeProduct(User user, Product product) {
-        if (nonNull(product)) {
-            product.setNutrients(nutrientsRepository.findByProductId(product.getId())
-                    .map(Nutrients::new)
-                    .orElse(null));
-            userProductService.checkWarningsAndReactions(user, product);
-        }
+    public Product createBaseProduct(ProductEntity entity, User user) {
+        Product product = new Product(entity);
+        userProductService.checkWarningsAndReactions(user, product);
+        return product;
     }
 
     @Override
@@ -166,8 +205,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getUnapprovedProducts() {
         if (isAdmin())
             return productRepository.findAllByApprovedIsFalse().stream()
-                    .map(this::createBaseProduct)
-                    .peek(p -> completeProduct(null, p))
+                    .map(p -> createBaseProduct(p, null))
                     .collect(Collectors.toList());
         else
             return Collections.emptyList();
