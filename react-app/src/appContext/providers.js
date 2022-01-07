@@ -4,6 +4,7 @@ import useLocalStorage from '../utils/useLocalStorageHook';
 
 let defaultState = {
   isLoggedIn: false,
+  isAdmin: false,
   token: null,
 };
 
@@ -14,16 +15,19 @@ const ContextProvider = (props) => {
   const [isAuth, setAuth] = useLocalStorage({ ...defaultState }, 'userAuth');
 
   const logIn = () => {
-    setAuth({ isLoggedIn: true });
+    setAuth(prevState => ({ ...prevState, isLoggedIn: true }));
+  };
+
+  const logInAdmin = () => {
+    setAuth(prevState => ({ ...prevState, isAdmin: true }));
   };
 
   const logOut = () => {
-    setAuth({ isLoggedIn: false });
+    setAuth(prevState => ({ ...prevState, isLoggedIn: false, isAdmin: false }));
   };
 
-  // TODO: check for errors
   return (
-    <AuthContext.Provider value={{ ...isAuth, logIn: logIn, logOut: logOut }}>
+    <AuthContext.Provider value={{ ...isAuth, logIn: logIn, logOut: logOut, logInAdmin: logInAdmin }}>
       {props.children}
     </AuthContext.Provider>
   );

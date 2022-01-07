@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 // TODO: api refactor + component atomization
-const CategorizeProducts = ({ userProducts }) => {
+const CategorizeProducts = ({ userProducts, date }) => {
   const classes = useStyles();
   const DISH_CATEGORIES = { 'BREAKFAST': [], 'LUNCH': [], 'DINNER': [], 'SUPPER': [], 'SNACK': [], 'OTHER': [] };
 
@@ -65,17 +65,18 @@ const CategorizeProducts = ({ userProducts }) => {
   // console.log(data);
   // if(isLoading || isError) return (<div>loading</div>);
 
-  const [userReactions, setUserReactions] = useState([]);
+  const [userReactions, setUserReactions] = useState(undefined);
   useEffect(() => {
-    apiCall('/api/user/getReactions', {
+    apiCall(`/api/user/getReactions?date=${date}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     }).then(data => setUserReactions(data))
     .catch(error => console.log(error));
-  }, []);
+  }, [date]);
 
+  //fixme :c
   return (
     (userReactions === undefined) ? <Skeleton /> : (
       <div>

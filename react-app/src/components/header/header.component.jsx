@@ -11,6 +11,7 @@ import { AppBar, Toolbar, Button, makeStyles, Hidden, IconButton, Popover } from
 
 import { HEADER_DATA_UNAUTHENTICATED } from './headerUnauthenticated.data.js';
 import { HEADER_DATA_AUTHENTICATED } from './headerAuthenticated.data.js';
+import { HEADER_DATA_ADMIN } from './headerAdmin.data.js';
 
 import './header.styles.scss';
 
@@ -40,7 +41,9 @@ const useStyles = makeStyles(() => ({
 const Header = () => {
   const authContext = useContext(AuthContext);
   let headerData;
-  if(authContext.isLoggedIn) {
+  if(authContext.isAdmin) {
+    headerData = HEADER_DATA_ADMIN;
+  } else if(authContext.isLoggedIn) {
     headerData = HEADER_DATA_AUTHENTICATED;
   } else headerData = HEADER_DATA_UNAUTHENTICATED;
 
@@ -116,14 +119,12 @@ const Header = () => {
   };
 
   return (
-    <header>
-      <AppBar position='fixed' elevation='0' className={header}>
-        <Toolbar className={toolbar}>
-          {displayLogo()}
-          <div>{getMenuButtons(headerData)}</div>
-        </Toolbar>
-      </AppBar>
-    </header>
+    <AppBar position='fixed' elevation='0' className={header}>
+      <Toolbar className={toolbar}>
+        {displayLogo()}
+        <div>{getMenuButtons(headerData)}</div>
+      </Toolbar>
+    </AppBar>
   );
 };
 

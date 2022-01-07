@@ -16,36 +16,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Calendar({ setUserProducts, setUserExercises }) {
+export default function Calendar({ onDateChange }) {
   const { calendar } = useStyles();
-  const authContext = useContext(AuthContext);
   const [date, setDate] = React.useState(format(new Date(), 'yyyy-MM-dd'));
 
   const handleChange = (newDate) => {
     setDate(format(newDate, 'yyyy-MM-dd'));
+    onDateChange(format(newDate, 'yyyy-MM-dd'));
   };
-
-  React.useEffect(() => {
-    if(authContext.isLoggedIn) {
-      apiCall(`/api/user/getUserProducts?date=${date}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(data => setUserProducts(data))
-      .catch(error => console.log(error));
-
-      apiCall(`/api/user/getUserExercises?date=${date}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(data => setUserExercises(data))
-      .catch(error => console.log(error));
-    }
-  }, [date]);
 
   return (
     <div className={calendar}>

@@ -11,6 +11,8 @@ import Homepage from './pages/homepage/homepage.component';
 import ProductSearchPage from './pages/product-search/product-search.component';
 import SearchResultsPage from './pages/search-results/search-results.component';
 import ProductInfoPage from './pages/product-info/product-info.component';
+import SuggestNewProductPage from './pages/suggest-new-product/suggest-new-product';
+import ReviewProductsSuggestions from './pages/review-products-suggestions/review-products-suggestions';
 import PricingPage from './pages/pricing/pricing.component';
 import MyAccountPage from './pages/my-account/my-account.component';
 import SignUpPage from './pages/sign-up/sign-up-page.component';
@@ -24,9 +26,6 @@ import './App.scss';
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
@@ -36,40 +35,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   //const [cookies, setCookies] = useCookies(['JSESSIONID']);
   //if (cookies.JSESSIONID) {logIn()} else logOut();
 
   return (
-    <div className={classes.root}>
+    <div className='App'>
       <CssBaseline />
       <Header />
+      <Switch>
+        <Route exact path='/' component={Homepage} />
+        <Route path='/bmicalculator' component={BMICalculatorPage} />
+        <Route exact path='/productsearch' component={ProductSearchPage} />
+        <Route path='/searchresults/:query' component={SearchResultsPage} />
+        <Route path='/productinfo/:id' component={ProductInfoPage} />
+        <Route path='/pricing' component={PricingPage} />
+        <Route path='/privacypolicy' component={PrivacyPolicyPage} />
+        <Route path='/terms' component={TermsOfServicePage} />
 
-      <div className='App'>
-        <Switch>
-          <Route exact path='/' component={Homepage} />
-          <Route path='/bmicalculator' component={BMICalculatorPage} />
-          <Route exact path='/productsearch' component={ProductSearchPage} />
-          <Route path='/searchresults/:query' component={SearchResultsPage} />
-          <Route path='/productinfo/:id' component={ProductInfoPage} />
-          <Route path='/pricing' component={PricingPage} />
-          <Route path='/privacypolicy' component={PrivacyPolicyPage} />
-          <Route path='/terms' component={TermsOfServicePage} />
+        {/* Authenticated-only pages: */}
+        <Route path='/dashboard' component={DashboardPage} />
+        <Route path='/summary' component={ProblematicProductsSummaryPage} />
+        <Route path='/suggestproduct' component={SuggestNewProductPage} />
+        <Route exact path='/myaccount' component={MyAccountPage} />
+        <Route exact path='/logout' component={LogOutPage} />
 
-          {/* Authenticated-only pages: */}
-          <Route path='/dashboard' component={DashboardPage} />
-          <Route path='/summary' component={ProblematicProductsSummaryPage} />
-          <Route exact path='/myaccount' component={MyAccountPage} />
-          <Route exact path='/logout' component={LogOutPage} />
+        {/* Admin-only pages: */}
+        <Route exact path='/review' component={ReviewProductsSuggestions} />
 
-          {/* Unauthenticated-only pages: */}
-          <Route path='/login' component={LogInPage} />
-          <Route exact path='/signup' component={SignUpPage} />
-        </Switch>
-        <Footer />
-      </div>
+        {/* Unauthenticated-only pages: */}
+        <Route path='/login' component={LogInPage} />
+        <Route exact path='/signup' component={SignUpPage} />
+      </Switch>
+      <Footer />
     </div>
   );
 };
