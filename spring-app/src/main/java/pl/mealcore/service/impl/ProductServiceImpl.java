@@ -156,7 +156,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createBaseProduct(ProductEntity entity, User user) {
-        Product product = new Product(entity);
+        Product product = new Product(entity, additionService.extractAdditives(entity));
         userProductService.checkWarningsAndReactions(user, product);
         return product;
     }
@@ -216,7 +216,7 @@ public class ProductServiceImpl implements ProductService {
         if (isAdmin()) {
             productRepository.findById(productId)
                     .ifPresent(productEntity -> {
-                        Product product = new Product(productEntity);
+                        Product product = new Product(productEntity, additionService.extractAdditives(productEntity));
                         product.setApproved(true);
                         product.setApprovedBy(userService.getByLogin(getLoggedUserLogin()));
                         product.setApprovedDate(new Date());

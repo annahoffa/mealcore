@@ -2,6 +2,7 @@ package pl.mealcore.dto.account;
 
 import lombok.*;
 import pl.mealcore.dto.BaseDto;
+import pl.mealcore.dto.product.Addition;
 import pl.mealcore.dto.product.Product;
 import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.model.product.ProductEntity;
@@ -9,8 +10,10 @@ import pl.mealcore.model.user.additionalData.UserProductEntity;
 import pl.mealcore.model.user.basicData.UserEntity;
 
 import java.util.Date;
+import java.util.List;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 @Data
 @Builder
@@ -25,10 +28,11 @@ public class UserProduct extends BaseDto<UserProductEntity> {
     private Integer quantity;
     private ProductCategory category;
 
-    public UserProduct(UserProductEntity entity) {
+    public UserProduct(UserProductEntity entity, List<Addition> additives) {
         super(entity);
         this.user = createDto(User::new, entity.getUser());
-        this.product = createDto(Product::new, entity.getProduct());
+        if (nonNull(entity.getProduct()))
+            this.product = new Product(entity.getProduct(), additives);
         this.date = entity.getDate();
         this.quantity = entity.getQuantity();
         this.category = entity.getCategory();

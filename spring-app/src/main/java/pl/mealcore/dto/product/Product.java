@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
@@ -41,7 +43,7 @@ public class Product extends BaseDto<ProductEntity> {
     private Integer addedQuantity;
     private ProductCategory category;
 
-    public Product(ProductEntity entity) {
+    public Product(ProductEntity entity, List<Addition> additives) {
         super(entity);
         this.code = entity.getCode();
         this.name = entity.getName();
@@ -55,7 +57,8 @@ public class Product extends BaseDto<ProductEntity> {
                 .map(i -> createDto(Image::new, i))
                 .collect(Collectors.toList());
         this.nutrients = createDto(Nutrients::new, entity.getNutrients());
-        this.ingredients = createDto(Ingredients::new, entity.getIngredients());
+        if (nonNull(entity.getIngredients()))
+            this.ingredients = new Ingredients(entity.getIngredients(), additives);
         this.approved = entity.isApproved();
         this.insertDate = entity.getInserted_date();
         this.insertBy = createDto(User::new, entity.getInserted_by());

@@ -8,7 +8,6 @@ import pl.mealcore.dto.BaseDto;
 import pl.mealcore.model.product.IngredientsEntity;
 import pl.mealcore.model.product.ProductEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,20 +28,14 @@ public class Ingredients extends BaseDto<IngredientsEntity> {
     private String ingredientsFromPalmOilTags;
     private String ingredientsThatMayBeFromPalmOilTags;
 
-    public Ingredients(IngredientsEntity entity) {
-        super(entity);
+    public Ingredients(IngredientsEntity entity, List<Addition> additives) {
         productId = entity.getProduct().getId();
         if (nonNull(entity.getIngredients_text()))
             ingredientsText = entity.getIngredients_text().replace("_", "");
         allergens = entity.getAllergens();
         tracesTags = entity.getTraces_tags();
-        additives = new ArrayList<>();
         ingredientsFromPalmOilTags = entity.getIngredients_from_palm_oil_tags();
         ingredientsThatMayBeFromPalmOilTags = entity.getIngredients_that_may_be_from_palm_oil_tags();
-    }
-
-    public Ingredients(IngredientsEntity entity, List<Addition> additives) {
-        this(entity);
         this.additives = additives;
     }
 

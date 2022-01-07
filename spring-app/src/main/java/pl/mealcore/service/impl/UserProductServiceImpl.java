@@ -16,6 +16,7 @@ import pl.mealcore.helper.DateHelper;
 import pl.mealcore.model.product.ProductCategory;
 import pl.mealcore.model.user.additionalData.UserProductEntity;
 import pl.mealcore.model.user.additionalData.UserReactionEntity;
+import pl.mealcore.service.AdditionService;
 import pl.mealcore.service.UserProductService;
 
 import java.util.Date;
@@ -32,12 +33,13 @@ import static pl.mealcore.helper.CollectionsHelper.distinctById;
 public class UserProductServiceImpl implements UserProductService {
     private final UserProductRepository userProductRepository;
     private final UserReactionRepository userReactionRepository;
+    private final AdditionService additionService;
 
     @Override
     public void addUserProduct(@NonNull User user, @NonNull Long productId, @NonNull Integer quantity, Date date, ProductCategory category) {
         date = DateHelper.getDateWithoutTime(date, new Date());
         UserProduct toSave = userProductRepository.findByUserIdAndProductIdAndDateAndCategory(user.getId(), productId, date, category)
-                .map(UserProduct::new)
+                .map(entity -> new UserProduct(entity, additionService.extractAdditives(entity.getProduct())))
                 .orElse(new UserProduct(user, new Product(productId), date, 0, isNull(category) ? ProductCategory.OTHER : category));
         toSave.addQuantity(quantity);
         userProductRepository.save(toSave.toEntity());
@@ -66,7 +68,7 @@ public class UserProductServiceImpl implements UserProductService {
     public UserProductsResponse getProblematicProductsForUser(User user) {
         return new UserProductsResponse(userProductRepository.findAllByUserId(user.getId()).stream()
                 .map(UserProductEntity::getProduct)
-                .map(Product::new)
+                .map(product -> new Product(product, additionService.extractAdditives(product)))
                 .filter(distinctById())
                 .filter(product -> ReactionValue.BAD.equals(getReactionForProduct(user, product.getId())))
                 .collect(Collectors.toList()));
@@ -114,7 +116,7 @@ public class UserProductServiceImpl implements UserProductService {
         return userProductRepository.findAllByUserIdAndDateAndCategory(reaction.getUser().getId(), reaction.getDate(),
                 reaction.getCategory()).stream()
                 .map(UserProductEntity::getProduct)
-                .map(Product::new)
+                .map(product -> new Product(product, additionService.extractAdditives(product)))
                 .collect(Collectors.toList());
     }
 }
