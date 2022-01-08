@@ -5,7 +5,7 @@ import { LinearProgress, makeStyles } from '@material-ui/core';
 // For some reason nothing else works
 const useStyles = makeStyles(() => ({
   root: {
-    height: 10,
+    height: '1.5em',
     borderRadius: 3,
   },
   overflowingValue: {
