@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
-import { Grid, Tooltip, Typography } from '@material-ui/core';
+import { AuthContext } from '../../appContext/providers';
+import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Skeleton from '@material-ui/lab/Skeleton';
@@ -16,6 +17,7 @@ const ProductInfoPage = (props) => {
     const productId = props.match.params.id; // query extracted from the browser's url field
     let history = useHistory();
     const [state, setState] = useState();
+    const authContext = useContext(AuthContext);
 
     useEffect(() => {
       apiCall(`/api/products/findById?productId=${productId}`)
@@ -107,29 +109,29 @@ const ProductInfoPage = (props) => {
         else
           return (data.charAt(0).toUpperCase() + data.slice(1)).replace('_', ' ');
       }
-
+  
       return (
-        <div>
-          {nutrients
-            ?
-            (nutrients && Object.keys(nutrients).map((key) => {
-              const value = nutrients[key];
+        <TableContainer component={Paper}>
+          <Table size="small" className='product-table'>
+            <TableBody>
+              {!nutrients && <TableRow hover>
+                <TableCell colSpan={2}>Brak danych</TableCell>
+              </TableRow>}
+              {nutrients && Object.keys(nutrients).map((key) => {
+                const value = nutrients[key];
+                if(key === 'id' || key === 'productId' || value === '' || value === null) 
+                  return null;
 
-              if(['id', 'productId'].includes(key)) {
-                return null;
-              }
-              if(value === '' || value === null) {
-                return null;
-              }
-              return (
-                <div>
-                  {formatNutrients(key)} &nbsp; {value}
-                </div>
-              );
-            }))
-            :
-            <span>Brak danych</span>}
-        </div>
+                return (
+                  <TableRow hover key={key}>
+                    <TableCell>{formatNutrients(key)}</TableCell>
+                    <TableCell >{value}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       );
     };
 
@@ -140,10 +142,10 @@ const ProductInfoPage = (props) => {
           <div className='warning-icon'>
             {productInfo.allergenWarning ? <AllergenWarning /> : null}
           </div>
-          <IconButton color='primary' onClick={openQuantityDialog} title='Add product to dashboard'
+          { authContext.isLoggedIn && <IconButton color='primary' onClick={openQuantityDialog} title='Add product to dashboard'
             aria-label='Dodaj produkt do panelu'>
             <AddCircleIcon />
-          </IconButton>
+          </IconButton>}
 
           {/*hidden modification dialog*/}
           <DefineProductQuantity quantityProps={quantityProps} apiCall={sendProductToDashboard} />
@@ -157,13 +159,14 @@ const ProductInfoPage = (props) => {
             </div>
           </Grid>
           <Grid item xs={12} md={8} className='product-info'>
-            <Typography variant='h6' align='center'>
+            <Typography variant='h4' align='center'>
               {productInfo.name}
             </Typography>
-            <Typography variant='body2'>
-              Marka: {productInfo.brands || '\u2014'}
+            <Typography variant='body1'>
+              <br/>
+              { productInfo.brands && <><b>Marka: </b>{ productInfo.brands }</> }
               <br />
-              Wielkość porcji: {productInfo.servingSize || '\u2014'}
+              { productInfo.servingSize && <><b>Wielkość porcji: </b> { productInfo.servingSize }</> }
             </Typography>
           </Grid>
         </Grid>
