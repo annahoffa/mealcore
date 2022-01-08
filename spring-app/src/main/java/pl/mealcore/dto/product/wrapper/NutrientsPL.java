@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 import pl.mealcore.dto.product.Nutrients;
+import pl.mealcore.helper.NumberHelper;
 
 @Data
 @EqualsAndHashCode
@@ -99,7 +100,7 @@ public class NutrientsPL {
         String result = "";
         String energy = nutrients.getEnergy();
         String energyKj = nutrients.getEnergyKj();
-        String energyKcal = nutrients.getEnergyKcal();
+        String energyKcal = NumberHelper.format(nutrients.getKcal());
         if (StringUtils.isNotBlank(energy))
             result = energy + "kJ";
         if (StringUtils.isNotBlank(energyKj))

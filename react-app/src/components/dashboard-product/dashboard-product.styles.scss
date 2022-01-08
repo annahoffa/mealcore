@@ -8,10 +8,33 @@
     .product-title {
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
+        align-items: center;
 
         .product-link {
             text-decoration: none;
+            color: #000;
+            
+            .product-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: inherit;
+                padding: 0.5em;
+    
+                .image-container {
+                    width: 5em;
+                    height: 5em;
+                    margin-right: 2.5em;
+        
+                    img {
+                        object-fit: cover;
+                        width: inherit;
+                        height: inherit;
+                        border-radius: 3px;
+                    }
+                }
+            }
+
 
             &:hover {
                 color: #3976bb;
@@ -26,6 +49,7 @@
         width: 80%; //of the parent container
         list-style: none;
         padding: 0;
+        text-align: center;
     }
 
     .quantity {

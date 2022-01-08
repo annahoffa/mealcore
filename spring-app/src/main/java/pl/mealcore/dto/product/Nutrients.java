@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import pl.mealcore.dto.BaseDto;
+import pl.mealcore.helper.NumberHelper;
 import pl.mealcore.model.product.NutrientsEntity;
 import pl.mealcore.model.product.ProductEntity;
 
@@ -14,6 +17,7 @@ import pl.mealcore.model.product.ProductEntity;
 @EqualsAndHashCode(callSuper = true)
 public class Nutrients extends BaseDto<NutrientsEntity> {
 
+    private static final double KJ_KCAL_SCALE = 0.2388458966275;
     private Long productId;
     private String energyKj;
     private String energyKcal;
@@ -354,5 +358,20 @@ public class Nutrients extends BaseDto<NutrientsEntity> {
         entity.setInositol_100g(inositol);
         entity.setCarnitine_100g(carnitine);
         return entity;
+    }
+
+    public double getKcal(double defaultValue) {
+        double kcal = defaultValue;
+        if (StringUtils.isNumeric(energyKcal))
+            kcal = NumberUtils.toDouble(energyKcal);
+        else if (StringUtils.isNumeric(energyKj))
+            kcal = NumberUtils.toDouble(energyKj) * KJ_KCAL_SCALE;
+        else if (StringUtils.isNumeric(energy))
+            kcal = NumberUtils.toDouble(energy) * KJ_KCAL_SCALE;
+        return NumberHelper.round(kcal);
+    }
+
+    public double getKcal() {
+        return getKcal(0);
     }
 }

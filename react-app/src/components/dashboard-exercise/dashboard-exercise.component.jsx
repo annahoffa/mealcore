@@ -71,7 +71,7 @@ const DashboardExercise = ({ item: exercise }) => {
   return (
     <div className='dashboard-exercise'>
       <div className='exercise-title'>
-        <Typography noWrap>{exercise.name}</Typography>
+        <Typography noWrap variant='body1'><b>{exercise.name}</b></Typography>
         <div className='icons'>
           <IconButton onClick={openDurationDialog} title='Zmień czas trwania'
             aria-label="Modify exercise's duration time">

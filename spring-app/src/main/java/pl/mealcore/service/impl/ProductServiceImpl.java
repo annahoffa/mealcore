@@ -69,12 +69,12 @@ public class ProductServiceImpl implements ProductService {
                 .filter(p -> {
                     if (isNull(kcalFrom) || isNull(p.getNutrients()))
                         return true;
-                    return kcalFrom <= NumberUtils.toDouble(p.getNutrients().getEnergyKcal());
+                    return kcalFrom <= p.getNutrients().getKcal();
                 })
                 .filter(p -> {
                     if (isNull(kcalTo) || isNull(p.getNutrients()))
                         return true;
-                    return kcalTo >= NumberUtils.toDouble(p.getNutrients().getEnergyKcal());
+                    return kcalTo >= p.getNutrients().getKcal();
                 })
                 .filter(p -> isNull(makeQuery) || StringUtils.containsIgnoreCase(p.getBrands(), makeQuery))
                 .collect(Collectors.toList());
@@ -90,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
             Comparator<Product> comparator;
             double defaultValue = reverseSort ? Double.MIN_VALUE : Double.MAX_VALUE;
             switch (sortType) {
-                case KCAL -> comparator = Comparator.comparing((Product p) -> NumberUtils.toDouble(p.getNutrients().getEnergyKcal(), defaultValue));
+                case KCAL -> comparator = Comparator.comparing((Product p) -> p.getNutrients().getKcal(defaultValue));
                 case FAT -> comparator = Comparator.comparing((Product p) -> NumberUtils.toDouble(p.getNutrients().getFat(), defaultValue));
                 case PROTEINS -> comparator = Comparator.comparing((Product p) -> NumberUtils.toDouble(p.getNutrients().getProteins(), defaultValue));
                 case CARBOHYDRATES -> comparator = Comparator.comparing((Product p) -> NumberUtils.toDouble(p.getNutrients().getCarbohydrates(), defaultValue));
@@ -123,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
             if (nonNull(productNutrients)) {
                 double scale = userProduct.getQuantity() / 100d;
                 updateNutrientsByScale(scale, productNutrients);
-                nutrients.addKcal(NumberUtils.toDouble(productNutrients.getEnergyKcal()));
+                nutrients.addKcal(productNutrients.getKcal());
                 nutrients.addCarbohydrates(NumberUtils.toDouble(productNutrients.getCarbohydrates()));
                 nutrients.addFat(NumberUtils.toDouble(productNutrients.getFat()));
                 nutrients.addProteins(NumberUtils.toDouble(productNutrients.getProteins()));
@@ -235,18 +235,11 @@ public class ProductServiceImpl implements ProductService {
 
     //  PRIVS
     private void updateNutrientsByScale(Double scale, Nutrients nutrients) {
-        double kcal = 0;
+        double kcal = nutrients.getKcal() * scale;
         double carbohydrates = NumberUtils.toDouble(nutrients.getCarbohydrates()) * scale;
         double fat = NumberUtils.toDouble(nutrients.getFat()) * scale;
         double proteins = NumberUtils.toDouble(nutrients.getProteins()) * scale;
         double fiber = NumberUtils.toDouble(nutrients.getFiber()) * scale;
-
-        if (nonNull(nutrients.getEnergyKcal()))
-            kcal = NumberUtils.toDouble(nutrients.getEnergyKcal()) * scale;
-        else if (nonNull(nutrients.getEnergyKj()))
-            kcal = NumberUtils.toDouble(nutrients.getEnergyKj()) * 0.2390 * scale;
-        else if (nonNull(nutrients.getEnergy()))
-            kcal = NumberUtils.toDouble(nutrients.getEnergy()) * 0.2390 * scale;
 
         nutrients.setEnergyKcal(NumberHelper.format(kcal));
         nutrients.setCarbohydrates(NumberHelper.format(carbohydrates));

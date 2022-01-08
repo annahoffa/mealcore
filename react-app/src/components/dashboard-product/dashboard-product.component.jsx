@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
 
-import { Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import EditIcon from '@material-ui/icons/Edit';
@@ -71,11 +71,18 @@ const DashboardProduct = ({ item: product }) => {
 
     <div className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''} ${!product.allergenWarning && product.badReaction ? 'dashboard-product-with-reaction-warning' : ''}`}>
       <div className='product-title'>
-        <Typography noWrap>
-          <Link className='product-link' to={{ pathname: `/productinfo/${product.id}` }}>
-            {product.name} ({product.addedQuantity} g)
-          </Link>
-        </Typography>
+        <Grid item xs={12} id={product.id}>
+            <Link className='product-link' to={{ pathname: `/productinfo/${product.id}` }}>
+              <div className='product-item'>
+                <div className='image-container'>
+                  <img src={product.images.find(obj => obj.url)?.url ?? ''} alt='Product' />
+                </div>
+                <Typography variant='body1'>
+                  <b>{product.name}</b>
+                </Typography>
+              </div>
+            </Link>
+          </Grid>
         <div className='icons'>
           <IconButton onClick={openQuantityDialog} title='Zmień ilość'
             aria-label="Modify product's quantity">
@@ -92,14 +99,14 @@ const DashboardProduct = ({ item: product }) => {
         </div>
       </div>
       <ul className='nutrients'>
-        <li>Kcal: {product.nutrients?.energyKcal || '\u2014'}</li>
-        <li>{product.nutrients?.proteins || '\u2014'}</li>
-        <li>{product.nutrients?.carbohydrates || '\u2014'}</li>
-        <li>{product.nutrients?.fat || '\u2014'}</li>
-        <li>{product.nutrients?.fiber || '\u2014'}</li>
+        <li>Kcal:<br /><b>{product.nutrients?.energyKcal || '\u2014'}</b></li>
+        <li>Białko:<br /><b>{product.nutrients?.proteins || '\u2014'}</b></li>
+        <li>Węglowodany:<br /><b>{product.nutrients?.carbohydrates || '\u2014'}</b></li>
+        <li>Tłuszcz:<br /><b>{product.nutrients?.fat || '\u2014'}</b></li>
+        <li>Błonnik:<br /><b>{product.nutrients?.fiber || '\u2014'}</b></li>
       </ul>
       <div className='quantity'>
-        <span>Ilość: {product.addedQuantity + ' g' || '\u003F'}</span>
+        <span>Ilość: <b>{product.addedQuantity + ' g' || '\u003F'}</b></span>
       </div>
     </div>
   );
