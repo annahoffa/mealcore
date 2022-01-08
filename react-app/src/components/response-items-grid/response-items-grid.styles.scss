@@ -12,11 +12,11 @@
         flex-direction: row;
         align-items: center;
         width: inherit;
-        padding: 0.5em;
+        padding: 1.5rem;
 
         .image-container {
-            width: 5rem;
-            height: 5rem;
+            width: 10rem;
+            height: 10rem;
             margin-right: 2.5rem;
 
             img {
@@ -30,7 +30,7 @@
     }
 
     .warning-icon {
-        padding-right: 5em;
+        padding-right: 2rem;
     }
 }
 

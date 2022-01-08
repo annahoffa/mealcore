@@ -11,20 +11,18 @@ const ItemsGrid = ({ items }) => {
 
   const getGridItems = (items) => (
     items.map((item) => (
-        <Grid item xs={12} id={item.id}>
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={4} id={item.id}>
           {/*TODO: Adjust for products which have both allergen warnings and reaction warnings*/}
           <Link className={`grid-link ${item.allergenWarning ? 'grid-link-with-warning' : ''} ${!item.allergenWarning && item.badReaction ? 'grid-link-with-bad-reaction' : ''}`} to={{ pathname: `/productinfo/${item.id}` }}>
             <div className='grid-item'>
               <div className='image-container'>
                 <img src={item.images.find(obj => obj.url)?.url ?? ''} alt='Product' />
               </div>
-              <Typography variant='h6'>
+              <Typography variant='body1'>
                 {item.name}
               </Typography>
             </div>
-            <div className='warning-icon'>
-              {item.allergenWarning ? <AllergenWarning /> : null}
-            </div>
+            {item.allergenWarning && <div className='warning-icon'><AllergenWarning /></div>}
           </Link>
         </Grid>
       ),
@@ -33,7 +31,7 @@ const ItemsGrid = ({ items }) => {
 
   return (
     <div className='grid-placeholder'>
-      <Grid container spacing={4}>
+      <Grid container justifyContent="center" alignItems="center" spacing={6}>
         {getGridItems(items)}
       </Grid>
     </div>
