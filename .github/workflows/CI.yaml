@@ -31,3 +31,9 @@ jobs:
           mvn test --file pom.xml -P test
         env:
           CI: ""
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: target/surefire-reports/*.xml
