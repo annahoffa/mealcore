@@ -14,6 +14,7 @@ import pl.mealcore.dto.product.wrapper.ProductPL;
 import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.service.AdditionService;
 import pl.mealcore.service.ProductService;
+import pl.mealcore.service.UserProductService;
 import pl.mealcore.service.UserService;
 
 import java.util.List;
@@ -28,6 +29,7 @@ import static pl.mealcore.helper.AuthenticationHelper.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final UserProductService userProductService;
     private final AdditionService additionService;
     private final UserService userService;
     private static final int PAGE_SIZE = 25;
@@ -43,11 +45,12 @@ public class ProductController {
                                               @RequestParam(name = "reverseSort", required = false) boolean reverseSort) {
         if (query.length() >= 2) {
             User user = userService.getByLogin(getLoggedUserLogin());
-            List<Product> suggestions = productService.getSuggestionsByName(user, query);
+            List<Product> suggestions = productService.getSuggestionsByName(query);
             suggestions = productService.applyFilters(suggestions, kcalFrom, kcalTo, makeQuery);
             suggestions = productService.sort(suggestions, sortType, reverseSort).stream()
                     .skip((long) PAGE_SIZE * page)
                     .limit(PAGE_SIZE)
+                    .map(p -> userProductService.checkWarningsAndReactions(user, p))
                     .collect(Collectors.toList());
             if (suggestions.isEmpty()) {
                 log.info("FAILED products suggestions, no product was found for query: '{}'", query);

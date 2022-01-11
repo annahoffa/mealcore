@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getSuggestionsByName(User user, String text);
+    List<Product> getSuggestionsByName(String text);
 
     List<Product> applyFilters(List<Product> suggestions, Integer kcalFrom, Integer kcalTo, String makeQuery);
 
@@ -23,7 +23,7 @@ public interface ProductService {
 
     UserProductsResponse getProductsWithNutrientsForUser(User user, Date parse);
 
-    Product createBaseProduct(ProductEntity entity, User user);
+    Product createBaseProduct(ProductEntity entity);
 
     boolean addProduct(Product product, User user);
 

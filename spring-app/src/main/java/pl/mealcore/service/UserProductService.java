@@ -21,5 +21,5 @@ public interface UserProductService {
 
     ReactionValue getReactionForProduct(User user, Long productId);
 
-    void checkWarningsAndReactions(User user, Product product);
+    Product checkWarningsAndReactions(User user, Product product);
 }
