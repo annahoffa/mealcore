@@ -69,6 +69,7 @@ class AdditionServiceImplTest {
         assertNull(additions.get(1).getId());
         assertEquals("E121", additions.get(1).getName());
         assertEquals("Brak informacji o dodatku", additions.get(1).getDescription());
+        throw new RuntimeException();
     }
 
     @Test
