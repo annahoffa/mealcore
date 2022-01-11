@@ -17,18 +17,18 @@ jobs:
           java-version: 15
           cache: maven
 
-      - name: Set up MySQL
-        env:
-          DB_DATABASE: test_db
-          DB_USER: root
-          DB_PASSWORD: root
-        run: |
-          sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+#      - name: Set up MySQL
+#        env:
+#          DB_DATABASE: test_db
+#          DB_USER: root
+#          DB_PASSWORD: root
+#        run: |
+#          sudo /etc/init.d/mysql start
+#          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
 
       - name: Build with Maven
         run: |
           cd spring-app/
-          mvn test --file pom.xml
+          mvn test --file pom.xml -P test
         env:
           CI: ""
