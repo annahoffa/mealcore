@@ -62,14 +62,13 @@ class AdditionServiceImplTest {
 
         List<Addition> additions = additionService.extractAdditives(product);
 
-        assertEquals(2, additions.size());
+        assertEquals(3, additions.size());
         assertEquals(1L, additions.get(0).getId());
         assertEquals("E120", additions.get(0).getName());
         assertEquals("E120 DESC", additions.get(0).getDescription());
         assertNull(additions.get(1).getId());
         assertEquals("E121", additions.get(1).getName());
         assertEquals("Brak informacji o dodatku", additions.get(1).getDescription());
-        throw new RuntimeException();
     }
 
     @Test
