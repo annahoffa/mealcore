@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -18,7 +19,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import pl.mealcore.configuration.handler.CustomAuthenticationFailureHandler;
 import pl.mealcore.configuration.handler.CustomAuthenticationSuccessHandler;
 import pl.mealcore.dto.account.User;
-import pl.mealcore.service.impl.UserDetailsServiceImpl;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +32,7 @@ import static pl.mealcore.model.user.basicData.UserRole.BASIC_USER_ROLE;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
