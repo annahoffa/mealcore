@@ -11,9 +11,6 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Setup npm
-        uses: actions/setup-node@v2
-
       - name: Setup Java JDK
         uses: actions/setup-java@v1.4.3
         with:
@@ -24,3 +21,5 @@ jobs:
         run: |
           cd spring-app/
           mvn -B package --file pom.xml
+        env:
+          CI: ""
