@@ -187,4 +187,12 @@
             </plugin>
         </plugins>
     </reporting>
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <active-profile>test</active-profile>
+            </properties>
+        </profile>
+    </profiles>
 </project>
