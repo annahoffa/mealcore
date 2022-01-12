@@ -1,26 +1,22 @@
 .product-info-container {
     display: flex;
     flex-direction: column;
-    width: 60%;
-    //width: calc(100% - 36px); // TODO: check who set that and why
+    width: 80%;
 
     .product-btn-group {
         display: inline-flex;
         justify-content: flex-end;
         align-items: baseline;
+        padding: 2rem;
 
         .warning-icon {
             margin-right: 1em;
         }
     }
 
-    .photo-container{
-        max-width: 100%;
-        overflow: hidden;
-    }
-
     .product-info {
         text-align: center;
+        width: 100%;
     }
 
     .product-table {
@@ -52,6 +48,6 @@
     border-radius: 5px;
 
     & > * {
-        padding: 2em;
+        padding: 0 2em 2em 2em;
     }
 }
