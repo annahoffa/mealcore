@@ -1,11 +1,11 @@
 import { Button, InputBase, makeStyles, Typography } from '@material-ui/core';
-import Skeleton from '@material-ui/lab/Skeleton';
 import ItemsGrid from '../../components/response-items-grid/response-items-grid.component';
 import Modal from '@material-ui/core/Modal';
 import React, { useContext, useState } from 'react';
 import { DashboardProviderContext } from './dashboard-provider';
 import SearchIcon from '@material-ui/icons/Search';
 import ProductInfo from '../../components/product-info/product-info.component';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -83,7 +83,7 @@ const DashboardModal = ({ open, setOpen }) => {
               case 'idle':
                 break;
               case 'loading':
-                return <Skeleton />;
+                return <div style={{width: '100%', marginTop: '5rem', textAlign:'center'}}><CircularProgress color="success" size='5rem'/></div>;
               case 'success':
                 return (
                   <>

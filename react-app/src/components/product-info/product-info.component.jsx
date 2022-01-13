@@ -4,7 +4,7 @@ import apiCall from '../../utils/apiCall';
 import { Button, Grid, Tooltip, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Skeleton from '@material-ui/lab/Skeleton';
+import CircularProgress from '@mui/material/CircularProgress';
 import MainContent from '../../components/main-content/main-content.component';
 import AllergenWarning from '../../components/allergen-warning/allergen-warning.component';
 import DefineProductQuantity from '../../components/define-product-quantity/define-product-quantity.component';
@@ -201,7 +201,7 @@ const ProductInfo = ({ id, handleClose, date }) => {
 
     return (
       <>
-        {state === undefined ? <Skeleton /> : getProductInfo(state)}
+        {state === undefined ? <CircularProgress color="success" size='5rem'/> : getProductInfo(state)}
       </>
     );
   }
