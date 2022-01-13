@@ -105,11 +105,21 @@ const ProductInfoPage = (props) => {
 
 
   const getNutrients = (nutrients) => {
+const isNutrientsEmpty = true;
     function formatNutrients(data) {
       if (data.size < 1)
         return data;
       else
         return (data.charAt(0).toUpperCase() + data.slice(1)).replace('_', ' ');
+    }
+    function isEmptyNutrients(data) {
+      for ( const key of Object.keys(data)) 
+        if (isNotEmpty(key))
+          return false;
+      return true;
+    }
+    function isNotEmpty(key){
+      return key !== 'id' && key !== 'productId' && nutrients[key];
     }
 
     return (
@@ -120,22 +130,18 @@ const ProductInfoPage = (props) => {
               <TableCell colSpan={2}><Typography variant='subtitle2'>Wartości odżywcze w 100g</Typography></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {!nutrients && <TableRow hover>
-              <TableCell colSpan={2}>Brak danych</TableCell>
-            </TableRow>}
+          <TableBody id='nutrients-rows'>
             {nutrients && Object.keys(nutrients).map((key) => {
-              const value = nutrients[key];
-              if (key === 'id' || key === 'productId' || value === '' || value === null)
-                return null;
-
-              return (
+              return isNotEmpty(key) ? (
                 <TableRow hover key={key}>
                   <TableCell>{formatNutrients(key)}</TableCell>
-                  <TableCell >{value}</TableCell>
+                  <TableCell >{nutrients[key]}</TableCell>
                 </TableRow>
-              );
+              ) : null;
             })}
+            { nutrients && isEmptyNutrients(nutrients) && <TableRow hover>
+              <TableCell colSpan={2} align='center'>Brak danych</TableCell>
+            </TableRow>}
           </TableBody>
         </Table>
       </TableContainer>
