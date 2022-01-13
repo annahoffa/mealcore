@@ -9,6 +9,7 @@ import pl.mealcore.annotations.RestApiController;
 import pl.mealcore.dto.account.User;
 import pl.mealcore.dto.allergicReaction.AllergicReaction;
 import pl.mealcore.dto.allergicReaction.AllergySymptomsList;
+import pl.mealcore.dto.response.BasicResponse;
 import pl.mealcore.helper.DateHelper;
 import pl.mealcore.service.UserAllergicReactionService;
 import pl.mealcore.service.UserService;
@@ -28,15 +29,17 @@ public class UserAllergicReactionController {
 
     @ResponseBody
     @PutMapping("/editAllergySymptoms")
-    ResponseEntity<Void> editAllergicReaction(@RequestBody AllergySymptomsList allergySymptomsList) {
+    ResponseEntity<BasicResponse> editAllergicReaction(@RequestBody AllergySymptomsList allergySymptomsList) {
         User user = userService.getByLogin(getLoggedUserLogin());
         if (isAuthenticated()) {
             userAllergicReactionService.updateAllergySymptoms(allergySymptomsList.getSymptomIds(), allergySymptomsList.getDate(), user);
             log.info("SUCCESSFUL add AllergicSymptoms to user '{}' ", user.getLogin());
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>(new BasicResponse().withSuccess(true).withMessage("Poprawnie dodano/zmodyfikowano symptomy."),
+                    HttpStatus.OK);
         } else {
             log.info("FAILED addAllergicReaction, no user in session");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return new ResponseEntity<>(new BasicResponse().withSuccess(false).withMessage("Nie znaleziono zalogowanego użytkownika."),
+                    HttpStatus.UNAUTHORIZED);
         }
     }
 

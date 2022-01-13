@@ -48,10 +48,10 @@
         flex-wrap: wrap;
         row-gap: 10px;
         column-gap: 10px;
-        width: 80%; //of the parent container
         list-style: none;
         padding: 0;
         text-align: center;
+        justify-content: space-between;
 
         & > li {
             min-width: 80px;
