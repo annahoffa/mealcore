@@ -71,7 +71,7 @@ const DashboardPage = () => {
                 </IconButton>
               </Tooltip>
               <ToolbarManageNote />
-              <ToolbarManageAllergySymptoms />
+              <ToolbarManageAllergySymptoms date={date} />
             </div>
             {userProductsQuery.isSuccess ?
               <CategorizeProducts userProducts={userProductsQuery.data.products} date={date} /> : <Skeleton />}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
 
@@ -9,31 +9,35 @@ import EditIcon from '@material-ui/icons/Edit';
 import DefineProductQuantity from '../define-product-quantity/define-product-quantity.component';
 
 import './dashboard-product.styles.scss';
+import { DashboardProviderContext } from '../../pages/dashboard/dashboard-provider';
 
 
 const DashboardProduct = ({ item: product, date }) => {
+  const {
+    userProductsQuery,
+  } = useContext(DashboardProviderContext);
 
   const modifyProductQuantity = () => {
-    apiCall(`/api/user/editProduct?productId=${product.id}&quantity=${productQuantity}&category=${productCategory}${date ? `&date=${date}` : ''}`, {
+    apiCall(`/api/user/editProduct?productId=${product.id}&quantity=${productQuantity}&category=${product.category}${date ? `&date=${date}` : ''}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    .then(() => {window.location.reload()})
+    .then(() => {userProductsQuery.refetch()})
     .catch(error => console.log(error));
 
     closeQuantityDialog();
   };
 
   const deleteProductFromDashboard = () => {
-    apiCall(`/api/user/removeProduct?productId=${product.id}${date ? `&date=${date}` : ''}`, {
+    apiCall(`/api/user/removeProduct?productId=${product.id}&category=${product.category}${date ? `&date=${date}` : ''}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    .then(() => {window.location.reload()})
+    .then(() => {userProductsQuery.refetch()})
     .catch(error => console.log(error));
   };
 

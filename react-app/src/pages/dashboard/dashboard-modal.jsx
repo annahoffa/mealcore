@@ -32,7 +32,7 @@ const DashboardModal = ({ open, setOpen }) => {
   const { paper, modal } = useStyles();
   const [searchValue, setSearchValue] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
   const {
     searchProductMutation,
     date,
@@ -42,6 +42,11 @@ const DashboardModal = ({ open, setOpen }) => {
   const handleSearchProduct = () => {
     searchProductMutation.mutate({ product: searchValue });
   };
+
+  const handleSetPageNumber = (pageNumber) => {
+    searchProductMutation.mutate({ product: searchValue, page: pageNumber-1 });
+    setPageNumber(pageNumber)
+  }
 
   return (
     <Modal className={modal + ' dashboard-modal'} open={open} onClose={() => {
@@ -91,8 +96,8 @@ const DashboardModal = ({ open, setOpen }) => {
                   <>
                     <h2>Wynik wyszukiwania:</h2>
                     <ItemsGrid items={searchProductMutation.data.products} onSelect={setSelectedItem} />
-                    <Pagination count={1} defaultPage={0} page={pageNumber}
-                      onChange={(event, page) => setPageNumber(page)} />
+                    <Pagination count={Math.ceil(searchProductMutation.data.productCount / 20)} defaultPage={1} page={pageNumber}
+                      onChange={(event, page) => handleSetPageNumber(page)} />
                   </>
                 );
             }
