@@ -19,7 +19,7 @@ const SearchResultsPage = (props) => {
   return (
     <MainContent>
       <h1>Wyniki wyszukiwania:</h1>
-      {productsQuery.isSuccess ? <><ItemsGrid items={productsQuery.data} /><Pagination count={1} defaultPage={0} page={pageNumber}
+      {productsQuery.isSuccess ? <><ItemsGrid items={productsQuery.data.products} /><Pagination count={1} defaultPage={0} page={pageNumber}
           onChange={(event, page) => setPageNumber(page)} /></> :
         <Loader width='35px' height='35px' />}
     </MainContent>

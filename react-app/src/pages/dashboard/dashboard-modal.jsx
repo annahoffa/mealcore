@@ -90,7 +90,7 @@ const DashboardModal = ({ open, setOpen }) => {
                 return (
                   <>
                     <h2>Wynik wyszukiwania:</h2>
-                    <ItemsGrid items={searchProductMutation.data} onSelect={setSelectedItem} />
+                    <ItemsGrid items={searchProductMutation.data.products} onSelect={setSelectedItem} />
                     <Pagination count={1} defaultPage={0} page={pageNumber}
                       onChange={(event, page) => setPageNumber(page)} />
                   </>
