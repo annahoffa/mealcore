@@ -3,7 +3,7 @@ import { AuthContext } from '../../appContext/providers';
 import apiCall from '../../utils/apiCall';
 import MainContent from '../../components/main-content/main-content.component';
 import ItemsGrid from '../../components/response-items-grid/response-items-grid.component';
-import { Skeleton } from '@material-ui/lab';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@material-ui/core';
 
 
@@ -33,7 +33,7 @@ const ProblematicProductsSummaryPage = () => {
         To produkty, które pojawiały się w Twoich listach gdy czułeś/aś się źle.<br />Ich spożycie może przyczynić się
         do zwiększenia objawów alergicznych.
       </Typography>
-      {productsSummary === undefined ? <Skeleton /> : <ItemsGrid items={productsSummary.products} />}
+      {productsSummary === undefined ? <CircularProgress color="success" size='5rem'/> : <ItemsGrid items={productsSummary.products} />}
     </MainContent>
   );
 };
