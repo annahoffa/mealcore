@@ -8,25 +8,24 @@
     border-radius: 6px;
 
     .grid-item {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width: inherit;
+        display: grid;
+        width: 100%;
         padding: 1.5rem;
+        grid-template-columns: auto 1fr;
+        grid-column-gap: 1.5rem;
 
-        .image-container {
-            width: 10rem;
-            height: 10rem;
-            margin-right: 2.5rem;
-
-            img {
-                object-fit: cover;
-                width: inherit;
-                height: inherit;
-                border-radius: 3px;
-            }
+        & > h6 {
+            font-size: 1.25rem;
+            font-family: Poppins, sans-serif;
+            font-weight: 500;
+            line-height: 1.6;
+            overflow: hidden;
+            height: 160px;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
         }
-
     }
 
     .warning-icon {

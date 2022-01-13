@@ -47,8 +47,8 @@ const DashboardProvider = (props) => {
       { enabled: authContext.isLoggedIn });
 
 
-    const mutation = async(product) => {
-      return await apiCall(`/api/products/suggestions?query=${product}`);
+    const mutation = async({ product, page = 0 }) => {
+      return await apiCall(`/api/products/suggestions?query=${product}&page=${page}`);
     };
 
     const searchProductMutation = useMutation(mutation);

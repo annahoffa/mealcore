@@ -5,6 +5,7 @@ import React, { useContext, useState } from 'react';
 import { DashboardProviderContext } from './dashboard-provider';
 import SearchIcon from '@material-ui/icons/Search';
 import ProductInfo from '../../components/product-info/product-info.component';
+import { Pagination } from '@material-ui/lab';
 import CircularProgress from '@mui/material/CircularProgress';
 
 
@@ -14,16 +15,16 @@ const useStyles = makeStyles((theme) => ({
     width: '80vw',
     height: '80vh',
     margin: 'auto',
-    overflow: 'auto',
+    overflow: 'hidden',
     gridTemplateRows: '0 1fr',
   },
   paper: {
-    height: 'fit-content',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     minHeight: '100%',
+    overflow: 'auto',
   },
 }));
 
@@ -31,6 +32,7 @@ const DashboardModal = ({ open, setOpen }) => {
   const { paper, modal } = useStyles();
   const [searchValue, setSearchValue] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
+  const [pageNumber, setPageNumber] = useState(0);
   const {
     searchProductMutation,
     date,
@@ -38,7 +40,7 @@ const DashboardModal = ({ open, setOpen }) => {
   } = useContext(DashboardProviderContext);
 
   const handleSearchProduct = () => {
-    searchProductMutation.mutate(searchValue);
+    searchProductMutation.mutate({ product: searchValue });
   };
 
   return (
@@ -88,7 +90,9 @@ const DashboardModal = ({ open, setOpen }) => {
                 return (
                   <>
                     <h2>Wynik wyszukiwania:</h2>
-                    <ItemsGrid items={searchProductMutation.data.products} onSelect={setSelectedItem} />
+                    <ItemsGrid items={searchProductMutation.data} onSelect={setSelectedItem} />
+                    <Pagination count={1} defaultPage={0} page={pageNumber}
+                      onChange={(event, page) => setPageNumber(page)} />
                   </>
                 );
             }

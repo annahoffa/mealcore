@@ -65,7 +65,7 @@ const UserAccountSettings = ({ tabName }) => {
 
       <div className='avatar-container'>
         <div className='avatar-placeholder' />
-        <div>
+        <div className='settings-element'>
           <SettingsModalDialog
             dialogName='avatarDialog'
             openStatus={allDialogs.avatarDialog}
@@ -80,9 +80,9 @@ const UserAccountSettings = ({ tabName }) => {
 
       <div className='text-settings'>
         <div className='settings-element'>
-          <div className='icon-text-clip'>
-            <EmailIcon />
-          </div>
+          {/*<div className='icon-text-clip'>*/}
+          {/*  <EmailIcon />*/}
+          {/*</div>*/}
           <div className='modal-button'>
             <SettingsModalDialog
               dialogName='emailDialog'
@@ -97,9 +97,9 @@ const UserAccountSettings = ({ tabName }) => {
           </div>
         </div>
         <div className='settings-element'>
-          <div className='icon-text-clip'>
-            <LockIcon />
-          </div>
+          {/*<div className='icon-text-clip'>*/}
+          {/*  <LockIcon />*/}
+          {/*</div>*/}
           <div className='modal-button'>
             <SettingsModalDialog
               dialogName='passwordDialog'

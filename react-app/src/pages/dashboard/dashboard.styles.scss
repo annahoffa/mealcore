@@ -23,4 +23,19 @@
             padding: 0.5rem;
         }
     }
+
+    .grid-placeholder {
+        height: unset;
+    }
+
+    .MuiPagination-ul {
+        margin: 50px auto;
+        justify-content: center;
+    }
+}
+
+.toolbar-margin-bottom {
+    @media (min-width: 960px) {
+        margin-bottom: 60px;
+    }
 }

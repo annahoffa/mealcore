@@ -87,7 +87,7 @@ const CategorizeProducts = ({ userProducts, date }) => {
               <ReactionRatingBar category='BREAKFAST'
                 savedReaction={userReactions.find(item => item.category === 'BREAKFAST')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['BREAKFAST']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['BREAKFAST']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -98,7 +98,7 @@ const CategorizeProducts = ({ userProducts, date }) => {
               <ReactionRatingBar category='LUNCH'
                 savedReaction={userReactions.find(item => item.category === 'LUNCH')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['LUNCH']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['LUNCH']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -109,7 +109,7 @@ const CategorizeProducts = ({ userProducts, date }) => {
               <ReactionRatingBar category='DINNER'
                 savedReaction={userReactions.find(item => item.category === 'DINNER')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['DINNER']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['DINNER']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -120,7 +120,7 @@ const CategorizeProducts = ({ userProducts, date }) => {
               <ReactionRatingBar category='SUPPER'
                 savedReaction={userReactions.find(item => item.category === 'SUPPER')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['SUPPER']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['SUPPER']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -131,7 +131,7 @@ const CategorizeProducts = ({ userProducts, date }) => {
               <ReactionRatingBar category='SNACK'
                 savedReaction={userReactions.find(item => item.category === 'SNACK')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['SNACK']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['SNACK']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -142,7 +142,7 @@ const CategorizeProducts = ({ userProducts, date }) => {
               <ReactionRatingBar category='OTHER'
                 savedReaction={userReactions.find(item => item.category === 'OTHER')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['OTHER']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['OTHER']} component={DashboardProduct} date={date} />
           </div>
         }
       </div>)

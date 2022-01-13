@@ -142,10 +142,16 @@ const ProductInfo = ({ id, handleClose, date }) => {
           <div className='warning-icon'>
             {productInfo.allergenWarning ? <AllergenWarning /> : null}
           </div>
-          <IconButton color='primary' onClick={openQuantityDialog} title='Add product to dashboard'
-            aria-label='Dodaj produkt do panelu'>
-            <AddCircleIcon />
-          </IconButton>
+          <Button
+            color='primary'
+            variant='outlined'
+            onClick={openQuantityDialog}
+            title='Dodaj produkt do panelu'
+            aria-label='Dodaj produkt do panelu'
+            startIcon={<AddCircleIcon />}
+          >
+            Dodaj produkt do panelu
+          </Button>
 
           {/*hidden modification dialog*/}
           <DefineProductQuantity quantityProps={quantityProps} apiCall={sendProductToDashboard} />

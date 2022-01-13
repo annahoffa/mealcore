@@ -50,8 +50,12 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isPopoverOpen = Boolean(anchorEl);
 
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleTogglePopover = (event) => {
+    if (anchorEl) {
+      setAnchorEl(null)
+    } else {
+      setAnchorEl(event.currentTarget);
+    }
   };
 
   const handlePopoverClose = () => {
@@ -84,8 +88,7 @@ const Header = () => {
         </Button>
       ) : (
         <IconButton
-          onMouseEnter={handlePopoverOpen}
-          onMouseLeave={handlePopoverClose}
+          onClick={handleTogglePopover}
           className={accountButton}
           aria-describedby='mouse-over-popover'
         >

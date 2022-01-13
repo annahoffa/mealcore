@@ -11,10 +11,10 @@ import DefineProductQuantity from '../define-product-quantity/define-product-qua
 import './dashboard-product.styles.scss';
 
 
-const DashboardProduct = ({ item: product }) => {
+const DashboardProduct = ({ item: product, date }) => {
 
   const modifyProductQuantity = () => {
-    apiCall(`/api/user/editProduct?productId=${product.id}&quantity=${productQuantity}`, {
+    apiCall(`/api/user/editProduct?productId=${product.id}&quantity=${productQuantity}&category=${productCategory}${date ? `&date=${date}` : ''}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const DashboardProduct = ({ item: product }) => {
   };
 
   const deleteProductFromDashboard = () => {
-    apiCall(`/api/user/removeProduct?productId=${product.id}`, {
+    apiCall(`/api/user/removeProduct?productId=${product.id}${date ? `&date=${date}` : ''}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -40,6 +40,7 @@ const DashboardProduct = ({ item: product }) => {
   //--- Quantity modification dialog ---
 
   const [productQuantity, setProductQuantity] = useState('');
+  const [productCategory, setProductCategory] = useState(null);
 
   const handleChange = (event) => {
     setProductQuantity(event.target.value);
@@ -58,6 +59,8 @@ const DashboardProduct = ({ item: product }) => {
   const quantityProps = {
     productQuantity,
     setProductQuantity,
+    productCategory,
+    setProductCategory,
     open,
     openQuantityDialog,
     closeQuantityDialog,

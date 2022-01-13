@@ -1,6 +1,6 @@
 import React, { createContext } from 'react';
 import useLocalStorage from '../utils/useLocalStorageHook';
-
+import { useHistory } from 'react-router-dom';
 
 let defaultState = {
   isLoggedIn: false,
@@ -12,6 +12,7 @@ export const AuthContext = createContext(defaultState);
 
 
 const ContextProvider = (props) => {
+  const history = useHistory();
   const [isAuth, setAuth] = useLocalStorage({ ...defaultState }, 'userAuth');
 
   const logIn = () => {
@@ -24,6 +25,7 @@ const ContextProvider = (props) => {
 
   const logOut = () => {
     setAuth(prevState => ({ ...prevState, isLoggedIn: false, isAdmin: false }));
+    history.push({ pathname: '/logout' });
   };
 
   return (
