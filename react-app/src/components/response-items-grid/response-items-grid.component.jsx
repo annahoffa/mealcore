@@ -13,7 +13,7 @@ const ItemsGrid = ({ items, onSelect }) => {
     items.map((item) => {
       if (onSelect) {
         return (
-          <Grid item xs={12} id={item.id} onClick={()=>{onSelect(item.id)}}>
+          <Grid item xs={12} sm={12} md={12} lg={6} xl={4} id={item.id} onClick={()=>{onSelect(item.id)}}>
             {/*TODO: Adjust for products which have both allergen warnings and reaction warnings*/}
             <div
               className={`grid-link ${item.allergenWarning ? 'grid-link-with-warning' : ''} ${!item.allergenWarning && item.badReaction ? 'grid-link-with-bad-reaction' : ''}`}>
@@ -25,15 +25,13 @@ const ItemsGrid = ({ items, onSelect }) => {
                   {item.name}
                 </Typography>
               </div>
-              <div className='warning-icon'>
-                {item.allergenWarning ? <AllergenWarning /> : null}
-              </div>
+              {item.allergenWarning && <div className='warning-icon'><AllergenWarning /></div>}
             </div>
           </Grid>
         );
       }
         return (
-          <Grid item xs={12} id={item.id}>
+          <Grid item xs={12} sm={12} md={12} lg={6} xl={4} id={item.id}>
             {/*TODO: Adjust for products which have both allergen warnings and reaction warnings*/}
             <Link
               className={`grid-link ${item.allergenWarning ? 'grid-link-with-warning' : ''} ${!item.allergenWarning && item.badReaction ? 'grid-link-with-bad-reaction' : ''}`}

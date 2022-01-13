@@ -50,7 +50,7 @@ const DashboardPage = () => {
     authContext.isLoggedIn ? (
       <div className='dashboard-container'>
         <Grid container style={{ width: '90%' }} spacing={8}>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} sm={12} md={12} lg={12} xl={4}>
             <Typography variant='h6'>Wybierz dzień:</Typography>
             <Calendar onDateChange={setDate} />
             <br />
@@ -61,7 +61,7 @@ const DashboardPage = () => {
                 currentValues={userProductsQuery.data} />
               : <Skeleton />}
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6} xl={4}>
             <Typography variant='h6'>Lista zjedzonych produktów:</Typography>
             <br />
             <div className={toolbar}>
@@ -76,7 +76,7 @@ const DashboardPage = () => {
             {userProductsQuery.isSuccess ?
               <CategorizeProducts userProducts={userProductsQuery.data.products} date={date} /> : <Skeleton />}
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6} xl={4}>
             <Typography variant='h6'>Dzienna aktywność:</Typography>
             <br />
             <DashboardExercisesToolbar />
