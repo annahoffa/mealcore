@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateRows: '0 1fr',
   },
   paper: {
+    height: 'fit-content',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],

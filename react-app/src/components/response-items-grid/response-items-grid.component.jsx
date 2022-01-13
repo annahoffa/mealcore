@@ -40,7 +40,7 @@ const ItemsGrid = ({ items, onSelect }) => {
                 <div className='image-container'>
                   <img src={item.images.find(obj => obj.url)?.url ?? ''} alt='Product' />
                 </div>
-                <Typography variant='h6'>
+                <Typography variant='body1'>
                   {item.name}
                 </Typography>
               </div>

@@ -50,9 +50,10 @@ public class ProductServiceImpl implements ProductService {
         suggestions.addAll(productRepository.findAllByNameStartsWithAndApprovedIsTrue(text));
         suggestions.addAll(productRepository.findAllByNameContainsAndApprovedIsTrue(" " + text + " "));
         suggestions.addAll(productRepository.findAllByNameContainsAndApprovedIsTrue(text));
+        Map<String, Addition> additionsMap = additionService.getAdditionsMap();
         return suggestions.stream()
                 .filter(distinctEntitiesById())
-                .map(this::createBaseProduct)
+                .map(p -> createBaseProduct(p, additionsMap))
                 .collect(Collectors.toList());
     }
 
@@ -155,6 +156,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product createBaseProduct(ProductEntity entity, Map<String, Addition> additions) {
+        return new Product(entity, additionService.extractAdditives(entity, additions));
+    }
+
+    @Override
     public boolean addProduct(Product product, User user) {
         try {
             if (nonNull(product) && nonNull(product.getName())) {
@@ -196,10 +202,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getUnapprovedProducts() {
-        if (isAdmin())
+        if (isAdmin()) {
+            Map<String, Addition> additionsMap = additionService.getAdditionsMap();
             return productRepository.findAllByApprovedIsFalse().stream()
-                    .map(this::createBaseProduct)
+                    .map(p -> createBaseProduct(p, additionsMap))
                     .collect(Collectors.toList());
+        }
         else
             return Collections.emptyList();
     }

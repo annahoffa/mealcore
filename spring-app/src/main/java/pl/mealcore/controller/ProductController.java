@@ -32,7 +32,7 @@ public class ProductController {
     private final UserProductService userProductService;
     private final AdditionService additionService;
     private final UserService userService;
-    private static final int PAGE_SIZE = 25;
+    private static final int PAGE_SIZE = 20;
 
     @ResponseBody
     @GetMapping("/suggestions")
