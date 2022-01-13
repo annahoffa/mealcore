@@ -12,6 +12,7 @@ import pl.mealcore.dto.product.Product;
 import pl.mealcore.dto.product.ProductSortType;
 import pl.mealcore.dto.product.wrapper.ProductPL;
 import pl.mealcore.dto.response.BasicResponse;
+import pl.mealcore.dto.response.SuggestionsResponse;
 import pl.mealcore.service.AdditionService;
 import pl.mealcore.service.ProductService;
 import pl.mealcore.service.UserProductService;
@@ -36,16 +37,17 @@ public class ProductController {
 
     @ResponseBody
     @GetMapping("/suggestions")
-    ResponseEntity<List<Product>> suggestions(@RequestParam String query,
-                                              @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-                                              @RequestParam(name = "kcalFrom", required = false) Integer kcalFrom,
-                                              @RequestParam(name = "kcalTo", required = false) Integer kcalTo,
-                                              @RequestParam(name = "make", required = false) String makeQuery,
-                                              @RequestParam(name = "sortBy", required = false) ProductSortType sortType,
-                                              @RequestParam(name = "reverseSort", required = false) boolean reverseSort) {
+    ResponseEntity<SuggestionsResponse> suggestions(@RequestParam String query,
+                                                    @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                                                    @RequestParam(name = "kcalFrom", required = false) Integer kcalFrom,
+                                                    @RequestParam(name = "kcalTo", required = false) Integer kcalTo,
+                                                    @RequestParam(name = "make", required = false) String makeQuery,
+                                                    @RequestParam(name = "sortBy", required = false) ProductSortType sortType,
+                                                    @RequestParam(name = "reverseSort", required = false) boolean reverseSort) {
         if (query.length() >= 2) {
             User user = userService.getByLogin(getLoggedUserLogin());
             List<Product> suggestions = productService.getSuggestionsByName(query);
+            int productCount = suggestions.size();
             suggestions = productService.applyFilters(suggestions, kcalFrom, kcalTo, makeQuery);
             suggestions = productService.sort(suggestions, sortType, reverseSort).stream()
                     .skip((long) PAGE_SIZE * page)
@@ -57,7 +59,7 @@ public class ProductController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             log.info("SUCCESS products suggestions, query: '{}'", query);
-            return new ResponseEntity<>(suggestions, HttpStatus.OK);
+            return new ResponseEntity<>(new SuggestionsResponse(suggestions, productCount), HttpStatus.OK);
         }
         log.info("FAILED products suggestions, query is to short: '{}'", query);
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

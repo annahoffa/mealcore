@@ -139,7 +139,7 @@ const isNutrientsEmpty = true;
                 </TableRow>
               ) : null;
             })}
-            { nutrients && isEmptyNutrients(nutrients) && <TableRow hover>
+            { !nutrients || isEmptyNutrients(nutrients) && <TableRow hover>
               <TableCell colSpan={2} align='center'>Brak danych</TableCell>
             </TableRow>}
           </TableBody>

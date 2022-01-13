@@ -88,7 +88,7 @@ const DashboardModal = ({ open, setOpen }) => {
                 return (
                   <>
                     <h2>Wynik wyszukiwania:</h2>
-                    <ItemsGrid items={searchProductMutation.data} onSelect={setSelectedItem} />
+                    <ItemsGrid items={searchProductMutation.data.products} onSelect={setSelectedItem} />
                   </>
                 );
             }

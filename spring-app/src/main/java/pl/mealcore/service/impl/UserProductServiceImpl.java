@@ -92,11 +92,11 @@ public class UserProductServiceImpl implements UserProductService {
                 value += 2;
             }
 
-        if (count > 0) {
+        if (count >= 5) {
             double score = value / count;
-            if (score > 3)
+            if (score > 4)
                 return ReactionValue.GOOD;
-            if (score < 3)
+            if (score < 2)
                 return ReactionValue.BAD;
         }
         return ReactionValue.NONE;

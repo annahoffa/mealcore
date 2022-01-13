@@ -19,7 +19,7 @@ const SearchResultsPage = (props) => {
   return (
     <MainContent>
       <h1>Wynik wyszukiwania:</h1>
-      {state === undefined ? <CircularProgress color="success" size='5rem'/> : <ItemsGrid items={state} />}
+      {state === undefined ? <CircularProgress color="success" size='5rem'/> : <ItemsGrid items={state.products} />}
     </MainContent>
   );
 };
