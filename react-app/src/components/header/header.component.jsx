@@ -25,8 +25,11 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'space-between',
   },
   logoContainer: {
+    fontSize: '1rem',
+    color: '#20C34E',
     height: '100%',
     width: '10%',
+    textDecoration: 'none',
   },
   menuButton: {
     marginLeft: '2rem',
