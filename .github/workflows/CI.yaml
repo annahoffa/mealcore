@@ -1,0 +1,39 @@
+name: CI
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 15
+
+#      - name: Set up MySQL
+#        env:
+#          DB_DATABASE: test_db
+#          DB_USER: root
+#          DB_PASSWORD: root
+#        run: |
+#          sudo /etc/init.d/mysql start
+#          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: Build with Maven
+        run: |
+          cd spring-app/
+          mvn test --file pom.xml -P test
+        env:
+          CI: ""
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: spring-app/target/surefire-reports/*.xml
