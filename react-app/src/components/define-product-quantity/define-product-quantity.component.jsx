@@ -12,7 +12,7 @@ const dishCategories = [
   { id: 9, label: 'Inne', query: 'OTHER' },
 ];
 
-const DefineProductQuantity = ({ quantityProps, apiCall }) => (
+const DefineProductQuantity = ({ quantityProps, apiCall, showCategory }) => (
   <Dialog open={quantityProps.open} onClose={quantityProps.closeQuantityDialog}>
     <DialogContent>
       <DialogContentText>
@@ -33,18 +33,19 @@ const DefineProductQuantity = ({ quantityProps, apiCall }) => (
         margin='dense'
         fullWidth
       />
-      {/*<Autocomplete*/}
-      {/*  value={dishCategories.find(dish => dish.query === quantityProps.productCategory)}*/}
-      {/*  onChange={(event, newValue) => {*/}
-      {/*    quantityProps.setProductCategory(newValue?.query);*/}
-      {/*  }}*/}
-      {/*  id='select-dish-category'*/}
-      {/*  sx={{ width: 300 }}*/}
-      {/*  options={dishCategories}*/}
-      {/*  getOptionLabel={(option) => option.label}*/}
-      {/*  noOptionsText='Nie znaleziono'*/}
-      {/*  renderInput={(params) => <TextField {...params} label='Wybierz kategorię posiłku...' />}*/}
-      {/*/>*/}
+      {showCategory &&
+        <Autocomplete
+          value={dishCategories.find(dish => dish.query === quantityProps.productCategory)}
+          onChange={(event, newValue) => {
+            quantityProps.setProductCategory(newValue?.query);
+          }}
+          id='select-dish-category'
+          sx={{ width: 300 }}
+          options={dishCategories}
+          getOptionLabel={(option) => option.label}
+          noOptionsText='Nie znaleziono'
+          renderInput={(params) => <TextField {...params} label='Wybierz kategorię posiłku...' />}
+        />}
     </DialogContent>
     <DialogActions>
       <Button onClick={quantityProps.closeQuantityDialog}>Anuluj</Button>

@@ -12,7 +12,7 @@ import DefineProductQuantity from '../../components/define-product-quantity/defi
 import './product-info.styles.scss';
 
 
-const ProductInfo = ({ id, handleClose, date }) => {
+const ProductInfo = ({ id, handleClose, date, handleCloseModal }) => {
     const productId = id; // query extracted from the browser's url field
     let history = useHistory();
     const [state, setState] = useState();
@@ -32,6 +32,7 @@ const ProductInfo = ({ id, handleClose, date }) => {
       })
       .then(() => {
         closeQuantityDialog();
+        handleCloseModal()
         history.push({ pathname: '/dashboard' });
       })
       .catch(error => console.log(error));
@@ -154,7 +155,7 @@ const ProductInfo = ({ id, handleClose, date }) => {
           </Button>
 
           {/*hidden modification dialog*/}
-          <DefineProductQuantity quantityProps={quantityProps} apiCall={sendProductToDashboard} />
+          <DefineProductQuantity quantityProps={quantityProps} apiCall={sendProductToDashboard} showCategory />
 
         </div>
 

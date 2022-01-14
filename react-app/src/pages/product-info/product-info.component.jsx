@@ -171,7 +171,7 @@ const ProductInfoPage = (props) => {
           </Button>}
 
           {/*hidden modification dialog*/}
-          <DefineProductQuantity quantityProps={quantityProps} apiCall={sendProductToDashboard} />
+          <DefineProductQuantity quantityProps={quantityProps} apiCall={sendProductToDashboard} showCategory />
 
         </div>
         <Grid container justifyContent='space-between' alignItems='stretch' style={{ minHeight: '40vh' }}>

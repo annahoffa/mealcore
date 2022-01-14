@@ -48,19 +48,21 @@ const DashboardModal = ({ open, setOpen }) => {
     setPageNumber(pageNumber)
   }
 
+  const handleCloseModal = () => {
+    setOpen(false);
+    userProductsQuery.refetch();
+    setSearchValue('')
+    setSelectedItem(null)
+    searchProductMutation.reset()
+  }
+
   return (
-    <Modal className={modal + ' dashboard-modal'} open={open} onClose={() => {
-      setOpen(false);
-      userProductsQuery.refetch();
-      setSearchValue('')
-      setSelectedItem(null)
-      searchProductMutation.reset()
-    }}>
+    <Modal className={modal + ' dashboard-modal'} open={open} onClose={handleCloseModal}>
       {selectedItem ?
         <div className={paper}>
           <ProductInfo id={selectedItem} handleClose={() => {
             setSelectedItem(null);
-          }} date={date} />
+          }} handleCloseModal={handleCloseModal} date={date} />
         </div>
         :
         <div className={paper}>

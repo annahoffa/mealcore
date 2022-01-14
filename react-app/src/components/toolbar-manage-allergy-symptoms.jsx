@@ -43,12 +43,19 @@ const ToolbarManageAllergySymptoms = ({ date }) => {
 
   const userAllergicReactionQuery = useQuery(['userAllergicReaction', date],
     (context) => (
-      apiCall(`/api/user/getUserAllergicReaction&date=${context.queryKey[1]}`, {
+      apiCall(`/api/user/getUserAllergicReaction?date=${context.queryKey[1]}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       })),
+    {
+      onSuccess: (data) => {
+        const newCheckboxes = {};
+        data.map(reaction => reaction.id).forEach(id => newCheckboxes[id] = true);
+        setCheckboxes(newCheckboxes);
+      },
+    },
   );
 
   const closeAllergySymptomsDialog = () => {
@@ -73,8 +80,7 @@ const ToolbarManageAllergySymptoms = ({ date }) => {
     .catch(error => console.log(error));
 
     closeAllergySymptomsDialog();
-    const newUserAllergicReaction = await userAllergicReactionQuery.refetch();
-    console.log(newUserAllergicReaction);
+    await userAllergicReactionQuery.refetch();
   };
 
   const handleChange = (props) => (event) => {
