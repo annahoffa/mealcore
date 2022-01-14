@@ -5,8 +5,11 @@ import MainContent from '../../components/main-content/main-content.component';
 
 const PrivacyPolicyPage = () => (
   <MainContent>
+    <h5>POLITYKA PRYWATNOŚCI I ZARZĄDZANIE PLIKAMI COOKIES</h5>
     <p>
-      No content yet!
+      Strona nie zbiera żadnych informacji o użytkowniku.
+      <br />
+      Używane są tylko niezbędne pliki cookies służące do identyfikacji aktualnie trwającej sesji.
     </p>
   </MainContent>
 );

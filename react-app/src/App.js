@@ -11,7 +11,6 @@ import SearchResultsPage from './pages/search-results/search-results.component';
 import ProductInfoPage from './pages/product-info/product-info.component';
 import SuggestNewProductPage from './pages/suggest-new-product/suggest-new-product';
 import ReviewProductsSuggestions from './pages/review-products-suggestions/review-products-suggestions';
-import PricingPage from './pages/pricing/pricing.component';
 import MyAccountPage from './pages/my-account/my-account.component';
 import SignUpPage from './pages/sign-up/sign-up-page.component';
 import LogInPage from './pages/log-in/log-in-page.component';
@@ -47,7 +46,6 @@ const App = () => {
         <Route exact path='/productsearch' component={ProductSearchPage} />
         <Route path='/searchresults/:query' component={SearchResultsPage} />
         <Route path='/productinfo/:id' component={ProductInfoPage} />
-        <Route path='/pricing' component={PricingPage} />
         <Route path='/privacypolicy' component={PrivacyPolicyPage} />
         <Route path='/terms' component={TermsOfServicePage} />
 

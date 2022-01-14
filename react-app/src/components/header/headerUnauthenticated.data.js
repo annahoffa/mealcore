@@ -7,10 +7,6 @@ export const HEADER_DATA_UNAUTHENTICATED = [
     label: 'Wyszukiwarka produktów',
     href: '/productsearch',
   },
-  // {
-  //   label: 'Cennik',
-  //   href: '/pricing',
-  // },
   {
     label: 'Zaloguj',
     href: '/login',
