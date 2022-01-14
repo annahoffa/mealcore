@@ -15,7 +15,7 @@ const DashboardExercisesToolbar = () => {
   const { toolbar } = useStyles();
 
   return (
-    <div className={toolbar}>
+    <div className={toolbar + ' toolbar-margin-bottom'}>
       <ToolbarAddNewExercise />
     </div>
   );

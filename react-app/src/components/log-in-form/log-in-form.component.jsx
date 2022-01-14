@@ -1,9 +1,9 @@
-import React, {useContext, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
-import {AuthContext} from '../../appContext/providers';
+import { AuthContext } from '../../appContext/providers';
 
-import {Button, FormControl, InputLabel, makeStyles, OutlinedInput} from '@material-ui/core';
+import { Button, FormControl, InputLabel, makeStyles, OutlinedInput } from '@material-ui/core';
 
 import './log-in-form.styles.scss';
 
@@ -44,11 +44,14 @@ const LogInForm = () => {
         'Content-Type': 'application/json',
       },
     })
-    .then(() => {
+    .then((data) => {
       authContext.logIn();
-      history.replace({ pathname: '/dashboard' });
+      if(data.authorities.filter(element => element.authority === 'ADMIN').length > 0) {
+        authContext.logInAdmin();
+      }
+      history.replace({ pathname: '/' });
     })
-    .catch(() => alert("Wprowadzono zły login lub hasło"));
+    .catch(() => alert('Wprowadzono zły login lub hasło'));
   };
 
   const { root, input } = useStyles();

@@ -2,26 +2,18 @@ import React from 'react';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 
-export const HEADER_DATA_AUTHENTICATED = [
-  {
-    label: 'Panel użytkownika',
-    href: '/dashboard',
-  },
-  {
-    label: 'Raport produktów problematycznych',
-    href: '/summary'
-  },
-  {
-    label: 'Kalkulator BMI',
-    href: '/bmicalculator',
-  },
+export const HEADER_DATA_ADMIN = [
   {
     label: 'Wyszukiwarka produktów',
     href: '/productsearch',
-  }, //TODO: Make /suggestproduct into a button somewhere inside the product search, not a link from a header
+  },
   {
     label: 'Dodaj produkt',
     href: '/suggestproduct',
+  },
+  {
+    label: 'Oczekujące produkty',
+    href: '/waitlist',
   },
   {
     icon: <AccountCircleIcon />,
@@ -30,15 +22,7 @@ export const HEADER_DATA_AUTHENTICATED = [
   },
 ];
 
-export const DRAWER_DATA_AUTHENTICATED = [
-  {
-    label: 'Panel użytkownika',
-    href: '/dashboard',
-  },
-  {
-    label: 'Kalkulator BMI',
-    href: '/bmicalculator',
-  },
+export const DRAWER_DATA_ADMIN = [
   {
     label: 'Wyszukiwarka produktów',
     href: '/productsearch',
@@ -46,6 +30,10 @@ export const DRAWER_DATA_AUTHENTICATED = [
   {
     label: 'Dodaj produkt',
     href: '/suggestproduct',
+  },
+  {
+    label: 'Oczekujące produkty',
+    href: '/waitlist',
   },
   {
     label: 'Ustawienia konta',

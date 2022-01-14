@@ -42,7 +42,9 @@ $img-above-card-amount: calc(-0.4 * calc(0.6 * #{$feature-card-width}));
 
             .text-container {
                 margin: 0 0.4em 1.8em;
-
+                padding-top: 3em;
+                height: 10rem;
+                
                 .text-title {
                     margin-bottom: 0.6em;
                 }

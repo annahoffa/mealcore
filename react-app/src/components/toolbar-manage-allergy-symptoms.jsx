@@ -3,6 +3,7 @@ import apiCall from '../utils/apiCall';
 import IconButton from '@material-ui/core/IconButton';
 import { FaAllergies } from 'react-icons/fa';
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, FormControl, FormControlLabel, FormGroup, makeStyles, Tooltip } from '@material-ui/core';
+import { useQuery } from 'react-query';
 
 
 const useStyles = makeStyles(() => ({
@@ -15,7 +16,7 @@ const useStyles = makeStyles(() => ({
   }
 ));
 
-const ToolbarManageAllergySymptoms = () => {
+const ToolbarManageAllergySymptoms = ({ date }) => {
   const { icon } = useStyles();
 
   // function to get checkboxes with all allergies (unchecked) + user's allergies (checked)
@@ -30,48 +31,50 @@ const ToolbarManageAllergySymptoms = () => {
     return checkboxes;
   };
 
-  const [allAllergySymptoms, setAllAllergySymptoms] = useState([]);
-  const [userAllergySymptoms, setUserAllergySymptoms] = useState([]);
   const [checkboxes, setCheckboxes] = useState({});
-  useEffect(() => setCheckboxes(prepareCheckboxes(Array.from(allAllergySymptoms), Array.from(userAllergySymptoms))),
-    [allAllergySymptoms, userAllergySymptoms]);
 
-  //TODO: Refactor the endpoint names
-  useEffect(() => {
-    apiCall('/api/allergicReaction/getAll', {
+  const allergicReactionQuery = useQuery(['allergicReaction'],
+    () => apiCall('/api/allergicReaction/getAll', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    })
-    .then(data => setAllAllergySymptoms(data))
-    .catch(error => console.log(error));
+    }));
 
-    apiCall('/api/user/getUserAllergicReaction', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(data => setUserAllergySymptoms(data))
-    .catch(error => console.log(error));
-  }, []);
+  const userAllergicReactionQuery = useQuery(['userAllergicReaction', date],
+    (context) => (
+      apiCall(`/api/user/getUserAllergicReaction&date=${context.queryKey[1]}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })),
+  );
 
-  const editUserAllergySymptoms = () => {
+  const closeAllergySymptomsDialog = () => {
+    setOpen(false);
+    setCheckboxes({});
+  };
+
+  const editUserAllergySymptoms = async() => {
     const symptomIds = Object.keys(checkboxes);
     const userSymptomIds = symptomIds.filter((symptomId) => (checkboxes[symptomId])).map(Number);
 
-    apiCall('/api/user/editAllergySymptoms', {
+    await apiCall(`/api/user/editAllergySymptoms`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        date: date,
         symptomIds: userSymptomIds,
       }),
     })
-    .then(closeAllergySymptomsDialog())
     .catch(error => console.log(error));
+
+    closeAllergySymptomsDialog();
+    const newUserAllergicReaction = await userAllergicReactionQuery.refetch();
+    console.log(newUserAllergicReaction);
   };
 
   const handleChange = (props) => (event) => {
@@ -82,10 +85,6 @@ const ToolbarManageAllergySymptoms = () => {
 
   const openAllergySymptomsDialog = () => {
     setOpen(true);
-  };
-
-  const closeAllergySymptomsDialog = () => {
-    setOpen(false);
   };
 
   return (
@@ -104,7 +103,7 @@ const ToolbarManageAllergySymptoms = () => {
           </DialogContentText>
           <FormControl sx={{ m: 3 }} component='fieldset' variant='standard'>
             <FormGroup>
-              {allAllergySymptoms.map(checkboxItem =>
+              {allergicReactionQuery.data?.map(checkboxItem =>
                 <FormControlLabel
                   control={<Checkbox checked={checkboxes[checkboxItem.id]} onChange={handleChange(checkboxItem.id)} />}
                   label={checkboxItem.name}

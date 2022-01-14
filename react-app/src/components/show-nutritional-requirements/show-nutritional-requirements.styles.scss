@@ -1,25 +1,26 @@
 .daily-requirements-container {
-    width: 500px;
+    width: 100%;
     background-color: #F6F6F6;
     border-radius: 5px;
     padding: 0.2em 1em;
 
     .item {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         align-items: center;
         padding: 5px;
 
         .percentage-bar {
-            width: 300px;
+            width: 90%;
             position: relative;
+            margin-top: 5px;
 
             .numbers {
                 position: absolute;
                 z-index: 1;
-                left: 50%;
-                top: 50%;
-                transform: translateX(-50%) translateY(-50%);
+                width: 100%;
+                text-align: center;
             }
         }
     }

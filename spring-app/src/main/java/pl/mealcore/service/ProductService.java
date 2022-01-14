@@ -1,6 +1,7 @@
 package pl.mealcore.service;
 
 import pl.mealcore.dto.account.User;
+import pl.mealcore.dto.product.Addition;
 import pl.mealcore.dto.product.Product;
 import pl.mealcore.dto.product.ProductSortType;
 import pl.mealcore.dto.response.UserProductsResponse;
@@ -9,9 +10,10 @@ import pl.mealcore.model.product.ProductEntity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
-    List<Product> getSuggestionsByName(User user, String text);
+    List<Product> getSuggestionsByName(String text);
 
     List<Product> applyFilters(List<Product> suggestions, Integer kcalFrom, Integer kcalTo, String makeQuery);
 
@@ -23,7 +25,9 @@ public interface ProductService {
 
     UserProductsResponse getProductsWithNutrientsForUser(User user, Date parse);
 
-    Product createBaseProduct(ProductEntity entity, User user);
+    Product createBaseProduct(ProductEntity entity);
+
+    Product createBaseProduct(ProductEntity entity, Map<String, Addition> additions);
 
     boolean addProduct(Product product, User user);
 

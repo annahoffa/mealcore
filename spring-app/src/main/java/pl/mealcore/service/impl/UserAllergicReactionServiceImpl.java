@@ -12,11 +12,8 @@ import pl.mealcore.helper.DateHelper;
 import pl.mealcore.model.user.additionalData.UserAllergicReactionEntity;
 import pl.mealcore.service.UserAllergicReactionService;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,15 +31,13 @@ public class UserAllergicReactionServiceImpl implements UserAllergicReactionServ
     }
 
     @Override
-    public void updateAllergySymptoms(List<Long> symptomIds, Instant date, User user) {
-        Date truncatedDate = Date.from(
-                Optional.ofNullable(date).orElse(Instant.now())
-                        .truncatedTo(ChronoUnit.DAYS));
-        userAllergicReactionRepository.deleteAllByUserIdAndDate(user.getId(), DateHelper.getDateWithoutTime(truncatedDate, new Date()));
+    public void updateAllergySymptoms(List<Long> symptomIds, Date date, User user) {
+        Date dateWithoutTime = DateHelper.getDateWithoutTime(date, new Date());
+        userAllergicReactionRepository.deleteAllByUserIdAndDate(user.getId(), dateWithoutTime);
         var reactions = symptomIds.stream().map(id -> UserAllergicReaction.builder()
                 .allergicReaction(new AllergicReaction(id))
                 .user(user)
-                .date(truncatedDate).build())
+                .date(dateWithoutTime).build())
                 .map(UserAllergicReaction::toEntity)
                 .collect(Collectors.toList());
         userAllergicReactionRepository.saveAll(reactions);

@@ -26,7 +26,7 @@ import static java.util.Objects.nonNull;
 import static pl.mealcore.dto.product.ProductSortType.ALPHABETIC;
 import static pl.mealcore.helper.AuthenticationHelper.getLoggedUserLogin;
 import static pl.mealcore.helper.AuthenticationHelper.isAdmin;
-import static pl.mealcore.helper.CollectionsHelper.distinctById;
+import static pl.mealcore.helper.CollectionsHelper.distinctEntitiesById;
 
 @Slf4j
 @Service
@@ -45,21 +45,15 @@ public class ProductServiceImpl implements ProductService {
     private final UserExerciseService userExerciseService;
 
     @Override
-    public List<Product> getSuggestionsByName(User user, String text) {
-        List<Product> suggestions = productRepository.findAllByNameIgnoreCaseAndApprovedIsTrue(text).stream()
-                .map(p -> createBaseProduct(p, user))
-                .collect(Collectors.toList());
-        productRepository.findAllByNameStartsWithAndApprovedIsTrue(text).stream()
-                .map(p -> createBaseProduct(p, user))
-                .forEach(suggestions::add);
-        productRepository.findAllByNameContainsAndApprovedIsTrue(" " + text + " ").stream()
-                .map(p -> createBaseProduct(p, user))
-                .forEach(suggestions::add);
-        productRepository.findAllByNameContainsAndApprovedIsTrue(text).stream()
-                .map(p -> createBaseProduct(p, user))
-                .forEach(suggestions::add);
+    public List<Product> getSuggestionsByName(String text) {
+        List<ProductEntity> suggestions = productRepository.findAllByNameIgnoreCaseAndApprovedIsTrue(text);
+        suggestions.addAll(productRepository.findAllByNameStartsWithAndApprovedIsTrue(text));
+        suggestions.addAll(productRepository.findAllByNameContainsAndApprovedIsTrue(" " + text + " "));
+        suggestions.addAll(productRepository.findAllByNameContainsAndApprovedIsTrue(text));
+        Map<String, Addition> additionsMap = additionService.getAdditionsMap();
         return suggestions.stream()
-                .filter(distinctById())
+                .filter(distinctEntitiesById())
+                .map(p -> createBaseProduct(p, additionsMap))
                 .collect(Collectors.toList());
     }
 
@@ -104,7 +98,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProduct(User user, Long id) {
         return productRepository.findByIdAndApprovedIsTrue(id)
-                .map(p -> createBaseProduct(p, user))
+                .map(this::createBaseProduct)
+                .map(p -> userProductService.checkWarningsAndReactions(user, p))
                 .orElse(null);
     }
 
@@ -115,7 +110,8 @@ public class ProductServiceImpl implements ProductService {
         BasicNutrients nutrients = new BasicNutrients();
         List<UserProductEntity> userProducts = userProductRepository.findAllByUserIdAndDate(user.getId(), date);
         for (UserProductEntity userProduct : userProducts) {
-            Product product = createBaseProduct(userProduct.getProduct(), user);
+            Product product = createBaseProduct(userProduct.getProduct());
+            userProductService.checkWarningsAndReactions(user, product);
             product.setAddedQuantity(userProduct.getQuantity());
             product.setCategory(userProduct.getCategory());
             products.add(product);
@@ -155,10 +151,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createBaseProduct(ProductEntity entity, User user) {
-        Product product = new Product(entity, additionService.extractAdditives(entity));
-        userProductService.checkWarningsAndReactions(user, product);
-        return product;
+    public Product createBaseProduct(ProductEntity entity) {
+        return new Product(entity, additionService.extractAdditives(entity));
+    }
+
+    @Override
+    public Product createBaseProduct(ProductEntity entity, Map<String, Addition> additions) {
+        return new Product(entity, additionService.extractAdditives(entity, additions));
     }
 
     @Override
@@ -203,10 +202,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getUnapprovedProducts() {
-        if (isAdmin())
+        if (isAdmin()) {
+            Map<String, Addition> additionsMap = additionService.getAdditionsMap();
             return productRepository.findAllByApprovedIsFalse().stream()
-                    .map(p -> createBaseProduct(p, null))
+                    .map(p -> createBaseProduct(p, additionsMap))
                     .collect(Collectors.toList());
+        }
         else
             return Collections.emptyList();
     }

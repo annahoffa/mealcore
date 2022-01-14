@@ -8,9 +8,7 @@ import pl.mealcore.model.product.IngredientsEntity;
 import pl.mealcore.model.product.ProductEntity;
 import pl.mealcore.service.AdditionService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
@@ -24,7 +22,7 @@ public class AdditionServiceImpl implements AdditionService {
     private final AdditivesRepository additivesRepository;
 
     @Override
-    public List<Addition> extractAdditives(ProductEntity product) {
+    public List<Addition> extractAdditives(ProductEntity product, Map<String, Addition> additions) {
         String additivesString = Optional.ofNullable(product)
                 .map(ProductEntity::getIngredients)
                 .map(IngredientsEntity::getAdditives_tags)
@@ -32,11 +30,23 @@ public class AdditionServiceImpl implements AdditionService {
         List<Addition> result = new ArrayList<>();
         if (nonNull(additivesString))
             for (String name : additivesString.split(ADDITIVES_SEPARATOR))
-                result.add(additivesRepository.findFirstByName(name)
-                        .map(Addition::new)
-                        .orElse(new Addition(name, NO_INFORMATION_MESSAGE)));
+                result.add(additions.getOrDefault(name, new Addition(name, NO_INFORMATION_MESSAGE)));
         return result;
 
+    }
+
+    @Override
+    public List<Addition> extractAdditives(ProductEntity product) {
+        Map<String, Addition> additionMap = getAdditionsMap();
+        return extractAdditives(product, additionMap);
+    }
+
+    @Override
+    public Map<String, Addition> getAdditionsMap() {
+        Map<String, Addition> additionMap = new HashMap<>();
+        for (Addition addition : getAll())
+            additionMap.put(addition.getName(), addition);
+        return additionMap;
     }
 
     @Override

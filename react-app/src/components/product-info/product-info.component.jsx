@@ -1,25 +1,21 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
-import { AuthContext } from '../../appContext/providers';
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@material-ui/core';
+import { Button, Grid, Tooltip, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CircularProgress from '@mui/material/CircularProgress';
 import MainContent from '../../components/main-content/main-content.component';
 import AllergenWarning from '../../components/allergen-warning/allergen-warning.component';
 import DefineProductQuantity from '../../components/define-product-quantity/define-product-quantity.component';
-import AutoFitImage from 'react-image-autofit-frame';
 
 import './product-info.styles.scss';
 
 
-const ProductInfoPage = (props) => {
-    const productId = props.match.params.id; // query extracted from the browser's url field
+const ProductInfo = ({ id, handleClose, date }) => {
+    const productId = id; // query extracted from the browser's url field
     let history = useHistory();
     const [state, setState] = useState();
-    const authContext = useContext(AuthContext);
 
     useEffect(() => {
       apiCall(`/api/products/findById?productId=${productId}`)
@@ -28,7 +24,7 @@ const ProductInfoPage = (props) => {
     }, []);
 
     const sendProductToDashboard = () => {
-      apiCall(`/api/user/addProduct?productId=${productId}&quantity=${productQuantity}&category=${productCategory || 'OTHER'}`, {
+      apiCall(`/api/user/addProduct?productId=${productId}&quantity=${productQuantity}&category=${productCategory || 'OTHER'}&date=${date}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,8 +101,6 @@ const ProductInfoPage = (props) => {
 
 
     const getNutrients = (nutrients) => {
-      const isNutrientsEmpty = true;
-
       function formatNutrients(data) {
         if(data.size < 1)
           return data;
@@ -114,51 +108,40 @@ const ProductInfoPage = (props) => {
           return (data.charAt(0).toUpperCase() + data.slice(1)).replace('_', ' ');
       }
 
-      function isEmptyNutrients(data) {
-        for(const key of Object.keys(data))
-          if(isNotEmpty(key))
-            return false;
-        return true;
-      }
-
-      function isNotEmpty(key) {
-        return key !== 'id' && key !== 'productId' && nutrients[key];
-      }
-
       return (
-        <TableContainer component={Paper}>
-          <Table size='small' className='product-table'>
-            <TableHead>
-              <TableRow style={{ backgroundColor: '#e4e4e4' }}>
-                <TableCell colSpan={2}><Typography variant='subtitle2'>Wartości odżywcze w 100g</Typography></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody id='nutrients-rows'>
-              {nutrients && Object.keys(nutrients).map((key) => {
-                return isNotEmpty(key) ? (
-                  <TableRow hover key={key}>
-                    <TableCell>{formatNutrients(key)}</TableCell>
-                    <TableCell>{nutrients[key]}</TableCell>
-                  </TableRow>
-                ) : null;
-              })}
-              {!nutrients || isEmptyNutrients(nutrients) && <TableRow hover>
-                <TableCell colSpan={2} align='center'>Brak danych</TableCell>
-              </TableRow>}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <div>
+          {nutrients
+            ?
+            (nutrients && Object.keys(nutrients).map((key) => {
+              const value = nutrients[key];
+
+              if(['id', 'productId'].includes(key)) {
+                return null;
+              }
+              if(value === '' || value === null) {
+                return null;
+              }
+              return (
+                <div>
+                  {formatNutrients(key)} &nbsp; {value}
+                </div>
+              );
+            }))
+            :
+            <span>Brak danych</span>}
+        </div>
       );
     };
 
     const getProductInfo = (productInfo) => (
       <div className={`product-info-container ${productInfo.allergenWarning ? 'allergen-warning' : ''}`}>
 
+        <Button variant='contained' color='primary' onClick={handleClose}>Wróć</Button>
+
         <div className='product-btn-group'>
           <div className='warning-icon'>
             {productInfo.allergenWarning ? <AllergenWarning /> : null}
           </div>
-          {authContext.isLoggedIn &&
           <Button
             color='primary'
             variant='outlined'
@@ -168,62 +151,66 @@ const ProductInfoPage = (props) => {
             startIcon={<AddCircleIcon />}
           >
             Dodaj produkt do panelu
-          </Button>}
+          </Button>
 
           {/*hidden modification dialog*/}
           <DefineProductQuantity quantityProps={quantityProps} apiCall={sendProductToDashboard} />
 
         </div>
-        <Grid container justifyContent='space-between' alignItems='stretch' style={{ minHeight: '40vh' }}>
-          <Grid item xs={12} sm={12} md={12} lg={6}>
-            <AutoFitImage frameWidth='90%' frameHeight='90%' imgSize='contain'
-              imgSrc={productInfo.images.find(obj => obj.url)?.url ?? ''} />
-          </Grid>
-          <Grid container xs={12} sm={12} md={12} lg={6}>
-            <Grid item className='product-info'>
-              <Typography variant='h4' align='center'>
-                {productInfo.name}
-              </Typography>
-              <Typography variant='body1'>
-                <div>
-                  <br />
-                  {productInfo.brands && <><b>Marka: </b>{productInfo.brands}</>}
-                  <br />
-                  {productInfo.servingSize && <><b>Wielkość porcji: </b> {productInfo.servingSize}</>}
-                </div>
-              </Typography>
-            </Grid>
-            <Grid container justify='center' alignItems='center'>
-              <Grid item xs={12} md={12} className='ingredients-block'>
-                <br />
-                <Typography variant='subtitle2'>Składniki</Typography>
-                <div>
-                  {getIngredients(productInfo?.ingredients)}
-                </div>
 
-                <div className='additives'>
-                  <Typography variant='subtitle2'>Dodatki</Typography>
-                  <div>{getAdditives(productInfo?.ingredients)}</div>
-                  <br />
-                </div>
-              </Grid>
-            </Grid>
+        <Grid container align='center' justify='center' alignItems='center'>
+          <Grid item xs={12} md={4}>
+            <div className='photo-container'>
+              <img src={productInfo.images.find(obj => obj.url)?.url ?? ''} alt='Product' />
+            </div>
+          </Grid>
+          <Grid item xs={12} md={8} className='product-info'>
+            <Typography variant='h6' align='center'>
+              {productInfo.name}
+            </Typography>
+            <Typography variant='body2'>
+              Marka: {productInfo.brands || '\u2014'}
+              <br />
+              Wielkość porcji: {productInfo.servingSize || '\u2014'}
+            </Typography>
           </Grid>
         </Grid>
-        <Grid container justify='center' alignItems='center' xs={12} md={12}>
-          {getNutrients(productInfo.nutrients)}
+
+        <Grid container justify='center' alignItems='center'>
+          <Grid item xs={12} md={12} className='ingredients-block'>
+            <br />
+            <Typography variant='subtitle2'>Składniki:</Typography>
+            <div>
+              {getIngredients(productInfo?.ingredients)}
+            </div>
+
+            <div className='additives'>
+              <Typography variant='subtitle2'>Dodatki:</Typography>
+              <div>{getAdditives(productInfo?.ingredients)}</div>
+              <br />
+            </div>
+          </Grid>
         </Grid>
 
+        <Grid container justify='center' alignItems='center'>
+          <Grid item xs={12} md={12} className='nutrients-block'>
+            <Typography variant='subtitle2'>Wartości odżywcze w 100g:</Typography>
+            <br />
+            <div>
+              {getNutrients(productInfo.nutrients)}
+            </div>
+          </Grid>
+        </Grid>
 
       </div>
     );
 
-  return (
-    <MainContent>
-      {state === undefined ? <CircularProgress color="success" size='5rem'/> : getProductInfo(state)}
-    </MainContent>
-  );
-}
-  ;
+    return (
+      <>
+        {state === undefined ? <CircularProgress color="success" size='5rem'/> : getProductInfo(state)}
+      </>
+    );
+  }
+;
 
-export default ProductInfoPage;
+export default ProductInfo;

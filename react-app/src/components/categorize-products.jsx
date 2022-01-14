@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 // TODO: api refactor + component atomization
-const CategorizeProducts = ({ userProducts }) => {
+const CategorizeProducts = ({ userProducts, date }) => {
   const classes = useStyles();
   const DISH_CATEGORIES = { 'BREAKFAST': [], 'LUNCH': [], 'DINNER': [], 'SUPPER': [], 'SNACK': [], 'OTHER': [] };
 
@@ -65,17 +65,18 @@ const CategorizeProducts = ({ userProducts }) => {
   // console.log(data);
   // if(isLoading || isError) return (<div>loading</div>);
 
-  const [userReactions, setUserReactions] = useState([]);
+  const [userReactions, setUserReactions] = useState(undefined);
   useEffect(() => {
-    apiCall('/api/user/getReactions', {
+    apiCall(`/api/user/getReactions?date=${date}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
     }).then(data => setUserReactions(data))
     .catch(error => console.log(error));
-  }, []);
+  }, [date]);
 
+  //fixme :c
   return (
     (userReactions === undefined) ? <Skeleton /> : (
       <div>
@@ -86,7 +87,7 @@ const CategorizeProducts = ({ userProducts }) => {
               <ReactionRatingBar category='BREAKFAST'
                 savedReaction={userReactions.find(item => item.category === 'BREAKFAST')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['BREAKFAST']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['BREAKFAST']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -97,7 +98,7 @@ const CategorizeProducts = ({ userProducts }) => {
               <ReactionRatingBar category='LUNCH'
                 savedReaction={userReactions.find(item => item.category === 'LUNCH')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['LUNCH']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['LUNCH']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -108,7 +109,7 @@ const CategorizeProducts = ({ userProducts }) => {
               <ReactionRatingBar category='DINNER'
                 savedReaction={userReactions.find(item => item.category === 'DINNER')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['DINNER']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['DINNER']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -119,7 +120,7 @@ const CategorizeProducts = ({ userProducts }) => {
               <ReactionRatingBar category='SUPPER'
                 savedReaction={userReactions.find(item => item.category === 'SUPPER')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['SUPPER']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['SUPPER']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -130,7 +131,7 @@ const CategorizeProducts = ({ userProducts }) => {
               <ReactionRatingBar category='SNACK'
                 savedReaction={userReactions.find(item => item.category === 'SNACK')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['SNACK']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['SNACK']} component={DashboardProduct} date={date} />
           </div>
         }
 
@@ -141,7 +142,7 @@ const CategorizeProducts = ({ userProducts }) => {
               <ReactionRatingBar category='OTHER'
                 savedReaction={userReactions.find(item => item.category === 'OTHER')?.value} />
             </div>
-            <DashboardElementsColumn items={DISH_CATEGORIES['OTHER']} component={DashboardProduct} />
+            <DashboardElementsColumn items={DISH_CATEGORIES['OTHER']} component={DashboardProduct} date={date} />
           </div>
         }
       </div>)

@@ -10,5 +10,8 @@ import java.util.List;
 @Repository
 public interface UserAllergicReactionRepository extends JpaRepository<UserAllergicReactionEntity, Long> {
     List<UserAllergicReactionEntity> findAllByUserIdAndDate(Long userId, Date date);
+
+    List<UserAllergicReactionEntity> findAllByUserId(Long userId);
+
     long deleteAllByUserIdAndDate(Long userId, Date date);
 }

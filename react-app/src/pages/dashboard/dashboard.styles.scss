@@ -4,4 +4,38 @@
     min-height: 70vh;
     padding: 100px 50px 50px; /* TODO: margin-top should be equal to the header height */
     background-color: #E4E3E3;
+
+}
+
+.dashboard-modal {
+    .search {
+        display: grid;
+        grid-template-columns: 50px 1fr 100px;
+        align-content: baseline;
+        border: 2px solid #DFDFDF;
+        border-radius: 4px;
+
+        &:focus-within {
+            border: 2px solid #20C34E;
+        }
+
+        .icon-container {
+            padding: 0.5rem;
+        }
+    }
+
+    .grid-placeholder {
+        height: unset;
+    }
+
+    .MuiPagination-ul {
+        margin: 50px auto;
+        justify-content: center;
+    }
+}
+
+.toolbar-margin-bottom {
+    @media (min-width: 960px) {
+        margin-bottom: 60px;
+    }
 }
