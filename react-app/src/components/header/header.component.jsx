@@ -67,7 +67,7 @@ const Header = () => {
   const displayLogo = () => (
     <Link className={logoContainer} to='/'>
       {/*<Logo />*/}
-      <span>logo placeholder</span>
+      <span>MealCore</span>
     </Link>
   );
 

@@ -150,7 +150,7 @@ public class UserController {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
             userService.changeUserLogin(user, newLogin, password);
-            log.info("SUCCESSFUL login change form '{}' to '{}'", auth.getName(), newLogin);
+            log.info("SUCCESSFUL login change form '{}' to '{}'", nonNull(auth) ? auth.getName() : null, newLogin);
             Authentication newAuth = new UsernamePasswordAuthenticationToken(user.toUserDetails(), user.toUserDetails().getPassword(), user.toUserDetails().getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(newAuth);
             return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
@@ -181,7 +181,7 @@ public class UserController {
             User user = userService.getByLogin(nonNull(auth) ? auth.getName() : null);
             if (isAuthenticated()) {
                 userService.changeUserData(user, userDataRequest);
-                log.info("SUCCESSFUL changed personal data, for user '{}'", auth.getName());
+                log.info("SUCCESSFUL changed personal data, for user '{}'", nonNull(auth) ? auth.getName() : null);
                 return new ResponseEntity<>(response.withSuccess(true), HttpStatus.OK);
             } else {
                 log.info("FAILED to change personal data, no user in session");
@@ -197,7 +197,7 @@ public class UserController {
      * Implemented by Spring Security
      */
     @ApiOperation(value = "Login", notes = "Login with the given credentials.")
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     public ResponseEntity<AuthResponse> login(
             @RequestParam("username") String username,
             @RequestParam("password") String password
@@ -205,6 +205,7 @@ public class UserController {
         throw new IllegalStateException("Add Spring Security to handle authentication");
     }
 
+    @SuppressWarnings({"squid:S2160", "squid:S1104"})
     private class AuthResponse extends BasicResponse {
         public Collection<GrantedAuthority> authorities;
     }
@@ -213,7 +214,7 @@ public class UserController {
      * Implemented by Spring Security
      */
     @ApiOperation(value = "Logout", notes = "Logout the current user.")
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @PostMapping(value = "/logout")
     public ResponseEntity<Void> logout() {
         throw new IllegalStateException("Add Spring Security to handle authentication");
     }
