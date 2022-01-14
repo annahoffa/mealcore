@@ -29,6 +29,8 @@ jobs:
         run: |
           cd spring-app/
           mvn test --file pom.xml -P test
+          mvn clean install
+          java -jar target/MealCore-0.1-SNAPSHOT.jar
         env:
           CI: ""
 

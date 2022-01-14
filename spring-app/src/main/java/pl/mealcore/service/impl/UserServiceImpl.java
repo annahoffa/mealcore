@@ -116,10 +116,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
-    public boolean isPasswordValidForUser(String password, User user) {
-        return User.PASSWORD_ENCODER.matches(password, user.getPassword());
-    }
 
     @Override
     public void changeUserData(User user, UserDataRequest request) throws BadHttpRequest {
@@ -137,6 +133,10 @@ public class UserServiceImpl implements UserService {
     }
 
     //  PRIVS
+    private boolean isPasswordValidForUser(String password, User user) {
+        return User.PASSWORD_ENCODER.matches(password, user.getPassword());
+    }
+
     private boolean validateCredentials(User user) {
         return validateLogin(user.getLogin()) && validatePassword(user.getPassword());
     }

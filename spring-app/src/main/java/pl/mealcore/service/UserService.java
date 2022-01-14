@@ -12,8 +12,6 @@ public interface UserService {
 
     User getByLogin(String login);
 
-    boolean isPasswordValidForUser(String password, User user);
-
     void changeUserPassword(User user, String oldPassword, String newPassword) throws UserInvalidCredentialsException, UserWrongPasswordException, BadSessionException;
 
     void changeUserLogin(User user, String newLogin, String password) throws BadSessionException, UserWrongPasswordException, UserInvalidCredentialsException, UserAlreadyExistException;
