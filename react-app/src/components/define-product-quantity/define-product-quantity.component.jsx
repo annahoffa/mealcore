@@ -34,18 +34,18 @@ const DefineProductQuantity = ({ quantityProps, apiCall, showCategory }) => (
         fullWidth
       />
       {showCategory &&
-        <Autocomplete
-          value={dishCategories.find(dish => dish.query === quantityProps.productCategory)}
-          onChange={(event, newValue) => {
-            quantityProps.setProductCategory(newValue?.query);
-          }}
-          id='select-dish-category'
-          sx={{ width: 300 }}
-          options={dishCategories}
-          getOptionLabel={(option) => option.label}
-          noOptionsText='Nie znaleziono'
-          renderInput={(params) => <TextField {...params} label='Wybierz kategorię posiłku...' />}
-        />}
+      <Autocomplete
+        value={dishCategories.find(dish => dish.query === quantityProps.productCategory)}
+        onChange={(event, newValue) => {
+          quantityProps.setProductCategory(newValue?.query);
+        }}
+        id='select-dish-category'
+        sx={{ width: 300 }}
+        options={dishCategories}
+        getOptionLabel={(option) => option.label}
+        noOptionsText='Nie znaleziono'
+        renderInput={(params) => <TextField {...params} label='Wybierz kategorię posiłku...' />}
+      />}
     </DialogContent>
     <DialogActions>
       <Button onClick={quantityProps.closeQuantityDialog}>Anuluj</Button>

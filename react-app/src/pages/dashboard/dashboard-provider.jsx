@@ -6,9 +6,7 @@ import { useMutation, useQuery } from 'react-query';
 
 
 let defaultState = {};
-
 export const DashboardProviderContext = createContext(defaultState);
-
 
 const DashboardProvider = (props) => {
     const authContext = useContext(AuthContext);

@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
 import { AuthContext } from '../../appContext/providers';
 import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -105,7 +104,7 @@ const ProductInfoPage = (props) => {
 
 
     const getNutrients = (nutrients) => {
-      const isNutrientsEmpty = true;
+      //const isNutrientsEmpty = true;
 
       function formatNutrients(data) {
         if(data.size < 1)
@@ -218,12 +217,12 @@ const ProductInfoPage = (props) => {
       </div>
     );
 
-  return (
-    <MainContent>
-      {state === undefined ? <CircularProgress color="success" size='5rem'/> : getProductInfo(state)}
-    </MainContent>
-  );
-}
-  ;
+    return (
+      <MainContent>
+        {state === undefined ? <CircularProgress color='success' size='5rem' /> : getProductInfo(state)}
+      </MainContent>
+    );
+  }
+;
 
 export default ProductInfoPage;

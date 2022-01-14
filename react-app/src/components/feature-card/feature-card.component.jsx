@@ -1,16 +1,15 @@
 import React from 'react';
-
 import { Typography } from '@material-ui/core';
 
 import './feature-card.styles.scss';
-//import { CARD_DATA as cardData } from './feature-card.data'; //TODO: Replace placeholder data with an API call
+//import { CARD_DATA as cardData } from './feature-card.data';
 
 
 const FeatureCard = ({ imagePath, text, title }) => (
   <div className='feature-card'>
     <div className='relative-content-wrapper'>
       <div className='image-container'>
-        <img src={imagePath} alt='Decoration'/>
+        <img src={imagePath} alt='Decoration' />
       </div>
       <div className='card-surface'>
         <div className='text-container'>

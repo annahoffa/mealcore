@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../appContext/providers';
+import { AppBar, Toolbar, Button, makeStyles, IconButton, Popover } from '@material-ui/core';
 // import clsx from 'classnames';
-
-import { AppBar, Toolbar, Button, makeStyles, Hidden, IconButton, Popover } from '@material-ui/core';
 // import { ReactComponent as Logo } from '../../assets/logo_horizontal.svg';
 // import { Menu as MenuIcon } from '@material-ui/icons';
 // import Drawer from '../drawer/drawer.component';
@@ -51,8 +50,8 @@ const Header = () => {
   const isPopoverOpen = Boolean(anchorEl);
 
   const handleTogglePopover = (event) => {
-    if (anchorEl) {
-      setAnchorEl(null)
+    if(anchorEl) {
+      setAnchorEl(null);
     } else {
       setAnchorEl(event.currentTarget);
     }
@@ -62,7 +61,7 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const { header, toolbar, logoContainer, menuButton, accountButton, popover } = useStyles();
+  const { header, toolbar, logoContainer, menuButton, accountButton } = useStyles();
 
   const displayLogo = () => (
     <Link className={logoContainer} to='/'>

@@ -44,17 +44,17 @@ const DashboardModal = ({ open, setOpen }) => {
   };
 
   const handleSetPageNumber = (pageNumber) => {
-    searchProductMutation.mutate({ product: searchValue, page: pageNumber-1 });
-    setPageNumber(pageNumber)
-  }
+    searchProductMutation.mutate({ product: searchValue, page: pageNumber - 1 });
+    setPageNumber(pageNumber);
+  };
 
   const handleCloseModal = () => {
     setOpen(false);
     userProductsQuery.refetch();
-    setSearchValue('')
-    setSelectedItem(null)
-    searchProductMutation.reset()
-  }
+    setSearchValue('');
+    setSelectedItem(null);
+    searchProductMutation.reset();
+  };
 
   return (
     <Modal className={modal + ' dashboard-modal'} open={open} onClose={handleCloseModal}>
@@ -92,13 +92,15 @@ const DashboardModal = ({ open, setOpen }) => {
               case 'idle':
                 break;
               case 'loading':
-                return <div style={{width: '100%', marginTop: '5rem', textAlign:'center'}}><CircularProgress color="success" size='5rem'/></div>;
+                return <div style={{ width: '100%', marginTop: '5rem', textAlign: 'center' }}><CircularProgress
+                  color='success' size='5rem' /></div>;
               case 'success':
                 return (
                   <>
                     <h2>Wynik wyszukiwania:</h2>
                     <ItemsGrid items={searchProductMutation.data.products} onSelect={setSelectedItem} />
-                    <Pagination count={Math.ceil(searchProductMutation.data.productCount / 20)} defaultPage={1} page={pageNumber}
+                    <Pagination count={Math.ceil(searchProductMutation.data.productCount / 20)} defaultPage={1}
+                      page={pageNumber}
                       onChange={(event, page) => handleSetPageNumber(page)} />
                   </>
                 );

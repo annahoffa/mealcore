@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import apiCall from '../../utils/apiCall';
-
-import {
-  Button, Checkbox, Container, FormControl, FormControlLabel, FormLabel,
-  InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup, TextField, Typography, makeStyles,
-} from '@material-ui/core';
+import { Button, Checkbox, Container, FormControl, FormControlLabel, FormLabel, InputAdornment, InputLabel, makeStyles, OutlinedInput, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -62,8 +58,7 @@ const SignUpForm = ({ isCompleted }) => {
 
   const stringToArray = (string) => {
     if(string) {
-      let array = string.split('\n');
-      return array;
+      return string.split('\n');
     }
     return [];
   };

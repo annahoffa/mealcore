@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { Redirect } from 'react-router';
 import { AuthContext } from '../../appContext/providers';
-
 import MainContent from '../../components/main-content/main-content.component';
 import UserAccountSettings from '../../components/user-account-settings/user-account-settings.component';
 

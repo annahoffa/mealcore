@@ -53,7 +53,7 @@ const NewProductForm = () => {
       <Typography variant='h5'>Wypełnij poniższe pola</Typography>
 
       <FormControl className={input} variant='outlined'>
-        <InputLabel htmlFor='userEmail'>Kod produktu</InputLabel>
+        <InputLabel htmlFor='userEmail'>Link do zdjęcia</InputLabel>
         <OutlinedInput
           id='productCode'
           type='text'
@@ -80,7 +80,7 @@ const NewProductForm = () => {
       </FormControl>
 
       <FormControl className={input} variant='outlined'>
-        <InputLabel htmlFor='userEmail'>Ilość</InputLabel>
+        <InputLabel htmlFor='userEmail'>Kaloryczność</InputLabel>
         <OutlinedInput
           id='userEmail'
           type='text'

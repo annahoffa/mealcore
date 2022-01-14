@@ -1,11 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {AuthContext} from '../../appContext/providers';
+import React, { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../appContext/providers';
 import apiCall from '../../utils/apiCall';
-
-import {Typography} from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
-import EmailIcon from '@material-ui/icons/Email';
-import LockIcon from '@material-ui/icons/Lock';
 import SettingsModalDialog from '../settings-modal-dialog/settings-modal-dialog.component';
 import ChangeEmailForm from '../change-email-form/change-email-form.component';
 import ChangePasswordForm from '../change-password-form/change-password-form.component';
@@ -15,7 +12,7 @@ import ChangePersonalDataForm from '../change-personal-data/change-personal-data
 import './user-account-settings.styles.scss';
 
 
-const UserAccountSettings = ({ tabName }) => {
+const UserAccountSettings = () => {
   const authContext = useContext(AuthContext);
 
   const [personalData, setPersonalData] = useState();

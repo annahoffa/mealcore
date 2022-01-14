@@ -9,9 +9,6 @@ import DashboardExercisesToolbar from '../../components/dashboard-exercises-tool
 import DashboardExercise from '../../components/dashboard-exercise/dashboard-exercise.component';
 import Calendar from '../../components/calendar';
 import CategorizeProducts from '../../components/categorize-products';
-
-
-import './dashboard.styles.scss';
 import DashboardProvider, { DashboardProviderContext } from './dashboard-provider';
 import ToolbarManageNote from '../../components/toolbar-manage-note';
 import ToolbarManageAllergySymptoms from '../../components/toolbar-manage-allergy-symptoms';
@@ -19,8 +16,10 @@ import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import DashboardModal from './dashboard-modal';
 
+import './dashboard.styles.scss';
 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles(() => ({
   toolbar: {
     '&>*': {
       marginRight: '0.2em',

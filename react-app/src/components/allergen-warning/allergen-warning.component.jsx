@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-
 import { Popover, Typography, makeStyles } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 
 import './allergen-warning.styles.scss';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   popover: {
     pointerEvents: 'none',
     '& > *': {
       padding: '1rem',
-    }
+    },
   },
 }));
 

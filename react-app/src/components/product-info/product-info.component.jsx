@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
 import { Button, Grid, Tooltip, Typography } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CircularProgress from '@mui/material/CircularProgress';
-import MainContent from '../../components/main-content/main-content.component';
 import AllergenWarning from '../../components/allergen-warning/allergen-warning.component';
 import DefineProductQuantity from '../../components/define-product-quantity/define-product-quantity.component';
 
@@ -32,7 +30,7 @@ const ProductInfo = ({ id, handleClose, date, handleCloseModal }) => {
       })
       .then(() => {
         closeQuantityDialog();
-        handleCloseModal()
+        handleCloseModal();
         history.push({ pathname: '/dashboard' });
       })
       .catch(error => console.log(error));
@@ -208,7 +206,7 @@ const ProductInfo = ({ id, handleClose, date, handleCloseModal }) => {
 
     return (
       <>
-        {state === undefined ? <CircularProgress color="success" size='5rem'/> : getProductInfo(state)}
+        {state === undefined ? <CircularProgress color='success' size='5rem' /> : getProductInfo(state)}
       </>
     );
   }

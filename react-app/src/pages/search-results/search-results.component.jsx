@@ -3,8 +3,8 @@ import apiCall from '../../utils/apiCall';
 import MainContent from '../../components/main-content/main-content.component';
 import ItemsGrid from '../../components/response-items-grid/response-items-grid.component';
 import { useQuery } from 'react-query';
-import Loader from '../../components/loader/loader';
 import { Pagination } from '@material-ui/lab';
+import { CircularProgress } from '@material-ui/core';
 
 
 const SearchResultsPage = (props) => {
@@ -13,7 +13,7 @@ const SearchResultsPage = (props) => {
 
   const productsQuery = useQuery(['productsQuery', userQuery, pageNumber],
     (context) => {
-      return apiCall(`/api/products/suggestions?query=${context.queryKey[1]}&page=${context.queryKey[2]-1}`);
+      return apiCall(`/api/products/suggestions?query=${context.queryKey[1]}&page=${context.queryKey[2] - 1}`);
     });
 
   return (
@@ -23,7 +23,7 @@ const SearchResultsPage = (props) => {
           <Pagination
             count={Math.ceil(productsQuery.data.productCount / 20)} defaultPage={1} page={pageNumber}
             onChange={(event, page) => setPageNumber(page)} /></> :
-        <Loader width='35px' height='35px' />}
+        <CircularProgress color='success' size='5rem' />}
     </MainContent>
   );
 };

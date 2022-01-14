@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { Grid, Typography } from '@material-ui/core';
 import AllergenWarning from '../allergen-warning/allergen-warning.component';
 

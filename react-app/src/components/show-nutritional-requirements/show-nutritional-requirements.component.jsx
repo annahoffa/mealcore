@@ -17,14 +17,16 @@ const ShowNutritionalRequirements = ({ maxValues, currentValues }) => {
       <div className='item'>
         <span><b>Białka:</b></span>
         <div className='percentage-bar'>
-          <span className='numbers'>{currentValues?.proteins || '\u2014'} / {parseFloat(maxValues?.proteins).toFixed(2)}</span>
+          <span
+            className='numbers'>{currentValues?.proteins || '\u2014'} / {parseFloat(maxValues?.proteins).toFixed(2)}</span>
           <PercentageBar value={currentValues?.proteins} maxValue={maxValues?.proteins} />
         </div>
       </div>
       <div className='item'>
         <span><b>Węglowodany:</b></span>
         <div className='percentage-bar'>
-          <span className='numbers'>{currentValues?.carbohydrates || '\u2014'} / {parseFloat(maxValues?.carbohydrates).toFixed(2)}</span>
+          <span
+            className='numbers'>{currentValues?.carbohydrates || '\u2014'} / {parseFloat(maxValues?.carbohydrates).toFixed(2)}</span>
           <PercentageBar value={currentValues?.carbohydrates} maxValue={maxValues?.carbohydrates} />
         </div>
       </div>
@@ -38,7 +40,8 @@ const ShowNutritionalRequirements = ({ maxValues, currentValues }) => {
       <div className='item'>
         <span><b>Błonnik:</b></span>
         <div className='percentage-bar'>
-          <span className='numbers'>{currentValues?.fiber || '\u2014'} / {parseFloat(maxValues?.fiber).toFixed(2)}</span>
+          <span
+            className='numbers'>{currentValues?.fiber || '\u2014'} / {parseFloat(maxValues?.fiber).toFixed(2)}</span>
           <PercentageBar value={currentValues?.fiber} maxValue={maxValues?.fiber} />
         </div>
       </div>

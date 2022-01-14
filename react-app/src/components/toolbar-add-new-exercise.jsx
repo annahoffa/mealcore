@@ -43,7 +43,9 @@ const ToolbarAddNewExercise = () => {
         'Content-Type': 'application/json',
       },
     })
-    .then(() => {window.location.reload()})
+    .then(() => {
+      window.location.reload();
+    })
     .catch(error => console.log(error));
   };
 
@@ -87,7 +89,7 @@ const ToolbarAddNewExercise = () => {
             options={availableExercises}
             getOptionLabel={(option) => option.name}
             noOptionsText='Nie znaleziono'
-            renderInput={(params) => <TextField {...params} label='Wybierz aktywność...'/>}
+            renderInput={(params) => <TextField {...params} label='Wybierz aktywność...' />}
           />
           <TextField
             autoFocus

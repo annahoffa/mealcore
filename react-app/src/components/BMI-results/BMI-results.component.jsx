@@ -1,9 +1,8 @@
 import React from 'react';
-
 import { Button, makeStyles, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 import './BMI-results.styles.scss';
-import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({

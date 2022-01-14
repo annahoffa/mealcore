@@ -4,7 +4,6 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-
 import {
   makeStyles,
   TextField,
@@ -38,7 +37,7 @@ const BMRForm = ({ handleChange, handleSubmit, state }) => {
   return (
     <form className={root} onSubmit={handleSubmit} autoComplete='off'>
       <Typography variant='h5' align='center'>
-        Oblicz swój wskaźnik zapotrzebowania kalorycznego. 
+        Oblicz swój wskaźnik zapotrzebowania kalorycznego.
       </Typography>
 
       <Grid container spacing={2}>

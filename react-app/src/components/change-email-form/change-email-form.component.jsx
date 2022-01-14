@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import apiCall from '../../utils/apiCall';
-
-import {Button, FormControl, InputLabel, makeStyles, OutlinedInput} from '@material-ui/core';
+import { Button, FormControl, InputLabel, makeStyles, OutlinedInput } from '@material-ui/core';
 
 import './change-email-form.styles.scss';
 
@@ -41,8 +40,8 @@ const ChangeEmailForm = () => {
       headers: { 'Content-type': 'application/x-www-form-urlencoded' },
       body: `newLogin=${formValues.newEmail}&password=${formValues.password}`,
     })
-        .then(() => alert("Email został zmieniony pomyślnie"))
-        .catch(() => alert("Nie udało się zmienić email-a"));
+    .then(() => alert('Email został zmieniony pomyślnie'))
+    .catch(() => alert('Nie udało się zmienić email-a'));
   };
 
   return (

@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../appContext/providers';
-
 import { Button, Typography } from '@material-ui/core';
 import MainContent from '../../components/main-content/main-content.component';
 import LogInForm from '../../components/log-in-form/log-in-form.component';
@@ -38,8 +37,8 @@ const LogInPage = () => {
           </div>
         </div>
       </MainContent>
-  ) : (
-    <Redirect to="/dashboard" />
+    ) : (
+      <Redirect to='/dashboard' />
     )
   );
 };

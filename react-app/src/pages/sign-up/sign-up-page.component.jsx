@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Redirect } from 'react-router';
 import { AuthContext } from '../../appContext/providers';
-
 import MainContent from '../../components/main-content/main-content.component';
 import SignUpForm from '../../components/sign-up-form/sign-up-form.component';
 import SignUpSuccess from '../../components/sign-up-success/sign-up-success.component';
@@ -14,8 +13,8 @@ const SignUpPage = () => {
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [successMsg])
+    window.scrollTo(0, 0);
+  }, [successMsg]);
 
   return (
     !authContext.isLoggedIn ? (

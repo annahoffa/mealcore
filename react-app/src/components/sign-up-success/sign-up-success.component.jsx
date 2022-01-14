@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { makeStyles, Typography, Button } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
@@ -8,7 +7,7 @@ import './sign-up-success.styles.scss';
 
 
 const useStyles = makeStyles({
-  root	: {
+  root: {
     display: 'flex',
     flexDirection: 'row',
     '& > *': {
@@ -16,7 +15,7 @@ const useStyles = makeStyles({
     },
   },
   fullWidth: {
-    width: '15em'
+    width: '15em',
   },
   icon: {
     fontSize: '72px',
@@ -26,9 +25,9 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
     '& > *': {
-      margin: '0.5rem'
-    }
-  }
+      margin: '0.5rem',
+    },
+  },
 });
 
 
@@ -40,8 +39,10 @@ const SignUpSuccessMessage = () => {
       <Typography variant='h5'>Twoje konto zostało utworzone!</Typography>
       <CheckCircleIcon color='primary' className={icon} />
       <div className={root}>
-        <Button fullWidth={true} className={fullWidth} variant='outlined' color='primary' to='/' component={Link}>Wróć do strony głównej</Button>
-        <Button fullWidth={true} className={fullWidth} variant='contained' color='primary' to='/login' component={Link}>Zaloguj</Button>
+        <Button fullWidth={true} className={fullWidth} variant='outlined' color='primary' to='/' component={Link}>Wróć
+          do strony głównej</Button>
+        <Button fullWidth={true} className={fullWidth} variant='contained' color='primary' to='/login'
+          component={Link}>Zaloguj</Button>
       </div>
     </div>
   );

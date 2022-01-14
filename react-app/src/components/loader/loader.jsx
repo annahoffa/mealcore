@@ -1,6 +1,7 @@
-import { keyframes } from '@emotion/css'
-import styled from '@emotion/styled'
-import React from 'react'
+import { keyframes } from '@emotion/css';
+import styled from '@emotion/styled';
+import React from 'react';
+
 
 const spinner = keyframes`
   0% {
@@ -13,7 +14,7 @@ const spinner = keyframes`
   100% {
     transform: rotate(360deg);
   }
-`
+`;
 
 const LoaderStyle = styled('span')`
   display: inline-flex;
@@ -26,10 +27,10 @@ const LoaderStyle = styled('span')`
   border-color: ${(props) => props.loaderColor};
   border-top-color: transparent !important;
   animation: ${spinner} 1s linear infinite;
-`
+`;
 
 const Loader = ({ loaderColor = '', ...props }) => (
   <LoaderStyle loaderColor={loaderColor} {...props} />
-)
+);
 
-export default Loader
+export default Loader;

@@ -10,7 +10,6 @@ const LogOutPage = () => {
   const authContext = useContext(AuthContext);
 
   const handleLogOut = () => {
-    // TODO fix errors
     apiCall('/api/user/logout', {
       method: 'POST',
       headers: {

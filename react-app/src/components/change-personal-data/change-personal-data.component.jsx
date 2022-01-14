@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import apiCall from '../../utils/apiCall';
-
 import { Button, Container, FormControl, FormControlLabel, FormLabel, InputAdornment, makeStyles, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
 
 import './change-personal-data.styles.scss';
@@ -39,8 +38,7 @@ const ChangePersonalDataForm = ({ currentData }) => {
 
   const stringToArray = (string) => {
     if(string) {
-      let array = string.split('\n');
-      return array;
+      return string.split('\n');
     }
     return [];
   };

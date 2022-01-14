@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
 import { AuthContext } from '../../appContext/providers';
-
 import { Button, FormControl, InputLabel, makeStyles, OutlinedInput } from '@material-ui/core';
 
 import './log-in-form.styles.scss';

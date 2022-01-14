@@ -11,12 +11,6 @@ const useStyles = makeStyles(() => ({
   dishCategory: {
     margin: '15px 0;',
   },
-  // TODO: add restraints to the parent container so that the reactions can be on the right side
-  // titleContainer: {
-  //   display: 'flex',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  // },
   titleContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -26,7 +20,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-// TODO: api refactor + component atomization
 const CategorizeProducts = ({ userProducts, date }) => {
   const classes = useStyles();
   const DISH_CATEGORIES = { 'BREAKFAST': [], 'LUNCH': [], 'DINNER': [], 'SUPPER': [], 'SNACK': [], 'OTHER': [] };

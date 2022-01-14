@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import clsx from 'classnames';
-
-import { CssBaseline, makeStyles } from '@material-ui/core';
+import { CssBaseline } from '@material-ui/core';
 import Header from './components/header/header.component';
 import BMICalculatorPage from './pages/BMI-calculator/BMI-calculator.component';
 import DashboardPage from './pages/dashboard/dashboard.component';
@@ -25,17 +23,16 @@ import TermsOfServicePage from './pages/footer-links/terms-of-service';
 import './App.scss';
 
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   appBar: {
+//     transition: theme.transitions.create(['margin', 'width'], {
+//       easing: theme.transitions.easing.sharp,
+//       duration: theme.transitions.duration.leavingScreen,
+//     }),
+//   },
+// }));
 
 const App = () => {
-  const [open, setOpen] = useState(false);
 
   //const [cookies, setCookies] = useCookies(['JSESSIONID']);
   //if (cookies.JSESSIONID) {logIn()} else logOut();

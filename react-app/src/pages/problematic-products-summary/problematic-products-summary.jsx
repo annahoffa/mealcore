@@ -3,8 +3,7 @@ import { AuthContext } from '../../appContext/providers';
 import apiCall from '../../utils/apiCall';
 import MainContent from '../../components/main-content/main-content.component';
 import ItemsGrid from '../../components/response-items-grid/response-items-grid.component';
-import { Typography } from '@material-ui/core';
-import Loader from '../../components/loader/loader';
+import { CircularProgress, Typography } from '@material-ui/core';
 
 
 const ProblematicProductsSummaryPage = () => {
@@ -32,7 +31,8 @@ const ProblematicProductsSummaryPage = () => {
         To produkty, które pojawiały się w Twoich listach gdy czułeś/aś się źle.<br />Ich spożycie może przyczynić się
         do zwiększenia objawów alergicznych.
       </Typography>
-      {productsSummary ? <ItemsGrid items={productsSummary.products} /> : <Loader width='35px' height='35px' />}
+      {productsSummary ? <ItemsGrid items={productsSummary.products} /> :
+        <CircularProgress color='success' size='5rem' />}
     </MainContent>
   );
 };

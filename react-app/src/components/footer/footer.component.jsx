@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { Button } from '@material-ui/core';
-
 import { FOOTER_DATA as footerData, SOCIAL_MEDIA_DATA as socialMediaData } from './footer.data';
+
 import './footer.styles.scss';
 
 

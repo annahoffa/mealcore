@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import apiCall from '../../utils/apiCall';
-
 import { Grid, Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
@@ -24,7 +23,9 @@ const DashboardProduct = ({ item: product, date }) => {
         'Content-Type': 'application/json',
       },
     })
-    .then(() => {userProductsQuery.refetch()})
+    .then(() => {
+      userProductsQuery.refetch();
+    })
     .catch(error => console.log(error));
 
     closeQuantityDialog();
@@ -37,7 +38,9 @@ const DashboardProduct = ({ item: product, date }) => {
         'Content-Type': 'application/json',
       },
     })
-    .then(() => {userProductsQuery.refetch()})
+    .then(() => {
+      userProductsQuery.refetch();
+    })
     .catch(error => console.log(error));
   };
 
@@ -76,20 +79,21 @@ const DashboardProduct = ({ item: product, date }) => {
   return (
     // TODO: Adjust for products which have both allergen warnings and reaction warnings
 
-    <div className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''} ${!product.allergenWarning && product.badReaction ? 'dashboard-product-with-reaction-warning' : ''}`}>
+    <div
+      className={`dashboard-product ${product.allergenWarning ? 'dashboard-product-with-warning' : ''} ${!product.allergenWarning && product.badReaction ? 'dashboard-product-with-reaction-warning' : ''}`}>
       <div className='product-title'>
         <Grid item xs={12} id={product.id}>
-            <Link className='product-link' to={{ pathname: `/productinfo/${product.id}` }}>
-              <div className='product-item'>
-                <div className='image-container'>
-                  <img src={product.images.find(obj => obj.url)?.url ?? ''} alt='Product' />
-                </div>
-                <Typography variant='body1'>
-                  <b>{product.name}</b>
-                </Typography>
+          <Link className='product-link' to={{ pathname: `/productinfo/${product.id}` }}>
+            <div className='product-item'>
+              <div className='image-container'>
+                <img src={product.images.find(obj => obj.url)?.url ?? ''} alt='Product' />
               </div>
-            </Link>
-          </Grid>
+              <Typography variant='body1'>
+                <b>{product.name}</b>
+              </Typography>
+            </div>
+          </Link>
+        </Grid>
         <div className='icons'>
           <IconButton onClick={openQuantityDialog} title='Zmień ilość'
             aria-label="Modify product's quantity">

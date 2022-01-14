@@ -16,7 +16,8 @@ const ReviewProductsSuggestions = () => {
 
   return (
     <MainContent>
-      {userSuggestions === undefined ? <CircularProgress color="success" size='5rem'/> : <ItemsGrid items={userSuggestions} />}
+      {userSuggestions === undefined ? <CircularProgress color='success' size='5rem' /> :
+        <ItemsGrid items={userSuggestions} />}
     </MainContent>
   );
 };
