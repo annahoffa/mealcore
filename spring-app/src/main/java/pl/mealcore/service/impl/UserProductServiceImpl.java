@@ -77,6 +77,7 @@ public class UserProductServiceImpl implements UserProductService {
                 .collect(Collectors.toList()));
     }
 
+    @SuppressWarnings("squid:S3518")
     @Override
     public ReactionValue getReactionForProduct(User user, Long productId) {
         double count = 0;
