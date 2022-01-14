@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import pl.mealcore.dto.BaseDto;
 import pl.mealcore.helper.NumberHelper;
@@ -362,11 +361,11 @@ public class Nutrients extends BaseDto<NutrientsEntity> {
 
     public double getKcal(double defaultValue) {
         double kcal = defaultValue;
-        if (StringUtils.isNumeric(energyKcal))
+        if (NumberUtils.isCreatable(energyKcal))
             kcal = NumberUtils.toDouble(energyKcal);
-        else if (StringUtils.isNumeric(energyKj))
+        else if (NumberUtils.isCreatable(energyKj))
             kcal = NumberUtils.toDouble(energyKj) * KJ_KCAL_SCALE;
-        else if (StringUtils.isNumeric(energy))
+        else if (NumberUtils.isCreatable(energy))
             kcal = NumberUtils.toDouble(energy) * KJ_KCAL_SCALE;
         return NumberHelper.round(kcal);
     }
